@@ -16,7 +16,7 @@ namespace LAS_Interface
 {
     public partial class FrmMain : Form
     {
-        string strconn = "server=localhost;database=las_database;uid=root;pwd=";
+        string strconn = "server=192.168.3.50;database=las_database;uid=root;pwd=";
         IPEndPoint remoteEP;
         Socket socket;
 
@@ -180,6 +180,11 @@ namespace LAS_Interface
         private void btnEnd_Click(object sender, EventArgs e)
         {
             RaiseEvents("End Transaction");
+        }
+
+        private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
