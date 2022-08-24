@@ -109,6 +109,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
             this.splitContainer2.Panel2.Controls.Add(this.btnSetPreset);
+            this.splitContainer2.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel2_Paint);
             this.splitContainer2.Size = new System.Drawing.Size(545, 632);
             this.splitContainer2.SplitterDistance = 327;
             this.splitContainer2.SplitterWidth = 5;
