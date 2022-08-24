@@ -1,0 +1,11 @@
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\LAS_Interface.exe.config
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\LAS_Interface.exe
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\LAS_Interface.pdb
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmMain.resources
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.Properties.Resources.resources
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.GenerateResource.cache
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.exe
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.pdb
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\Library.dll
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\Library.pdb
+C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csprojResolveAssemblyReference.cache
