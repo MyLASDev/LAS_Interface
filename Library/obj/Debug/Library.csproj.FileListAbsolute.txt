@@ -3,3 +3,9 @@ C:\Users\cmddev\source\repos\LAS_Interface\Library\bin\Debug\Library.pdb
 C:\Users\cmddev\source\repos\LAS_Interface\Library\obj\Debug\Library.dll
 C:\Users\cmddev\source\repos\LAS_Interface\Library\obj\Debug\Library.pdb
 C:\Users\cmddev\source\repos\LAS_Interface\Library\obj\Debug\Library.csprojResolveAssemblyReference.cache
+D:\c#\LLAS_V2\LAS_Interface\Library\bin\Debug\Library.dll
+D:\c#\LLAS_V2\LAS_Interface\Library\bin\Debug\Library.pdb
+D:\c#\LLAS_V2\LAS_Interface\Library\obj\Debug\Library.csproj.AssemblyReference.cache
+D:\c#\LLAS_V2\LAS_Interface\Library\obj\Debug\Library.csproj.CoreCompileInputs.cache
+D:\c#\LLAS_V2\LAS_Interface\Library\obj\Debug\Library.dll
+D:\c#\LLAS_V2\LAS_Interface\Library\obj\Debug\Library.pdb

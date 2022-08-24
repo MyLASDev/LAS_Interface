@@ -10,13 +10,15 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using Library;
+using MySql.Data.MySqlClient;
+
 namespace LAS_Interface
 {
     public partial class FrmMain : Form
     {
+        string strconn = "server=localhost;database=las_database;uid=root;pwd=";
         IPEndPoint remoteEP;
         Socket socket;
-        public AcculoadLib.AcculoadMember[] AclMember;
 
         public FrmMain()
         {
@@ -26,16 +28,17 @@ namespace LAS_Interface
         private void FrmMain_Load(object sender, EventArgs e)
         {
             timer1.Start();
-            RaiseEvents("<----------Application Start---------->");
+            RaiseEvents("Application Start");
+            updatedatagridview();
         }
-        private void SetStatusbar(string pMessage)
+        private void SetStatusbar(string pMessage)        
         {
             toolStripStatus.Text = pMessage;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            string text = "[Date Time : " + DateTime.Now + "]";
+            string text  = "[Date Time : " + DateTime.Now + "]";
             SetStatusbar(text);
         }
         private bool ConnectAcl()
@@ -57,7 +60,7 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                RaiseEvents("Connect Lost = " + ex.Message);
+                RaiseEvents("Connect Lost = "+ex.Message);
                 return false;
             }
 
@@ -66,7 +69,7 @@ namespace LAS_Interface
         void RaiseEvents(string pMsg)
         {
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
-            DisplayMessage("", vMsg);
+            DisplayMessage("",vMsg);
         }
         #region ListboxItem
 
@@ -147,7 +150,6 @@ namespace LAS_Interface
         private void btnConnectAcl_Click(object sender, EventArgs e)
         {
             bool value = ClientLib.ConnectAcl();
-            bool vCheck = ClientLib.getIsConnectAcl();
             if (value)
             {
                 RaiseEvents("Connection Success");
@@ -156,19 +158,36 @@ namespace LAS_Interface
             {
                 RaiseEvents("Connection lost");
             }
-
+                       
+        }
+        public void updatedatagridview()
+        {
+            MySqlConnection conn = new MySqlConnection(strconn);
+            conn.Open();
+            string viewdata = "select * from Las_data";
+            MySqlDataAdapter adapter = new MySqlDataAdapter(viewdata, conn);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            dgvDisplay.DataSource = dt;
+            conn.Close();
         }
 
-        private void btnEQ_Click(object sender, EventArgs e)
+        private void btnSetPreset_Click(object sender, EventArgs e)
         {
-            AclMember = new AcculoadLib.AcculoadMember[1];
-            AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+            FrmPreset frmPreset = new FrmPreset(this);//link page//
+            frmPreset.ShowDialog();
+            updatedatagridview();
+            RaiseEvents("Setting Preset");
+        }
 
-            string vCmd = AcculoadLib.RequestEnquireStatus(14);
-            string vData = ClientLib.SendData(vCmd);
-            AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ,vData);
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            RaiseEvents("Start Loading");
+        }
 
-            RaiseEvents( "Transaction Done = "+ AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
+        private void btnEnd_Click(object sender, EventArgs e)
+        {
+            RaiseEvents("End Transaction");
         }
     }
 }

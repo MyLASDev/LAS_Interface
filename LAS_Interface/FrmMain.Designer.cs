@@ -34,12 +34,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgvDisplay = new System.Windows.Forms.DataGridView();
+            this.btnEnd = new System.Windows.Forms.Button();
             this.btnConnectAcl = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnSetPreset = new System.Windows.Forms.Button();
             this.lstMain = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnEQ = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -55,11 +55,13 @@
             // statusStrip1
             // 
             this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(29)))), ((int)(((byte)(35)))));
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 513);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 632);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(826, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1101, 26);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -67,13 +69,14 @@
             // 
             this.toolStripStatus.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.toolStripStatus.Name = "toolStripStatus";
-            this.toolStripStatus.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatus.Size = new System.Drawing.Size(151, 20);
             this.toolStripStatus.Text = "toolStripStatusLabel1";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -83,14 +86,16 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lstMain);
-            this.splitContainer1.Size = new System.Drawing.Size(826, 513);
-            this.splitContainer1.SplitterDistance = 409;
+            this.splitContainer1.Size = new System.Drawing.Size(1101, 632);
+            this.splitContainer1.SplitterDistance = 545;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -100,12 +105,13 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.btnEQ);
+            this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
             this.splitContainer2.Panel2.Controls.Add(this.btnSetPreset);
-            this.splitContainer2.Size = new System.Drawing.Size(409, 513);
-            this.splitContainer2.SplitterDistance = 266;
+            this.splitContainer2.Size = new System.Drawing.Size(545, 632);
+            this.splitContainer2.SplitterDistance = 327;
+            this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
             // dgvDisplay
@@ -113,15 +119,28 @@
             this.dgvDisplay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDisplay.Location = new System.Drawing.Point(0, 0);
+            this.dgvDisplay.Margin = new System.Windows.Forms.Padding(4);
             this.dgvDisplay.Name = "dgvDisplay";
-            this.dgvDisplay.Size = new System.Drawing.Size(409, 266);
+            this.dgvDisplay.RowHeadersWidth = 51;
+            this.dgvDisplay.Size = new System.Drawing.Size(545, 327);
             this.dgvDisplay.TabIndex = 0;
+            // 
+            // btnEnd
+            // 
+            this.btnEnd.Location = new System.Drawing.Point(337, 44);
+            this.btnEnd.Name = "btnEnd";
+            this.btnEnd.Size = new System.Drawing.Size(127, 36);
+            this.btnEnd.TabIndex = 3;
+            this.btnEnd.Text = "End Transaction";
+            this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // btnConnectAcl
             // 
-            this.btnConnectAcl.Location = new System.Drawing.Point(35, 104);
+            this.btnConnectAcl.Location = new System.Drawing.Point(68, 115);
+            this.btnConnectAcl.Margin = new System.Windows.Forms.Padding(4);
             this.btnConnectAcl.Name = "btnConnectAcl";
-            this.btnConnectAcl.Size = new System.Drawing.Size(142, 23);
+            this.btnConnectAcl.Size = new System.Drawing.Size(189, 28);
             this.btnConnectAcl.TabIndex = 2;
             this.btnConnectAcl.Text = "Connect Accuload";
             this.btnConnectAcl.UseVisualStyleBackColor = true;
@@ -129,21 +148,25 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(123, 23);
+            this.btnStart.Location = new System.Drawing.Point(203, 44);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(95, 29);
+            this.btnStart.Size = new System.Drawing.Size(127, 36);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start Load";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnSetPreset
             // 
-            this.btnSetPreset.Location = new System.Drawing.Point(22, 23);
+            this.btnSetPreset.Location = new System.Drawing.Point(68, 44);
+            this.btnSetPreset.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetPreset.Name = "btnSetPreset";
-            this.btnSetPreset.Size = new System.Drawing.Size(95, 29);
+            this.btnSetPreset.Size = new System.Drawing.Size(127, 36);
             this.btnSetPreset.TabIndex = 0;
             this.btnSetPreset.Text = "Set Preset";
             this.btnSetPreset.UseVisualStyleBackColor = true;
+            this.btnSetPreset.Click += new System.EventHandler(this.btnSetPreset_Click);
             // 
             // lstMain
             // 
@@ -153,34 +176,26 @@
             this.lstMain.ForeColor = System.Drawing.Color.Crimson;
             this.lstMain.FormattingEnabled = true;
             this.lstMain.HorizontalScrollbar = true;
-            this.lstMain.ItemHeight = 16;
+            this.lstMain.ItemHeight = 20;
             this.lstMain.Location = new System.Drawing.Point(0, 0);
+            this.lstMain.Margin = new System.Windows.Forms.Padding(4);
             this.lstMain.Name = "lstMain";
             this.lstMain.ScrollAlwaysVisible = true;
-            this.lstMain.Size = new System.Drawing.Size(413, 513);
+            this.lstMain.Size = new System.Drawing.Size(551, 632);
             this.lstMain.TabIndex = 6;
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnEQ
-            // 
-            this.btnEQ.Location = new System.Drawing.Point(227, 104);
-            this.btnEQ.Name = "btnEQ";
-            this.btnEQ.Size = new System.Drawing.Size(75, 23);
-            this.btnEQ.TabIndex = 3;
-            this.btnEQ.Text = "EQ";
-            this.btnEQ.UseVisualStyleBackColor = true;
-            this.btnEQ.Click += new System.EventHandler(this.btnEQ_Click);
-            // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(826, 535);
+            this.ClientSize = new System.Drawing.Size(1101, 658);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMain";
             this.Text = "FrmMain";
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -212,7 +227,7 @@
         private System.Windows.Forms.ListBox lstMain;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnConnectAcl;
-        private System.Windows.Forms.Button btnEQ;
+        private System.Windows.Forms.Button btnEnd;
     }
 }
 
