@@ -172,14 +172,6 @@ namespace LAS_Interface
             conn.Close();
         }
 
-        private void btnSetPreset_Click(object sender, EventArgs e)
-        {
-            FrmPreset frmPreset = new FrmPreset(this);//link page//
-            frmPreset.ShowDialog();
-            updatedatagridview();
-            RaiseEvents("Setting Preset");
-        }
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             RaiseEvents("Start Loading");

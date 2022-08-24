@@ -127,7 +127,7 @@
             // 
             // btnEnd
             // 
-            this.btnEnd.Location = new System.Drawing.Point(337, 44);
+            this.btnEnd.Location = new System.Drawing.Point(365, 46);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(127, 36);
             this.btnEnd.TabIndex = 3;
@@ -148,7 +148,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(203, 44);
+            this.btnStart.Location = new System.Drawing.Point(231, 46);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(127, 36);
@@ -159,14 +159,10 @@
             // 
             // btnSetPreset
             // 
-            this.btnSetPreset.Location = new System.Drawing.Point(68, 44);
-            this.btnSetPreset.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSetPreset.Location = new System.Drawing.Point(0, 0);
             this.btnSetPreset.Name = "btnSetPreset";
-            this.btnSetPreset.Size = new System.Drawing.Size(127, 36);
-            this.btnSetPreset.TabIndex = 0;
-            this.btnSetPreset.Text = "Set Preset";
-            this.btnSetPreset.UseVisualStyleBackColor = true;
-            this.btnSetPreset.Click += new System.EventHandler(this.btnSetPreset_Click);
+            this.btnSetPreset.Size = new System.Drawing.Size(75, 23);
+            this.btnSetPreset.TabIndex = 4;
             // 
             // lstMain
             // 
