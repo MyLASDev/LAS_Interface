@@ -49,7 +49,8 @@ namespace Library
                 //socket.ReceiveTimeout = 2000;
                 //socket.SendTimeout = 1000;
 
-                tcp = new TcpClient(ipAddress, 7734);
+                //tcp = new TcpClient(ipAddress, 7734);
+                tcp = new TcpClient(addresses[0].ToString(), 7734);
                 //tc = new TcpClient("192.168.1.193", 7734);
                 tcp.SendTimeout = 1000;
                 stm = tcp.GetStream();

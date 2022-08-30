@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Library;
+using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
-using Library;
-using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace LAS_Interface
 {
     public partial class FrmMain : Form
     {
-        string strconn = "server=192.168.3.50;database=las_database;uid=root;pwd=";
+        string strconn = "server=r98du2bxwqkq3shg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;database=ahda1gtbqhb7pncg;uid=hktvkvjk6993txuk;pwd=ma46ffmhhxgl0zj6";
         IPEndPoint remoteEP;
         Socket socket;
+        public AcculoadLib.AcculoadMember[] AclMember;
 
         public FrmMain()
         {
@@ -29,7 +24,8 @@ namespace LAS_Interface
         {
             timer1.Start();
             RaiseEvents("Application Start");
-            updatedatagridview();
+            updatedgvLH();
+            //updatedgvLL();
         }
         private void SetStatusbar(string pMessage)        
         {
@@ -150,6 +146,7 @@ namespace LAS_Interface
         private void btnConnectAcl_Click(object sender, EventArgs e)
         {
             bool value = ClientLib.ConnectAcl();
+            bool vCheck = ClientLib.getIsConnectAcl();
             if (value)
             {
                 RaiseEvents("Connection Success");
@@ -160,16 +157,20 @@ namespace LAS_Interface
             }
                        
         }
-        public void updatedatagridview()
+        public void updatedgvLH()
         {
-            MySqlConnection conn = new MySqlConnection(strconn);
-            conn.Open();
-            string viewdata = "select * from Las_data";
-            MySqlDataAdapter adapter = new MySqlDataAdapter(viewdata, conn);
+            string sql = "select * from loadingheaders";
             DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            dgvDisplay.DataSource = dt;
-            conn.Close();
+            dt = DatabaseLib.Excute_DataAdapter(sql);
+            dataGridView1.DataSource = dt;
+        }
+
+        public void updatedgvLL()
+        {
+            string sql = "select * from LoadingLine";
+            DataTable dt = new DataTable();
+            dt = DatabaseLib.Excute_DataAdapter(sql);
+            dataGridView2.DataSource = dt;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -182,9 +183,57 @@ namespace LAS_Interface
             RaiseEvents("End Transaction");
         }
 
-        private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)
+        private void btnEQ_Click(object sender, EventArgs e)
         {
+            AclMember = new AcculoadLib.AcculoadMember[1];
+            AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
 
+            string vCmd = AcculoadLib.RequestEnquireStatus(14);
+            string vData = ClientLib.SendData(vCmd);
+            AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ, vData);
+
+            RaiseEvents("Transaction Done = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
         }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            FrmLoading frmDO = new FrmLoading(this);
+            frmDO.ShowDialog();
+            RaiseEvents("Add Delivery Order");
+            updatedgvLH();
+            //updatedgvLL();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            FrmLoading frmDO = new FrmLoading(this);
+            frmDO.frmActon = 2;
+            frmDO.ShowDialog();
+            RaiseEvents("Edit Delivery Order");
+            updatedgvLH();
+            //updatedgvLL();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+            string loadno = dataGridView1.SelectedCells[0].Value.ToString();
+            MySqlConnection conn = new MySqlConnection(strconn);
+            conn.Open();
+            MySqlCommand cmd = conn.CreateCommand();
+            cmd.Parameters.AddWithValue("@LoadNo", loadno);
+            cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
+            if (cmd.ExecuteNonQuery() > 0)
+                MessageBox.Show("successfully");
+            else
+                MessageBox.Show("error");
+            conn.Close();
+            updatedgvLH();
+        }
+
     }
 }
