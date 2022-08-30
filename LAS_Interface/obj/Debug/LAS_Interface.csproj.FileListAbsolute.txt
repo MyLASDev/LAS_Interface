@@ -11,9 +11,7 @@ C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\bin\Debug\Library.pdb
 C:\Users\cmddev\source\repos\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csprojResolveAssemblyReference.cache
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.AssemblyReference.cache
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.SuggestedBindingRedirects.cache
-D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmDO.resources
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmMain.resources
-D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmPreset.resources
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.Properties.Resources.resources
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.GenerateResource.cache
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.CoreCompileInputs.cache
@@ -87,3 +85,5 @@ D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.C
 D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.csproj.CopyComplete
 D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.exe
 D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.pdb
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmLoading.resources
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\bin\Debug\Library.dll.config

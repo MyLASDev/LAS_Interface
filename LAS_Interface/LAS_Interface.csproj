@@ -90,11 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcculoadProcess.cs" />
-    <Compile Include="FrmDO.cs">
+    <Compile Include="FrmLoading.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmDO.designer.cs">
-      <DependentUpon>FrmDO.cs</DependentUpon>
+    <Compile Include="FrmLoading.designer.cs">
+      <DependentUpon>FrmLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
@@ -104,8 +104,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FrmDO.resx">
-      <DependentUpon>FrmDO.cs</DependentUpon>
+    <EmbeddedResource Include="FrmLoading.resx">
+      <DependentUpon>FrmLoading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
