@@ -26,7 +26,6 @@ namespace LAS_Interface
 
         public void add()
         {
-
             string tu_number1 = txt_หัว.Text.Trim();
             string tu_number2 = txt_พ่วง.Text.Trim();
             string driver_name = txt_คนขับ.Text.Trim();
@@ -65,21 +64,56 @@ namespace LAS_Interface
 
         }
 
+        public void updateLine()
+        {
+
+            MySqlConnection conn = new MySqlConnection(strconn);
+            string tu_number1 = txt_หัว.Text.Trim();
+            string tu_number2 = txt_พ่วง.Text.Trim();
+            string driver_name = txt_คนขับ.Text.Trim();
+            string StrQuery = string.Empty;
+
+            for (int i = 0; i < dgvLL.Rows.Count; i++)
+            {
+                string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
+                string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
+                string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
+                StrQuery = string.Format("update loadinglines set LoadNo = LoadNo, Compartment = compartment, ProductName = productName, Preset = preset, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = BatchNo");
+                bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
+
+            }
+
+        }
         public void edit()
         {
-            MySqlConnection conn = new MySqlConnection(strconn);
-            conn.Open();
-            MySqlCommand command = conn.CreateCommand();
-            command.Parameters.AddWithValue("@TuNumber1", txt_หัว.Text);
-            command.Parameters.AddWithValue("@TuNumber2", txt_พ่วง.Text);
-            command.Parameters.AddWithValue("@DriverName", txt_คนขับ.Text);
-            command.Parameters.AddWithValue("@LoadNo", frmMain.dataGridView1.SelectedCells[0].Value.ToString());
-            command.CommandText = "update `loadingheaders` set `TuNumber1`= @TuNumber1,`TuNumber2`= @TuNumber2,`DriverName`= @DriverName, UpdatedAt = current_timestamp() where `loadingheaders`.`LoadNo` = @LoadNo";
-            if (command.ExecuteNonQuery() > 0)
+            string tu_number1 = txt_หัว.Text.Trim();
+            string tu_number2 = txt_พ่วง.Text.Trim();
+            string driver_name = txt_คนขับ.Text.Trim();
+            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = tu_number1, TuNumber2 = tu_number2, DriverName = driver_name, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = LoadNo "); 
+            
+            if (DatabaseLib.ExecuteSQL(strSQL))
+            {
                 MessageBox.Show("successfully");
+                updateLine();
+            }
             else
+            {
                 MessageBox.Show("error");
-            conn.Close();
+            }
+
+            //MySqlConnection conn = new MySqlConnection(strconn);
+            //conn.Open();
+            //MySqlCommand command = conn.CreateCommand();
+            //command.Parameters.AddWithValue("@TuNumber1", txt_หัว.Text);
+            //command.Parameters.AddWithValue("@TuNumber2", txt_พ่วง.Text);
+            //command.Parameters.AddWithValue("@DriverName", txt_คนขับ.Text);
+            //command.Parameters.AddWithValue("@LoadNo", frmMain.dataGridView1.SelectedCells[0].Value.ToString());
+            //command.CommandText = "update `loadingheaders` set `TuNumber1`= @TuNumber1,`TuNumber2`= @TuNumber2,`DriverName`= @DriverName, UpdatedAt = current_timestamp() where `loadingheaders`.`LoadNo` = @LoadNo";
+            //if (command.ExecuteNonQuery() > 0)
+            //    MessageBox.Show("successfully");
+            //else
+            //    MessageBox.Show("error");
+            //conn.Close();
         }
 
         private void txt_ช่อง_TextChanged(object sender, EventArgs e)
