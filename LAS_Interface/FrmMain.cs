@@ -5,6 +5,7 @@ using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace LAS_Interface
 {
@@ -235,5 +236,6 @@ namespace LAS_Interface
             updatedgvLH();
         }
 
+        
     }
 }

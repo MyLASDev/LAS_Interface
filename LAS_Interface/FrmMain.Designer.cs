@@ -160,6 +160,7 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(545, 181);
             this.dataGridView1.TabIndex = 0;
+           
             // 
             // dataGridView2
             // 
