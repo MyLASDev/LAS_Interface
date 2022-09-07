@@ -15,6 +15,8 @@ namespace LAS_Interface
         IPEndPoint remoteEP;
         Socket socket;
         public AcculoadLib.AcculoadMember[] AclMember;
+        public string load_no;
+
 
         public FrmMain()
         {
@@ -164,6 +166,7 @@ namespace LAS_Interface
             DataTable dt = new DataTable();
             dt = DatabaseLib.Excute_DataAdapter(sql);
             dataGridView1.DataSource = dt;
+          
         }
 
         public void updatedgvLL()
@@ -176,6 +179,13 @@ namespace LAS_Interface
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            AclMember = new AcculoadLib.AcculoadMember[1];
+            AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+
+            string vCmd = AcculoadLib.RequestEnquireStatus(14);
+            string vData = ClientLib.SendData(vCmd);
+            
+
             RaiseEvents("Start Loading");
         }
 
@@ -236,6 +246,21 @@ namespace LAS_Interface
             updatedgvLH();
         }
 
-        
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            load_no = dataGridView1.SelectedCells[0].Value.ToString();
+            string sql2 = @"SELECT  LoadNo, Compartment, ProductName, Preset
+                              FROM loadinglines where LoadNo = " + load_no;
+            DataTable dt2 = new DataTable();
+            dt2 = DatabaseLib.Excute_DataAdapter(sql2);
+            dataGridView2.DataSource = dt2;
+
+          /*for (int i = 0; i < dt2.Rows.Count; i++)
+            {
+                Console.WriteLine(i);
+                dataGridView2.Rows[i].Cells[2].Value = dt2.Rows[i]["ProductName"].ToString();
+                dataGridView2.Rows[i].Cells[3].Value = dt2.Rows[i]["Preset"].ToString();          
+            }*/
+        }
     }
 }
