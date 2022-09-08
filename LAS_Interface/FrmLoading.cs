@@ -138,7 +138,6 @@ namespace LAS_Interface
                     num = Convert.ToInt16(txt_ช่อง.Text);
                 }
 
-                Console.WriteLine(num);
                 dgvLL.Rows.Clear();
                 if (num > 5)
                 {
@@ -212,8 +211,10 @@ namespace LAS_Interface
 
         private  bool Recievetext()
         {
+            //Check loading header
             string tu_number1 = txt_หัว.Text;
             string driver_name = txt_คนขับ.Text;
+            string numrow = txt_ช่อง.Text;
             if (string.IsNullOrEmpty(tu_number1))
             {
                 MessageBox.Show("กรุณากรอก ทะเบียนหัวลาก", "การแจ้งเตือนข้อมูล", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -224,6 +225,17 @@ namespace LAS_Interface
                 MessageBox.Show("กรุณากรอก ชื่อพนักงานขับรถ", "การแจ้งเตือนข้อมูล", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
+            //Check number of row
+            if (string.IsNullOrEmpty(numrow))
+            {
+                MessageBox.Show("กรุณากรอก จำนวนช่องจ่าย", "การแจ้งเตือนข้อมูล", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+
+
+
             //Check loading line
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {

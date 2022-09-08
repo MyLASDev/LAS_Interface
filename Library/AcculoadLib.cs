@@ -256,6 +256,11 @@ namespace Library
             public double TotalizerGST;
             public double TotalizerMASS;
         }
+          public string AuthorizeSetBatch(int pMeterAddr, int pPreset)
+        {
+            string result = BuildMessage(pMeterAddr, "SF " + pPreset);
+            return result;
+        }
         public static string RequestEnquireStatus(int pMeterAddr)
         {
             string result = BuildMessage(pMeterAddr, "EQ");
