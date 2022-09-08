@@ -235,5 +235,9 @@ namespace LAS_Interface
             updatedgvLH();
         }
 
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
