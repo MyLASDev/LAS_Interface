@@ -30,14 +30,14 @@ namespace LAS_Interface
             updatedgvLH();
             //updatedgvLL();
         }
-        private void SetStatusbar(string pMessage)        
+        private void SetStatusbar(string pMessage)
         {
             toolStripStatus.Text = pMessage;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            string text  = "[Date Time : " + DateTime.Now + "]";
+            string text = "[Date Time : " + DateTime.Now + "]";
             SetStatusbar(text);
         }
         private bool ConnectAcl()
@@ -59,7 +59,7 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                RaiseEvents("Connect Lost = "+ex.Message);
+                RaiseEvents("Connect Lost = " + ex.Message);
                 return false;
             }
 
@@ -68,7 +68,7 @@ namespace LAS_Interface
         void RaiseEvents(string pMsg)
         {
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
-            DisplayMessage("",vMsg);
+            DisplayMessage("", vMsg);
         }
         #region ListboxItem
 
@@ -158,7 +158,7 @@ namespace LAS_Interface
             {
                 RaiseEvents("Connection lost");
             }
-                       
+
         }
         public void updatedgvLH()
         {
@@ -166,7 +166,7 @@ namespace LAS_Interface
             DataTable dt = new DataTable();
             dt = DatabaseLib.Excute_DataAdapter(sql);
             dataGridView1.DataSource = dt;
-          
+
         }
 
         public void updatedgvLL()
@@ -184,7 +184,7 @@ namespace LAS_Interface
 
             string vCmd = AcculoadLib.RequestEnquireStatus(14);
             string vData = ClientLib.SendData(vCmd);
-            
+
 
             RaiseEvents("Start Loading");
         }
@@ -212,7 +212,7 @@ namespace LAS_Interface
             frmDO.ShowDialog();
             RaiseEvents("Add Delivery Order");
             updatedgvLH();
-            //updatedgvLL();
+            
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -222,15 +222,53 @@ namespace LAS_Interface
             frmDO.ShowDialog();
             RaiseEvents("Edit Delivery Order");
             updatedgvLH();
-            //updatedgvLL();
+            
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+            //string loadno = dataGridView1.SelectedCells[0].Value.ToString();
+            //MySqlConnection conn = new MySqlConnection(strconn);
+            //conn.Open();
+            //MySqlCommand cmd = conn.CreateCommand();
+            //cmd.Parameters.AddWithValue("@LoadNo", loadno);
+            //cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
+            try
+            {
+                delheader();
+                delline();
+                updatedgvLH();
+                MessageBox.Show("successfully");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error");
+            }
+            //if (cmd.ExecuteNonQuery() > 0)
+            //    MessageBox.Show("successfully");
+            //else
+            //    MessageBox.Show("error");
+            //conn.Close();
+
+        }
+
+        public void delline()
+        {
+            string loadno = dataGridView1.SelectedCells[0].Value.ToString();
+            MySqlConnection conn = new MySqlConnection(strconn);
+            conn.Open();
+            MySqlCommand cmd = conn.CreateCommand();
+            cmd.Parameters.AddWithValue("@LoadNo", loadno);
+            cmd.CommandText = "delete from loadinglines where LoadNo = @LoadNo";
+            cmd.ExecuteNonQuery();
+        }
+
+        public void delheader()
         {
             string loadno = dataGridView1.SelectedCells[0].Value.ToString();
             MySqlConnection conn = new MySqlConnection(strconn);
@@ -238,19 +276,9 @@ namespace LAS_Interface
             MySqlCommand cmd = conn.CreateCommand();
             cmd.Parameters.AddWithValue("@LoadNo", loadno);
             cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
-            if (cmd.ExecuteNonQuery() > 0)
-                MessageBox.Show("successfully");
-            else
-                MessageBox.Show("error");
-            conn.Close();
-            updatedgvLH();
+            cmd.ExecuteNonQuery();
         }
 
-<<<<<<< HEAD
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-=======
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
@@ -260,13 +288,13 @@ namespace LAS_Interface
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
 
-          /*for (int i = 0; i < dt2.Rows.Count; i++)
-            {
-                Console.WriteLine(i);
-                dataGridView2.Rows[i].Cells[2].Value = dt2.Rows[i]["ProductName"].ToString();
-                dataGridView2.Rows[i].Cells[3].Value = dt2.Rows[i]["Preset"].ToString();          
-            }*/
->>>>>>> 5aca3d814da92ceda85e559d5f83cac613d403f3
+            /*for (int i = 0; i < dt2.Rows.Count; i++)
+              {
+                  Console.WriteLine(i);
+                  dataGridView2.Rows[i].Cells[2].Value = dt2.Rows[i]["ProductName"].ToString();
+                  dataGridView2.Rows[i].Cells[3].Value = dt2.Rows[i]["Preset"].ToString();          
+              }*/
         }
+
     }
 }

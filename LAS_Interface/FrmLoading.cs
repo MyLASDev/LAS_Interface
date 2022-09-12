@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Library;
+using Org.BouncyCastle.Utilities.Collections;
+using System.Security.Cryptography.X509Certificates;
+
 namespace LAS_Interface
 {
     public partial class FrmLoading : Form
@@ -38,12 +41,15 @@ namespace LAS_Interface
                 {
                     addLine(loadno) ;
                     MessageBox.Show("successfully");
+                   
+                    this.Close();
                 }
           
             }
             else
             {
                 MessageBox.Show("error");
+                this.Close();
             }
 
         }
@@ -83,9 +89,8 @@ namespace LAS_Interface
                 //string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format("update loadinglines set ProductName = {0}, Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ", productName, preset);
+                StrQuery = string.Format("update loadinglines set ProductName = {0}, Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ;", productName, preset);
                 bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
-
             }
 
         }
@@ -103,12 +108,14 @@ namespace LAS_Interface
                 {
                     updateLine(loadno);
                     MessageBox.Show("successfully");
+                    this.Close();
                 }
 
             }
             else
             {
                 MessageBox.Show("error");
+                this.Close();
             }
 
 
