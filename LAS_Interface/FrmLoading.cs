@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Library;
+using Org.BouncyCastle.Utilities.Collections;
+using System.Security.Cryptography.X509Certificates;
+
 namespace LAS_Interface
 {
     public partial class FrmLoading : Form
@@ -38,12 +41,15 @@ namespace LAS_Interface
                 {
                     addLine(loadno) ;
                     MessageBox.Show("successfully");
+                   
+                    this.Close();
                 }
           
             }
             else
             {
                 MessageBox.Show("error");
+                this.Close();
             }
 
         }
@@ -69,7 +75,7 @@ namespace LAS_Interface
 
         }
 
-        public void updateLine()
+        public void updateLine(long pLoadNo)
         {
 
             MySqlConnection conn = new MySqlConnection(strconn);
@@ -80,12 +86,11 @@ namespace LAS_Interface
 
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {
-                string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
+                //string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format("update loadinglines set LoadNo = LoadNo, Compartment = compartment, ProductName = productName, Preset = preset, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = BatchNo");
+                StrQuery = string.Format("update loadinglines set ProductName = {0}, Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ;", productName, preset);
                 bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
-
             }
 
         }
@@ -94,17 +99,25 @@ namespace LAS_Interface
             string tu_number1 = txt_หัว.Text.Trim();
             string tu_number2 = txt_พ่วง.Text.Trim();
             string driver_name = txt_คนขับ.Text.Trim();
-            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = tu_number1, TuNumber2 = tu_number2, DriverName = driver_name, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = LoadNo "); 
-            
-            if (DatabaseLib.ExecuteSQL(strSQL))
+            long loadno;
+            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = {0}, TuNumber2 = {1}, DriverName =  {2}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ", tu_number1, tu_number2, driver_name);
+          
+            if (DatabaseLib.Execute_NonQueryResId(strSQL, out loadno))
             {
-                MessageBox.Show("successfully");
-                updateLine();
+                if (loadno > 0)
+                {
+                    updateLine(loadno);
+                    MessageBox.Show("successfully");
+                    this.Close();
+                }
+
             }
             else
             {
                 MessageBox.Show("error");
+                this.Close();
             }
+
 
             //MySqlConnection conn = new MySqlConnection(strconn);
             //conn.Open();
@@ -179,7 +192,7 @@ namespace LAS_Interface
                     dgvLL.Rows[i].Cells["product"].Value = dt.Rows[i]["ProductName"].ToString();
                     dgvLL.Rows[i].Cells["preset"].Value = dt.Rows[i]["Preset"].ToString();
                 }
-                //dgvLL.DataSource = dt;
+                
             }
         }
 
