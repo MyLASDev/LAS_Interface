@@ -6,6 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Xml.Linq;
 
 namespace LAS_Interface
 {
@@ -16,6 +19,8 @@ namespace LAS_Interface
         Socket socket;
         public AcculoadLib.AcculoadMember[] AclMember;
         public string load_no;
+        public string batch_no;
+        public int pPreset;
 
 
         public FrmMain()
@@ -179,14 +184,34 @@ namespace LAS_Interface
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            AclMember = new AcculoadLib.AcculoadMember[1];
-            AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+            MySqlConnection conn = new MySqlConnection(strconn);
+            conn.Open();
+            batch_no = dataGridView2.SelectedCells[0].Value.ToString();
+            string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt
+                        FROM loadinglines where BatchNo = " + batch_no;
 
-            string vCmd = AcculoadLib.RequestEnquireStatus(14);
-            string vData = ClientLib.SendData(vCmd);
-            
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            string result = string.Empty;
+            while (reader.Read())
+            {
+                result =  reader["Preset"]+"";
+                bool isParsable = Int32.TryParse(result, out pPreset);
 
-            RaiseEvents("Start Loading");
+                if (isParsable)
+                {
+                    AclMember = new AcculoadLib.AcculoadMember[1];
+                    AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+
+                    string vCmd = AcculoadLib.AuthorizeSetBatch(14, pPreset);
+                    ClientLib.SendData(vCmd);                    
+                }
+                else
+                {
+                    MessageBox.Show("Error");
+                }
+            }
+            conn.Close();
         }
 
         private void btnEnd_Click(object sender, EventArgs e)
@@ -215,7 +240,7 @@ namespace LAS_Interface
             //updatedgvLL();
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+         private void btnEdit_Click(object sender, EventArgs e)
         {
             FrmLoading frmDO = new FrmLoading(this);
             frmDO.frmActon = 2;
@@ -249,7 +274,7 @@ namespace LAS_Interface
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
-            string sql2 = @"SELECT  LoadNo, Compartment, ProductName, Preset
+            string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = " + load_no;
             DataTable dt2 = new DataTable();
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
