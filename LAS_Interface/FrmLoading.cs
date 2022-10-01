@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using Library;
 using Org.BouncyCastle.Utilities.Collections;
 using System.Security.Cryptography.X509Certificates;
@@ -41,7 +41,6 @@ namespace LAS_Interface
                 {
                     addLine(loadno) ;
                     MessageBox.Show("successfully");
-                   
                     this.Close();
                 }
           
@@ -96,11 +95,12 @@ namespace LAS_Interface
         }
         public void edit()
         {
+            
             string tu_number1 = txt_หัว.Text.Trim();
             string tu_number2 = txt_พ่วง.Text.Trim();
             string driver_name = txt_คนขับ.Text.Trim();
             long loadno;
-            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = {0}, TuNumber2 = {1}, DriverName =  {2}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ", tu_number1, tu_number2, driver_name);
+            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName =  '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = loadno ", tu_number1, tu_number2, driver_name);
           
             if (DatabaseLib.Execute_NonQueryResId(strSQL, out loadno))
             {

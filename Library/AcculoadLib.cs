@@ -256,9 +256,49 @@ namespace Library
             public double TotalizerGST;
             public double TotalizerMASS;
         }
+        public  static string AllocateBlendRecipes(int pMeterAddr, int pRecipeNo)
+        {
+            byte[] b = new byte[13];
+            int i, j, k;
+
+            for (i = 0; i < b.Length; i++)
+            {
+                b[i] = (byte)'0';
+            }
+            j = (pRecipeNo - 1) / 4;
+            k = (pRecipeNo - 1) % 4;
+
+            for (i = 0; i < j; i++)
+            {
+                b[i] = (byte)'0';
+            }
+
+            if (k == 0)
+                b[i] = (byte)'1';
+            else if (k == 1)
+                b[i] = (byte)'2';
+            else if (k == 2)
+                b[i] = (byte)'4';
+            else
+                b[i] = (byte)'8';
+
+
+            string result = BuildMessage(pMeterAddr, "AB " + Encoding.UTF7.GetString(b));
+            return result;
+        }
         public static string AuthorizeSetBatch(int pMeterAddr, int pPreset)
         {
             string result = BuildMessage(pMeterAddr, "SF " + pPreset);
+            return result;
+        }
+        public static string RemoteStart(int pMeterAddr)
+        {
+            string result = BuildMessage(pMeterAddr, "SA");
+            return result;
+        }
+        public static string RemoteStop(int pMeterAddr)
+        {
+            string result = BuildMessage(pMeterAddr, "SP");
             return result;
         }
         public static string RequestEnquireStatus(int pMeterAddr)
@@ -266,14 +306,30 @@ namespace Library
             string result = BuildMessage(pMeterAddr, "EQ");
             return result;
         }
-
+        public static string EndBatch(int pMeterAddr)
+        {
+            string strCmd = BuildMessage(pMeterAddr, "EB");
+            return strCmd;
+        }
+        public static string EndTransaction(int pMeterAddr)
+        {
+            string result = BuildMessage(pMeterAddr, "ET");
+            return result;
+        }
+        public static string ResetAlarm(int pMeterAddr)
+        {
+            string result = BuildMessage(pMeterAddr, "AR");
+            return result;
+        }
+      
         private static string BuildMessage(int pMeterAddr, string pMessage)
         {
 
             string vLRC = CalLRC(pMeterAddr.ToString("D2") + pMessage + char.ConvertFromUtf32(ETX));
+            //Console.WriteLine(vLRC);
             string s = char.ConvertFromUtf32(STX) + pMeterAddr.ToString("D2") + pMessage + char.ConvertFromUtf32(ETX) + vLRC;
-
-            return s;
+            //Console.WriteLine(s);
+             return s;
         }
         private static string CalLRC(string pMsg)
         {
@@ -283,7 +339,10 @@ namespace Library
             for (int i = 0; i < b.Length; i++)
             {
                 LRC = LRC ^ b[i];
+                //Console.WriteLine(LRC);
+
             }
+            //Console.WriteLine(char.ConvertFromUtf32(LRC));
             return char.ConvertFromUtf32(LRC);
         }
         public static bool DecodedEnquireStatus(ref _EnquireStatus pValue, string pDecodeData)
@@ -296,9 +355,9 @@ namespace Library
                 if (pDecodeData == null)
                     return bRet;
 
-                bRet = CheckMessageReceive(pDecodeData);
+                bRet = CheckMessageReceive(pDecodeData); 
                 //vRecv = pDecodeData;
-                vRecv = pDecodeData.Substring(DATA_Position, ETX_Position - DATA_Position);
+                vRecv = pDecodeData.Substring(DATA_Position, ETX_Position - DATA_Position);  //take this line to commu.
                 if (!bRet)
                 {
                     pValue.StringStatus = "0000000000000000";
@@ -307,7 +366,7 @@ namespace Library
 
                 //if (vRecv.Length < 16)
                 //    vRecv.PadRight(16, '0');
-                pValue.StringStatus = vRecv;
+                pValue.StringStatus = vRecv;    //this line take value into Enquire status 
                 for (int vIndex = 0; vIndex < vRecv.Length; vIndex++)
                 {
                     switch (vIndex)
@@ -513,5 +572,9 @@ namespace Library
             return bCheck;
         }
 
+        public static void DecodedEnquireStatus(ref _MeterValueCharacter meterValueCharacter, string vData)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

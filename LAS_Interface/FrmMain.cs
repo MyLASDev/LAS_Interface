@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Xml.Linq;
+using Google.Protobuf.WellKnownTypes;
 
 namespace LAS_Interface
 {
@@ -33,7 +33,7 @@ namespace LAS_Interface
             timer1.Start();
             RaiseEvents("Application Start");
             updatedgvLH();
-            //updatedgvLL();
+           
         }
         private void SetStatusbar(string pMessage)
         {
@@ -184,57 +184,185 @@ namespace LAS_Interface
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            MySqlConnection conn = new MySqlConnection(strconn);
-            conn.Open();
             batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-            string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt
-                        FROM loadinglines where BatchNo = " + batch_no;
 
-<<<<<<< HEAD
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
-            MySqlDataReader reader = cmd.ExecuteReader();
+            string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt FROM loadinglines where BatchNo = " + batch_no;
             string result = string.Empty;
-            while (reader.Read())
+            AclMember = new AcculoadLib.AcculoadMember[1];
+
+            result = DatabaseLib.ExecuteReader_pPreset(sql); 
+            bool isParsable = Int32.TryParse(result, out pPreset);
+
+            if (isParsable)
             {
-                result =  reader["Preset"]+"";
-                bool isParsable = Int32.TryParse(result, out pPreset);
-=======
-            string vCmd = AcculoadLib.RequestEnquireStatus(14);
-            string vData = ClientLib.SendData(vCmd);
+                string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
+                ClientLib.SendData(vCmd1);
+               
+                string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
+                ClientLib.SendData(vCmd2);
+                RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
+                CurrentStatus();
 
->>>>>>> d1af3f11f450756efecade83a29a171478796ae3
-
-                if (isParsable)
+                try
                 {
-                    AclMember = new AcculoadLib.AcculoadMember[1];
-                    AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+                    PullEnquireStatus();
 
-                    string vCmd = AcculoadLib.AuthorizeSetBatch(14, pPreset);
-                    ClientLib.SendData(vCmd);                    
+                    if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                    {
+                        string vCmd3 = AcculoadLib.RemoteStart(14);
+                        ClientLib.SendData(vCmd3);
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error");
+                    }
+
                 }
-                else
+                catch (Exception)
                 {
                     MessageBox.Show("Error");
                 }
             }
-            conn.Close();
-        }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+            CurrentStatus();
 
+            /*string vCmd = AcculoadLib.EndBatch(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
+            CurrentStatus();*/
+
+            /*string vCmd = AcculoadLib.ResetAlarm(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
+            CurrentStatus();*/
+
+            /*string vCmd = AcculoadLib.EndBatch(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
+            CurrentStatus();*/
+
+            /*string vCmd = AcculoadLib.RemoteStop(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
+            CurrentStatus();*/
+        }
+            
         private void btnEnd_Click(object sender, EventArgs e)
         {
-            RaiseEvents("End Transaction");
+            string vCmd = AcculoadLib.EndTransaction(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
         }
 
-        private void btnEQ_Click(object sender, EventArgs e)
+       /* private void btnEQ_Click(object sender, EventArgs e)
         {
+            PullEnquireStatus();
+            RaiseEvents("Transaction Done = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
+        }*/
+        public void PullEnquireStatus()
+        {
+
             AclMember = new AcculoadLib.AcculoadMember[1];
             AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
-
             string vCmd = AcculoadLib.RequestEnquireStatus(14);
             string vData = ClientLib.SendData(vCmd);
             AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ, vData);
 
-            RaiseEvents("Transaction Done = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
+        }
+
+        public void CurrentStatus()
+        {
+            
+            PullEnquireStatus();
+
+            if (AclMember[0].AclValueNew.EQ.A1b3_ProgramMode)
+            {
+                RaiseEvents("ProgramMode = " + AclMember[0].AclValueNew.EQ.A1b3_ProgramMode);
+            }
+            if (AclMember[0].AclValueNew.EQ.A1b2_Release)
+            {
+                RaiseEvents("Release = " + AclMember[0].AclValueNew.EQ.A1b2_Release);
+            }
+            if (AclMember[0].AclValueNew.EQ.A1b1_Flowing)
+            {
+                RaiseEvents("Flowing = " + AclMember[0].AclValueNew.EQ.A1b1_Flowing);
+            }
+            if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+            {
+                RaiseEvents("Authorized = " + AclMember[0].AclValueNew.EQ.A1b0_Authorized);
+            }
+            if (AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress)
+            {
+                RaiseEvents("TransactionInProgress = " + AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress);
+            }
+            if (AclMember[0].AclValueNew.EQ.A2b2_TransactionDone)
+            {
+                RaiseEvents("TransactionDone = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone);
+            }
+            if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
+            {
+                RaiseEvents("BatchDone = " + AclMember[0].AclValueNew.EQ.A2b1_BatchDone);
+            }
+            if (AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
+            {
+                RaiseEvents("AlarmOn = " + AclMember[0].AclValueNew.EQ.A3b3_AlarmOn);
+            }
+            if (AclMember[0].AclValueNew.EQ.A3b2_StandbyTransactionExist)
+            {
+                RaiseEvents("StandbyTransactionExist = " + AclMember[0].AclValueNew.EQ.A3b2_StandbyTransactionExist);
+            }
+            if (AclMember[0].AclValueNew.EQ.A3b1_StorageFull)
+            {
+                RaiseEvents("StorageFull = " + AclMember[0].AclValueNew.EQ.A3b1_StorageFull);
+            }
+            if (AclMember[0].AclValueNew.EQ.A3b0_InStandbyMode)
+            {
+                RaiseEvents("InStandbyMode = " + AclMember[0].AclValueNew.EQ.A3b0_InStandbyMode);
+            }
+            if (AclMember[0].AclValueNew.EQ.A4b3_ProgramValueChange)
+            {
+                RaiseEvents("ProgramValueChange = " + AclMember[0].AclValueNew.EQ.A4b3_ProgramValueChange);
+            }
+            if (AclMember[0].AclValueNew.EQ.A4b2_DelayPrompt)
+            {
+                RaiseEvents("DelayPrompt = " + AclMember[0].AclValueNew.EQ.A4b2_DelayPrompt);
+            }
+            if (AclMember[0].AclValueNew.EQ.A4b1_DisplayMessageTimeout)
+            {
+                RaiseEvents("DisplayMessageTimeout = " + AclMember[0].AclValueNew.EQ.A4b1_DisplayMessageTimeout);
+            }
+            if (AclMember[0].AclValueNew.EQ.A4b0_PowerFailOccurred)
+            {
+                RaiseEvents("PowerFailOccurred = " + AclMember[0].AclValueNew.EQ.A4b0_PowerFailOccurred);
+            }
+            if (AclMember[0].AclValueNew.EQ.A5b3_CheckingEntries)
+            {
+                RaiseEvents("CheckingEntries = " + AclMember[0].AclValueNew.EQ.A5b3_CheckingEntries);
+            }
+            if (AclMember[0].AclValueNew.EQ.A5b1_Input2)
+            {
+                RaiseEvents("Input2 = " + AclMember[0].AclValueNew.EQ.A5b1_Input2);
+            }
+            if (AclMember[0].AclValueNew.EQ.A16b3_PrintingInProgress)
+            {
+                RaiseEvents("PrintingInProgress = " + AclMember[0].AclValueNew.EQ.A16b3_PrintingInProgress);
+            }
+            if (AclMember[0].AclValueNew.EQ.A16b2_PermissiveDelay)
+            {
+                RaiseEvents("PermissiveDelay = " + AclMember[0].AclValueNew.EQ.A16b2_PermissiveDelay);
+            }
+            if (AclMember[0].AclValueNew.EQ.A16b1_CardDataPresent)
+            {
+                RaiseEvents("CardDataPresent = " + AclMember[0].AclValueNew.EQ.A16b1_CardDataPresent);
+            }
+            if (AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress)
+            {
+                RaiseEvents("PresetInProgress = " + AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress);
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -247,28 +375,20 @@ namespace LAS_Interface
         }
 
          private void btnEdit_Click(object sender, EventArgs e)
-        {
+         {
             FrmLoading frmDO = new FrmLoading(this);
             frmDO.frmActon = 2;
             frmDO.ShowDialog();
             RaiseEvents("Edit Delivery Order");
             updatedgvLH();
             
-        }
+         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
-            //string loadno = dataGridView1.SelectedCells[0].Value.ToString();
-            //MySqlConnection conn = new MySqlConnection(strconn);
-            //conn.Open();
-            //MySqlCommand cmd = conn.CreateCommand();
-            //cmd.Parameters.AddWithValue("@LoadNo", loadno);
-            //cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
+           
             try
             {
                 delheader();
@@ -280,11 +400,6 @@ namespace LAS_Interface
             {
                 MessageBox.Show("Error");
             }
-            //if (cmd.ExecuteNonQuery() > 0)
-            //    MessageBox.Show("successfully");
-            //else
-            //    MessageBox.Show("error");
-            //conn.Close();
 
         }
 
@@ -309,12 +424,19 @@ namespace LAS_Interface
             cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
             cmd.ExecuteNonQuery();
         }
-
+ 
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
             string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = " + load_no;
+           
+
+           /* if ()
+            {
+                
+
+            }*/
             DataTable dt2 = new DataTable();
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
@@ -327,5 +449,26 @@ namespace LAS_Interface
               }*/
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            const byte STX = 2;
+            Console.WriteLine(char.ConvertFromUtf32(STX));
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string vCmd = AcculoadLib.EndBatch(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
+            CurrentStatus();
+        }
+
+   
+
+    
+
+        
+
+    
     }
 }

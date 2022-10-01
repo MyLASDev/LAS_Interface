@@ -36,7 +36,6 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.btnEQ = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -117,7 +116,6 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.btnEQ);
             this.splitContainer2.Panel2.Controls.Add(this.label1);
             this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
             this.splitContainer2.Panel2.Controls.Add(this.btnDelete);
@@ -150,6 +148,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -171,23 +170,9 @@
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
-<<<<<<< HEAD
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(543, 156);
-=======
             this.dataGridView2.Size = new System.Drawing.Size(545, 142);
->>>>>>> d1af3f11f450756efecade83a29a171478796ae3
             this.dataGridView2.TabIndex = 9;
-            // 
-            // btnEQ
-            // 
-            this.btnEQ.Location = new System.Drawing.Point(365, 118);
-            this.btnEQ.Name = "btnEQ";
-            this.btnEQ.Size = new System.Drawing.Size(69, 36);
-            this.btnEQ.TabIndex = 11;
-            this.btnEQ.Text = "EQ";
-            this.btnEQ.UseVisualStyleBackColor = true;
-            this.btnEQ.Click += new System.EventHandler(this.btnEQ_Click);
             // 
             // label1
             // 
@@ -234,7 +219,7 @@
             // 
             // btnEnd
             // 
-            this.btnEnd.Location = new System.Drawing.Point(220, 118);
+            this.btnEnd.Location = new System.Drawing.Point(172, 118);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(127, 36);
             this.btnEnd.TabIndex = 3;
@@ -255,7 +240,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(75, 118);
+            this.btnStart.Location = new System.Drawing.Point(24, 118);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(127, 36);
@@ -341,7 +326,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnEQ;
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
     }

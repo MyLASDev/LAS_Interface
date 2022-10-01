@@ -71,10 +71,13 @@ namespace Library
                 if (getIsConnectAcl())
                 {
                     int byteCount = Encoding.ASCII.GetByteCount(pMessage);
+                    //Console.WriteLine(byteCount);
                     byte[] sendData = new byte[byteCount];
                     sendData = Encoding.ASCII.GetBytes(pMessage);
+                    //Console.WriteLine(sendData);
                     stm.Write(sendData, 0, byteCount);
                     vRecv = ReceiveData();
+                    //Console.WriteLine(vRecv);
                 }
             }
             catch (Exception ex)
