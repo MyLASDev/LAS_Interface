@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -36,17 +37,19 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.btnEQ = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnResetAlarm = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnConnectAcl = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.lstMain = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnInfo = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -62,6 +65,7 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -70,10 +74,10 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 632);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 621);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1101, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(1236, 26);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -98,8 +102,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.lstMain);
-            this.splitContainer1.Size = new System.Drawing.Size(1101, 632);
-            this.splitContainer1.SplitterDistance = 545;
+            this.splitContainer1.Size = new System.Drawing.Size(1236, 621);
+            this.splitContainer1.SplitterDistance = 609;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -117,16 +121,15 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.btnEQ);
-            this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
-            this.splitContainer2.Panel2.Controls.Add(this.btnDelete);
-            this.splitContainer2.Panel2.Controls.Add(this.btnEdit);
+            this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
+            this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
+            this.splitContainer2.Panel2.Controls.Add(this.btnResetAlarm);
+            this.splitContainer2.Panel2.Controls.Add(this.btnStop);
             this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
-            this.splitContainer2.Size = new System.Drawing.Size(545, 632);
-            this.splitContainer2.SplitterDistance = 327;
+            this.splitContainer2.Size = new System.Drawing.Size(609, 621);
+            this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -144,119 +147,171 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.dataGridView2);
-            this.splitContainer3.Size = new System.Drawing.Size(545, 327);
-            this.splitContainer3.SplitterDistance = 181;
+            this.splitContainer3.Size = new System.Drawing.Size(609, 319);
+            this.splitContainer3.SplitterDistance = 175;
             this.splitContainer3.TabIndex = 1;
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(545, 181);
+            this.dataGridView1.Size = new System.Drawing.Size(609, 175);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
             // 
             // dataGridView2
             // 
             this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView2.Location = new System.Drawing.Point(0, 0);
             this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(545, 142);
+            this.dataGridView2.Size = new System.Drawing.Size(609, 140);
             this.dataGridView2.TabIndex = 9;
             // 
-            // btnEQ
+            // groupBox1
             // 
-            this.btnEQ.Location = new System.Drawing.Point(365, 118);
-            this.btnEQ.Name = "btnEQ";
-            this.btnEQ.Size = new System.Drawing.Size(69, 36);
-            this.btnEQ.TabIndex = 11;
-            this.btnEQ.Text = "EQ";
-            this.btnEQ.UseVisualStyleBackColor = true;
-            this.btnEQ.Click += new System.EventHandler(this.btnEQ_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.Location = new System.Drawing.Point(71, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 20);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Loading Order";
+            this.groupBox1.Controls.Add(this.btnAdd);
+            this.groupBox1.Controls.Add(this.btnEdit);
+            this.groupBox1.Controls.Add(this.btnDelete);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(71, 18);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(454, 65);
+            this.groupBox1.TabIndex = 14;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Loading Order";
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(206, 45);
+            this.btnAdd.AutoSize = true;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnAdd.ForeColor = System.Drawing.Color.Black;
+            this.btnAdd.Location = new System.Drawing.Point(114, 14);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(83, 36);
+            this.btnAdd.Size = new System.Drawing.Size(100, 36);
             this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(388, 45);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(83, 36);
-            this.btnDelete.TabIndex = 8;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
-            // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(297, 45);
+            this.btnEdit.AutoSize = true;
+            this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEdit.ForeColor = System.Drawing.Color.Black;
+            this.btnEdit.Location = new System.Drawing.Point(222, 14);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(83, 36);
+            this.btnEdit.Size = new System.Drawing.Size(100, 36);
             this.btnEdit.TabIndex = 5;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = true;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.AutoSize = true;
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnDelete.ForeColor = System.Drawing.Color.Black;
+            this.btnDelete.Location = new System.Drawing.Point(330, 14);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(100, 36);
+            this.btnDelete.TabIndex = 8;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
+            // 
+            // btnResetAlarm
+            // 
+            this.btnResetAlarm.AutoSize = true;
+            this.btnResetAlarm.BackColor = System.Drawing.Color.Orange;
+            this.btnResetAlarm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnResetAlarm.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnResetAlarm.Location = new System.Drawing.Point(238, 165);
+            this.btnResetAlarm.Margin = new System.Windows.Forms.Padding(4);
+            this.btnResetAlarm.Name = "btnResetAlarm";
+            this.btnResetAlarm.Size = new System.Drawing.Size(146, 39);
+            this.btnResetAlarm.TabIndex = 13;
+            this.btnResetAlarm.Text = "Reset Alarm";
+            this.btnResetAlarm.UseVisualStyleBackColor = false;
+            // 
+            // btnStop
+            // 
+            this.btnStop.AutoSize = true;
+            this.btnStop.BackColor = System.Drawing.Color.Red;
+            this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStop.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnStop.Location = new System.Drawing.Point(225, 104);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(147, 39);
+            this.btnStop.TabIndex = 12;
+            this.btnStop.Text = "Stop Loading";
+            this.btnStop.UseVisualStyleBackColor = false;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
             // btnEnd
             // 
-            this.btnEnd.Location = new System.Drawing.Point(220, 118);
+            this.btnEnd.AutoSize = true;
+            this.btnEnd.BackColor = System.Drawing.Color.Magenta;
+            this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEnd.Location = new System.Drawing.Point(378, 104);
             this.btnEnd.Name = "btnEnd";
-            this.btnEnd.Size = new System.Drawing.Size(127, 36);
+            this.btnEnd.Size = new System.Drawing.Size(147, 39);
             this.btnEnd.TabIndex = 3;
             this.btnEnd.Text = "End Transaction";
-            this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.UseVisualStyleBackColor = false;
             this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
             // 
             // btnConnectAcl
             // 
-            this.btnConnectAcl.Location = new System.Drawing.Point(75, 191);
+            this.btnConnectAcl.AutoSize = true;
+            this.btnConnectAcl.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnConnectAcl.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnConnectAcl.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnConnectAcl.Location = new System.Drawing.Point(71, 165);
             this.btnConnectAcl.Margin = new System.Windows.Forms.Padding(4);
             this.btnConnectAcl.Name = "btnConnectAcl";
-            this.btnConnectAcl.Size = new System.Drawing.Size(150, 36);
+            this.btnConnectAcl.Size = new System.Drawing.Size(159, 39);
             this.btnConnectAcl.TabIndex = 2;
             this.btnConnectAcl.Text = "Connect Accuload";
-            this.btnConnectAcl.UseVisualStyleBackColor = true;
+            this.btnConnectAcl.UseVisualStyleBackColor = false;
             this.btnConnectAcl.Click += new System.EventHandler(this.btnConnectAcl_Click);
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(75, 118);
+            this.btnStart.AutoSize = true;
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnStart.Location = new System.Drawing.Point(71, 104);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(127, 36);
+            this.btnStart.Size = new System.Drawing.Size(147, 40);
             this.btnStart.TabIndex = 1;
-            this.btnStart.Text = "Start Load";
-            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Text = "Start Loading";
+            this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // lstMain
@@ -272,7 +327,7 @@
             this.lstMain.Margin = new System.Windows.Forms.Padding(4);
             this.lstMain.Name = "lstMain";
             this.lstMain.ScrollAlwaysVisible = true;
-            this.lstMain.Size = new System.Drawing.Size(551, 632);
+            this.lstMain.Size = new System.Drawing.Size(622, 621);
             this.lstMain.TabIndex = 6;
             // 
             // timer1
@@ -285,14 +340,35 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnInfo
+            // 
+            this.btnInfo.AutoSize = true;
+            this.btnInfo.BackColor = System.Drawing.Color.Black;
+            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInfo.Font = new System.Drawing.Font("Angsana New", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnInfo.ForeColor = System.Drawing.Color.White;
+            this.btnInfo.Image = global::LAS_Interface.Properties.Resources.images__3_;
+            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInfo.Location = new System.Drawing.Point(71, 228);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(175, 43);
+            this.btnInfo.TabIndex = 15;
+            this.btnInfo.Text = "Status Details";
+            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnInfo.UseVisualStyleBackColor = false;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1101, 658);
+            this.BackColor = System.Drawing.SystemColors.Desktop;
+            this.ClientSize = new System.Drawing.Size(1236, 647);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1254, 694);
             this.Name = "FrmMain";
             this.Text = "FrmMain";
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -313,6 +389,8 @@
             this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,10 +413,12 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnEQ;
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnResetAlarm;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnInfo;
     }
 }
 

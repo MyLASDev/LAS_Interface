@@ -29,28 +29,37 @@ namespace LAS_Interface
 
         public void add()
         {
-            string tu_number1 = txt_หัว.Text.Trim();
-            string tu_number2 = txt_พ่วง.Text.Trim();
-            string driver_name = txt_คนขับ.Text.Trim();
-            long loadno;
-            string strSQL = string.Format("INSERT INTO loadingheaders (TuNumber1, TuNumber2, DriverName) VALUES('{0}', '{1}', '{2}'); ", tu_number1, tu_number2, driver_name);
-
-            if (DatabaseLib.Execute_NonQueryResId(strSQL,out loadno))
+            try
             {
-                if (loadno > 0)
+                string tu_number1 = txt_หัว.Text.Trim();
+                string tu_number2 = txt_พ่วง.Text.Trim();
+                string driver_name = txt_คนขับ.Text.Trim();
+                long loadno;
+                string strSQL = string.Format("INSERT INTO loadingheaders (TuNumber1, TuNumber2, DriverName) VALUES('{0}', '{1}', '{2}'); ", tu_number1, tu_number2, driver_name);
+
+                if (DatabaseLib.Execute_NonQueryResId(strSQL, out loadno))
                 {
-                    addLine(loadno) ;
-                    MessageBox.Show("successfully");
-                   
+                    if (loadno > 0)
+                    {
+                        addLine(loadno);
+                        MessageBox.Show("successfully");
+
+                        this.Close();
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("error");
                     this.Close();
                 }
-          
+                
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("error");
-                this.Close();
+                
             }
+            
 
         }
 
@@ -75,7 +84,7 @@ namespace LAS_Interface
 
         }
 
-        public void updateLine(long pLoadNo)
+        public void updateLine()
         {
 
             MySqlConnection conn = new MySqlConnection(strconn);
@@ -86,10 +95,10 @@ namespace LAS_Interface
 
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {
-                //string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
+                string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format("update loadinglines set ProductName = {0}, Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ;", productName, preset);
+                StrQuery = string.Format("update loadinglines set Compartment = {0}, ProductName = '{1}', Preset = {2}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", compartment, productName, preset, load_no );
                 bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
             }
 
@@ -99,17 +108,14 @@ namespace LAS_Interface
             string tu_number1 = txt_หัว.Text.Trim();
             string tu_number2 = txt_พ่วง.Text.Trim();
             string driver_name = txt_คนขับ.Text.Trim();
-            long loadno;
-            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = {0}, TuNumber2 = {1}, DriverName =  {2}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = pLoadNo ", tu_number1, tu_number2, driver_name);
           
-            if (DatabaseLib.Execute_NonQueryResId(strSQL, out loadno))
+            string strSQL = string.Format("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName = '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", tu_number1, tu_number2, driver_name, load_no ) ;
+          
+            if (DatabaseLib.ExecuteSQL (strSQL ))
             {
-                if (loadno > 0)
-                {
-                    updateLine(loadno);
+                    updateLine();
                     MessageBox.Show("successfully");
                     this.Close();
-                }
 
             }
             else
@@ -240,9 +246,6 @@ namespace LAS_Interface
                 return false;
             }
 
-
-
-
             //Check loading line
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {
@@ -290,7 +293,6 @@ namespace LAS_Interface
                 return null;
             }
         }
-
 
     }
 }

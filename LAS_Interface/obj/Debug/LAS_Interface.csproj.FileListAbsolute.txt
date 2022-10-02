@@ -87,3 +87,8 @@ D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmLoading.res
 D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\bin\Debug\Library.dll.config
 D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\bin\Debug\Library.dll.config
 D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmLoading.resources
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\bin\Debug\LAS_Interface.exe.manifest
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\bin\Debug\LAS_Interface.application
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.exe.manifest
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.application
+D:\c#\LLAS_V2\LAS_Interface\LAS_Interface\obj\Debug\LAS_Interface.FrmStatus.resources
