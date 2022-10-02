@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 
 namespace Library
 {
@@ -59,6 +60,33 @@ namespace Library
 
             return vCheck;
         }
+        public static  string ExecuteReader_pPreset(string pStrSQL)
+        {
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(strconn))
+                {
+                    MySqlCommand command = new MySqlCommand(pStrSQL, connection);
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(pStrSQL, connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    string Read = string.Empty;
+                    while (reader.Read())
+                    {
+                       Read = reader["Preset"] + "";
+                    }
+                    reader.Close();
+                    return Read;
+                }
+            }
+            catch (Exception)
+            {
+
+            } 
+            return null;
+        }
+
         public static DataTable Excute_DataAdapter(string pSql)
         { 
             DataTable dt = new DataTable();

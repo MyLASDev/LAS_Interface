@@ -37,7 +37,11 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+<<<<<<< HEAD
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+=======
+            this.label1 = new System.Windows.Forms.Label();
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -121,10 +125,17 @@
             // 
             // splitContainer2.Panel2
             // 
+<<<<<<< HEAD
             this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.btnResetAlarm);
             this.splitContainer2.Panel2.Controls.Add(this.btnStop);
+=======
+            this.splitContainer2.Panel2.Controls.Add(this.label1);
+            this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
+            this.splitContainer2.Panel2.Controls.Add(this.btnDelete);
+            this.splitContainer2.Panel2.Controls.Add(this.btnEdit);
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
@@ -154,9 +165,12 @@
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
+<<<<<<< HEAD
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+=======
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -183,6 +197,7 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
+<<<<<<< HEAD
             this.dataGridView2.Size = new System.Drawing.Size(609, 140);
             this.dataGridView2.TabIndex = 9;
             // 
@@ -199,6 +214,21 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loading Order";
+=======
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(545, 142);
+            this.dataGridView2.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label1.Location = new System.Drawing.Point(71, 52);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(116, 20);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Loading Order";
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             // 
             // btnAdd
             // 
@@ -272,11 +302,15 @@
             // 
             // btnEnd
             // 
+<<<<<<< HEAD
             this.btnEnd.AutoSize = true;
             this.btnEnd.BackColor = System.Drawing.Color.Magenta;
             this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnEnd.Location = new System.Drawing.Point(378, 104);
+=======
+            this.btnEnd.Location = new System.Drawing.Point(172, 118);
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(147, 39);
             this.btnEnd.TabIndex = 3;
@@ -301,11 +335,15 @@
             // 
             // btnStart
             // 
+<<<<<<< HEAD
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStart.Location = new System.Drawing.Point(71, 104);
+=======
+            this.btnStart.Location = new System.Drawing.Point(24, 118);
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(147, 40);
@@ -413,6 +451,10 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
+<<<<<<< HEAD
+=======
+        private System.Windows.Forms.Label label1;
+>>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button btnStop;
