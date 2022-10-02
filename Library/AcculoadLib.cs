@@ -326,9 +326,9 @@ namespace Library
         {
 
             string vLRC = CalLRC(pMeterAddr.ToString("D2") + pMessage + char.ConvertFromUtf32(ETX));
-            //Console.WriteLine(vLRC);
+           
             string s = char.ConvertFromUtf32(STX) + pMeterAddr.ToString("D2") + pMessage + char.ConvertFromUtf32(ETX) + vLRC;
-            //Console.WriteLine(s);
+            
              return s;
         }
         private static string CalLRC(string pMsg)
@@ -339,10 +339,10 @@ namespace Library
             for (int i = 0; i < b.Length; i++)
             {
                 LRC = LRC ^ b[i];
-                //Console.WriteLine(LRC);
+              
 
             }
-            //Console.WriteLine(char.ConvertFromUtf32(LRC));
+            
             return char.ConvertFromUtf32(LRC);
         }
         public static bool DecodedEnquireStatus(ref _EnquireStatus pValue, string pDecodeData)
@@ -356,7 +356,7 @@ namespace Library
                     return bRet;
 
                 bRet = CheckMessageReceive(pDecodeData); 
-                //vRecv = pDecodeData;
+               
                 vRecv = pDecodeData.Substring(DATA_Position, ETX_Position - DATA_Position);  //take this line to commu.
                 if (!bRet)
                 {
@@ -364,8 +364,6 @@ namespace Library
                     return bRet;
                 }
 
-                //if (vRecv.Length < 16)
-                //    vRecv.PadRight(16, '0');
                 pValue.StringStatus = vRecv;    //this line take value into Enquire status 
                 for (int vIndex = 0; vIndex < vRecv.Length; vIndex++)
                 {
@@ -413,7 +411,7 @@ namespace Library
                             break;
                     }
                 }
-                //pValue = mAcculoadValue.EQ;
+               
                 return bRet;
             }
             catch (Exception exp)

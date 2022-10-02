@@ -37,23 +37,20 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-<<<<<<< HEAD
+            this.btnInfo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-=======
-            this.label1 = new System.Windows.Forms.Label();
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnResetAlarm = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnConnectAcl = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.lstMain = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnInfo = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -125,17 +122,11 @@
             // 
             // splitContainer2.Panel2
             // 
-<<<<<<< HEAD
             this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.btnResetAlarm);
             this.splitContainer2.Panel2.Controls.Add(this.btnStop);
-=======
             this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
-            this.splitContainer2.Panel2.Controls.Add(this.btnDelete);
-            this.splitContainer2.Panel2.Controls.Add(this.btnEdit);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
@@ -165,12 +156,9 @@
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
-<<<<<<< HEAD
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-=======
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -197,15 +185,32 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
-<<<<<<< HEAD
             this.dataGridView2.Size = new System.Drawing.Size(609, 140);
             this.dataGridView2.TabIndex = 9;
             // 
+            // btnInfo
+            // 
+            this.btnInfo.AutoSize = true;
+            this.btnInfo.BackColor = System.Drawing.Color.Black;
+            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInfo.Font = new System.Drawing.Font("Angsana New", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnInfo.ForeColor = System.Drawing.Color.White;
+            this.btnInfo.Image = global::LAS_Interface.Properties.Resources.images__3_;
+            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInfo.Location = new System.Drawing.Point(71, 228);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(175, 43);
+            this.btnInfo.TabIndex = 15;
+            this.btnInfo.Text = "Status Details";
+            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnInfo.UseVisualStyleBackColor = false;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnAdd);
-            this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.btnDelete);
+            this.groupBox1.Controls.Add(this.btnEdit);
+            this.groupBox1.Controls.Add(this.btnAdd);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(71, 18);
@@ -214,28 +219,13 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loading Order";
-=======
-            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(545, 142);
-            this.dataGridView2.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.Location = new System.Drawing.Point(71, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 20);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Loading Order";
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             // 
             // btnAdd
             // 
             this.btnAdd.AutoSize = true;
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnAdd.ForeColor = System.Drawing.Color.Black;
-            this.btnAdd.Location = new System.Drawing.Point(114, 14);
+            this.btnAdd.Location = new System.Drawing.Point(43, 22);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(100, 36);
@@ -249,7 +239,7 @@
             this.btnEdit.AutoSize = true;
             this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnEdit.ForeColor = System.Drawing.Color.Black;
-            this.btnEdit.Location = new System.Drawing.Point(222, 14);
+            this.btnEdit.Location = new System.Drawing.Point(151, 22);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(100, 36);
@@ -263,7 +253,7 @@
             this.btnDelete.AutoSize = true;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnDelete.ForeColor = System.Drawing.Color.Black;
-            this.btnDelete.Location = new System.Drawing.Point(330, 14);
+            this.btnDelete.Location = new System.Drawing.Point(259, 22);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(100, 36);
@@ -285,6 +275,7 @@
             this.btnResetAlarm.TabIndex = 13;
             this.btnResetAlarm.Text = "Reset Alarm";
             this.btnResetAlarm.UseVisualStyleBackColor = false;
+            this.btnResetAlarm.Click += new System.EventHandler(this.btnResetAlarm_Click);
             // 
             // btnStop
             // 
@@ -300,17 +291,20 @@
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 23);
+            this.label1.TabIndex = 16;
+            // 
             // btnEnd
             // 
-<<<<<<< HEAD
             this.btnEnd.AutoSize = true;
             this.btnEnd.BackColor = System.Drawing.Color.Magenta;
             this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnEnd.Location = new System.Drawing.Point(378, 104);
-=======
-            this.btnEnd.Location = new System.Drawing.Point(172, 118);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(147, 39);
             this.btnEnd.TabIndex = 3;
@@ -335,15 +329,11 @@
             // 
             // btnStart
             // 
-<<<<<<< HEAD
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStart.Location = new System.Drawing.Point(71, 104);
-=======
-            this.btnStart.Location = new System.Drawing.Point(24, 118);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(147, 40);
@@ -377,24 +367,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // btnInfo
-            // 
-            this.btnInfo.AutoSize = true;
-            this.btnInfo.BackColor = System.Drawing.Color.Black;
-            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnInfo.Font = new System.Drawing.Font("Angsana New", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.btnInfo.ForeColor = System.Drawing.Color.White;
-            this.btnInfo.Image = global::LAS_Interface.Properties.Resources.images__3_;
-            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInfo.Location = new System.Drawing.Point(71, 228);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(175, 43);
-            this.btnInfo.TabIndex = 15;
-            this.btnInfo.Text = "Status Details";
-            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInfo.UseVisualStyleBackColor = false;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // FrmMain
             // 
@@ -451,10 +423,9 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnAdd;
-<<<<<<< HEAD
-=======
+
         private System.Windows.Forms.Label label1;
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
+
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button btnStop;
