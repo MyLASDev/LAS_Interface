@@ -230,7 +230,6 @@ namespace LAS_Interface
                 ClientLib.SendData(vCmd);
                 RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
                 PullEnquireStatus();
-                RaiseEvents("End Transaction");
             }
             
         }
@@ -332,7 +331,7 @@ namespace LAS_Interface
                 AcculoadProcess.StopBatch = false;
                 RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
                 PullEnquireStatus();
-                RaiseEvents("Stop Loading");
+                
             }
         }
 
@@ -354,7 +353,7 @@ namespace LAS_Interface
             } 
         }
 
-        /*private void SProcess_Click(object sender, EventArgs e)
+        private void btnStartProcess_Click(object sender, EventArgs e)
         {
             try
             {
@@ -382,10 +381,23 @@ namespace LAS_Interface
             }
         }
 
-        private void StpProcess_Click(object sender, EventArgs e)
+        private void btnStopProcess_Click(object sender, EventArgs e)
         {
             AlcProcess.StopThread();
             PullEnquireStatus();
-        }*/
+        }
+
+        private void btnEndBatch_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                string vCmd = AcculoadLib.EndBatch(14);
+                ClientLib.SendData(vCmd);
+                RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
+                PullEnquireStatus();
+            }
+               
+        }
     }
 }
