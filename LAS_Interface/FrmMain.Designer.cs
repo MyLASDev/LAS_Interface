@@ -37,6 +37,9 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnInfo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -122,6 +125,9 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.button3);
+            this.splitContainer2.Panel2.Controls.Add(this.button2);
+            this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.btnResetAlarm);
@@ -189,6 +195,45 @@
             this.dataGridView2.Size = new System.Drawing.Size(609, 140);
             this.dataGridView2.TabIndex = 9;
             // 
+            // button3
+            // 
+            this.button3.AutoSize = true;
+            this.button3.BackColor = System.Drawing.Color.HotPink;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button3.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button3.Location = new System.Drawing.Point(482, 165);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(119, 39);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "Stop Process";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.AutoSize = true;
+            this.button2.BackColor = System.Drawing.Color.Brown;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button2.Location = new System.Drawing.Point(357, 165);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(119, 39);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Start Process";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            this.button1.AutoSize = true;
+            this.button1.BackColor = System.Drawing.Color.Magenta;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button1.Location = new System.Drawing.Point(324, 104);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 40);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "End Batch";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
             // btnInfo
             // 
             this.btnInfo.AutoSize = true;
@@ -216,12 +261,13 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(71, 18);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(454, 65);
+            this.groupBox1.Size = new System.Drawing.Size(373, 67);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loading Order";
             // 
             // btnDelete
+<<<<<<< HEAD
             // 
             this.btnDelete.AutoSize = true;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
@@ -234,6 +280,36 @@
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.AutoSize = true;
+            this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEdit.ForeColor = System.Drawing.Color.Black;
+            this.btnEdit.Location = new System.Drawing.Point(151, 22);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(100, 36);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnAdd
+=======
+>>>>>>> e46fc3550ed9a76c5780625b0bf21ac55c02eff6
+            // 
+            this.btnAdd.AutoSize = true;
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnAdd.ForeColor = System.Drawing.Color.Black;
+            this.btnAdd.Location = new System.Drawing.Point(43, 22);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(100, 36);
+            this.btnAdd.TabIndex = 9;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnEdit
             // 
@@ -272,7 +348,7 @@
             this.btnResetAlarm.Location = new System.Drawing.Point(238, 165);
             this.btnResetAlarm.Margin = new System.Windows.Forms.Padding(4);
             this.btnResetAlarm.Name = "btnResetAlarm";
-            this.btnResetAlarm.Size = new System.Drawing.Size(146, 39);
+            this.btnResetAlarm.Size = new System.Drawing.Size(112, 39);
             this.btnResetAlarm.TabIndex = 13;
             this.btnResetAlarm.Text = "Reset Alarm";
             this.btnResetAlarm.UseVisualStyleBackColor = false;
@@ -284,9 +360,9 @@
             this.btnStop.BackColor = System.Drawing.Color.Red;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnStop.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStop.Location = new System.Drawing.Point(225, 104);
+            this.btnStop.Location = new System.Drawing.Point(198, 105);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(147, 39);
+            this.btnStop.Size = new System.Drawing.Size(120, 39);
             this.btnStop.TabIndex = 12;
             this.btnStop.Text = "Stop Loading";
             this.btnStop.UseVisualStyleBackColor = false;
@@ -302,10 +378,10 @@
             // btnEnd
             // 
             this.btnEnd.AutoSize = true;
-            this.btnEnd.BackColor = System.Drawing.Color.Magenta;
+            this.btnEnd.BackColor = System.Drawing.Color.DarkTurquoise;
             this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnEnd.Location = new System.Drawing.Point(378, 104);
+            this.btnEnd.Location = new System.Drawing.Point(450, 104);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(147, 39);
             this.btnEnd.TabIndex = 3;
@@ -337,7 +413,7 @@
             this.btnStart.Location = new System.Drawing.Point(71, 104);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(147, 40);
+            this.btnStart.Size = new System.Drawing.Size(120, 40);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start Loading";
             this.btnStart.UseVisualStyleBackColor = false;
@@ -433,6 +509,9 @@
         private System.Windows.Forms.Button btnResetAlarm;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 
