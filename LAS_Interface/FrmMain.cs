@@ -5,15 +5,10 @@ using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-<<<<<<< HEAD
 using System.Data.SqlClient;
-using System.Drawing;
-=======
 using System.Drawing;
 using System.Xml.Linq;
 using Google.Protobuf.WellKnownTypes;
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
 
 namespace LAS_Interface
 {
@@ -24,7 +19,6 @@ namespace LAS_Interface
         Socket socket;
         public AcculoadLib.AcculoadMember[] AclMember;
         public string load_no;
-<<<<<<< HEAD
         public SqlConnection cn;
         public SqlDataAdapter da;
         //private Rectangle button1OriginalRectangle;
@@ -34,11 +28,8 @@ namespace LAS_Interface
         //private Rectangle button5OriginalRectangle;
         //private Rectangle splitOriginalRectangle;
         //private Rectangle originalFormSize;
-=======
         public string batch_no;
         public int pPreset;
-
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
 
         public FrmMain()
         {
@@ -203,107 +194,68 @@ namespace LAS_Interface
 
         }
 
-        //public void updatedgvLL()
-        //{
-        //    string sql = "select * from LoadingLine";
-        //    DataTable dt = new DataTable();
-        //    dt = DatabaseLib.Excute_DataAdapter(sql);
-        //    dataGridView2.DataSource = dt;
-        //}
-
         private void btnStart_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-            string status = dataGridView2.SelectedCells[4].Value.ToString();
-            int s = System.Convert.ToInt32(status);
-            if ( s == 1)
+            DialogResult confirm = MessageBox.Show("คุณต้องการ start loading ใช่หรือไม่ ?", "Start Loading", MessageBoxButtons.YesNo);
+            if (confirm == DialogResult.Yes)
             {
-                DialogResult result = MessageBox.Show("คุณต้องการ start loading ใช่หรือไม่ ?", "Start Loading", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+
+                batch_no = dataGridView2.SelectedCells[0].Value.ToString();
+
+                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt FROM loadinglines where BatchNo = " + batch_no;
+                string result = string.Empty;
+                AclMember = new AcculoadLib.AcculoadMember[1];
+
+                result = DatabaseLib.ExecuteReader_pPreset(sql);
+                bool isParsable = Int32.TryParse(result, out pPreset);
+
+                if (isParsable)
                 {
-                    AclMember = new AcculoadLib.AcculoadMember[1];
-                    AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
+                    string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
+                    ClientLib.SendData(vCmd1);
 
-                    string vCmd = AcculoadLib.RequestEnquireStatus(14);
-                    string vData = ClientLib.SendData(vCmd);
+                    string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
+                    ClientLib.SendData(vCmd2);
+                    RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
+                    CurrentStatus();
 
-                    RaiseEvents("Start Loading");
-                }
-            }
-            
-            
-=======
-            batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-
-            string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt FROM loadinglines where BatchNo = " + batch_no;
-            string result = string.Empty;
-            AclMember = new AcculoadLib.AcculoadMember[1];
-
-            result = DatabaseLib.ExecuteReader_pPreset(sql); 
-            bool isParsable = Int32.TryParse(result, out pPreset);
-
-            if (isParsable)
-            {
-                string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
-                ClientLib.SendData(vCmd1);
-               
-                string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
-                ClientLib.SendData(vCmd2);
-                RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
-                CurrentStatus();
-
-                try
-                {
-                    PullEnquireStatus();
-
-                    if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                    try
                     {
-                        string vCmd3 = AcculoadLib.RemoteStart(14);
-                        ClientLib.SendData(vCmd3);
-                        
+                        PullEnquireStatus();
+
+                        if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                        {
+                            string vCmd3 = AcculoadLib.RemoteStart(14);
+                            ClientLib.SendData(vCmd3);
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error");
+                        }
+
                     }
-                    else
+                    catch (Exception)
                     {
                         MessageBox.Show("Error");
                     }
-
                 }
-                catch (Exception)
+                else
                 {
                     MessageBox.Show("Error");
                 }
+                CurrentStatus();
+
             }
-            else
-            {
-                MessageBox.Show("Error");
-            }
-            CurrentStatus();
-
-            /*string vCmd = AcculoadLib.EndBatch(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
-            CurrentStatus();*/
-
-            /*string vCmd = AcculoadLib.ResetAlarm(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
-            CurrentStatus();*/
-
-            /*string vCmd = AcculoadLib.EndBatch(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
-            CurrentStatus();*/
-
-            /*string vCmd = AcculoadLib.RemoteStop(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
-            CurrentStatus();*/
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
         }
             
         private void btnEnd_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
+            string vCmd = AcculoadLib.EndBatch(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
+            CurrentStatus();
+
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -312,28 +264,6 @@ namespace LAS_Interface
             
         }
 
-        //private void btnEQ_Click(object sender, EventArgs e)
-        //{
-        //    AclMember = new AcculoadLib.AcculoadMember[1];
-        //    AclMember[0].AclValueNew = new AcculoadLib._AcculoadValue();
-
-        //    string vCmd = AcculoadLib.RequestEnquireStatus(14);
-        //    string vData = ClientLib.SendData(vCmd);
-        //    AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ, vData);
-
-        //    RaiseEvents("Transaction Done = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
-        //}
-=======
-            string vCmd = AcculoadLib.EndTransaction(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
-        }
-
-       /* private void btnEQ_Click(object sender, EventArgs e)
-        {
-            PullEnquireStatus();
-            RaiseEvents("Transaction Done = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone.ToString());
-        }*/
         public void PullEnquireStatus()
         {
 
@@ -435,7 +365,7 @@ namespace LAS_Interface
                 RaiseEvents("PresetInProgress = " + AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress);
             }
         }
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
+
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -443,11 +373,6 @@ namespace LAS_Interface
            frmDO.ShowDialog();
            RaiseEvents("Add Delivery Order");
            updatedgvLH();
-            //bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
-            //if (vCheck == true)
-            //{
-
-            //}
         }
 
          private void btnEdit_Click(object sender, EventArgs e)
@@ -460,11 +385,6 @@ namespace LAS_Interface
             
          }
 
-<<<<<<< HEAD
-=======
-      
-
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
            
@@ -509,34 +429,25 @@ namespace LAS_Interface
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
-<<<<<<< HEAD
-            string sql2 = @"SELECT  LoadNo, Compartment, ProductName, Preset, Status
-=======
+
             string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
                               FROM loadinglines where LoadNo = " + load_no;
            
 
-           /* if ()
-            {
-                
-
-            }*/
             DataTable dt2 = new DataTable();
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
 
-            /*for (int i = 0; i < dt2.Rows.Count; i++)
-              {
-                  Console.WriteLine(i);
-                  dataGridView2.Rows[i].Cells[2].Value = dt2.Rows[i]["ProductName"].ToString();
-                  dataGridView2.Rows[i].Cells[3].Value = dt2.Rows[i]["Preset"].ToString();          
-              }*/
+
         }
 
-<<<<<<< HEAD
+
         private void btnStop_Click(object sender, EventArgs e)
         {
+            string vCmd = AcculoadLib.RemoteStop(14);
+            ClientLib.SendData(vCmd);
+            RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
+            CurrentStatus();
             DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
@@ -550,56 +461,12 @@ namespace LAS_Interface
             frmStatus.ShowDialog();
         }
 
-
-
-        //private void resizeControl(Rectangle r, Control c)
-        //{
-        //    float xratio = (float)(this.ClientRectangle.Width) / (float)(originalFormSize.Width);
-        //    float yratio = (float)(this.ClientRectangle.Height) / (float)(originalFormSize.Height);
-        //    int newx = (int)(r.Location.X * xratio);
-        //    int newy = (int)(r.Location.Y * yratio);
-        //    int newWidth = (int)(r.Width * xratio);
-        //    int newHeight = (int)(r.Height * yratio);
-        //    c.Location = new Point(newx, newy);
-        //    c.Size = new Size(newWidth, newHeight);
-        //}
-        //private void FrmMain_Resize(object sender, EventArgs e)
-        //{
-        //    ResizeChildren();
-        //}
-
-        //private void ResizeChildren()
-        //{
-        //    resizeControl(button1OriginalRectangle, btnEnd);
-        //    resizeControl(button5OriginalRectangle, btnResetAlarm);
-        //    resizeControl(button2OriginalRectangle, btnStart);
-        //    resizeControl(button4OriginalRectangle, btnStop);
-        //    resizeControl(button3OriginalRectangle, btnConnectAcl);
-        //    //resizeControl(splitOriginalRectangle, splitContainer2);
-        //}
-
-=======
-        private void button2_Click(object sender, EventArgs e)
+        private void btnResetAlarm_Click(object sender, EventArgs e)
         {
-            const byte STX = 2;
-            Console.WriteLine(char.ConvertFromUtf32(STX));
+          string vCmd = AcculoadLib.ResetAlarm(14);
+          ClientLib.SendData(vCmd);
+          RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
+          CurrentStatus();
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string vCmd = AcculoadLib.EndBatch(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
-            CurrentStatus();
-        }
-
-   
-
-    
-
-        
-
-    
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
     }
 }

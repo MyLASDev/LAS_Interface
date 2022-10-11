@@ -39,7 +39,7 @@ namespace LAS_Interface
 
                 if (DatabaseLib.Execute_NonQueryResId(strSQL, out loadno))
                 {
-<<<<<<< HEAD
+
                     if (loadno > 0)
                     {
                         addLine(loadno);
@@ -52,10 +52,10 @@ namespace LAS_Interface
                 else
                 {
                     MessageBox.Show("error");
-=======
+
                     addLine(loadno) ;
                     MessageBox.Show("successfully");
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
+
                     this.Close();
                 }
                 
@@ -114,13 +114,12 @@ namespace LAS_Interface
             string tu_number1 = txt_หัว.Text.Trim();
             string tu_number2 = txt_พ่วง.Text.Trim();
             string driver_name = txt_คนขับ.Text.Trim();
-<<<<<<< HEAD
-=======
             long loadno;
+
             string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName =  '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = loadno ", tu_number1, tu_number2, driver_name);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
+
           
-            string strSQL = string.Format("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName = '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", tu_number1, tu_number2, driver_name, load_no ) ;
+           // string strSQL = string.Format("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName = '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", tu_number1, tu_number2, driver_name, load_no ) ;
           
             if (DatabaseLib.ExecuteSQL (strSQL ))
             {
