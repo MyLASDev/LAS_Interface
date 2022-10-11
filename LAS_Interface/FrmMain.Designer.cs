@@ -37,11 +37,8 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-<<<<<<< HEAD
+            this.btnInfo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-=======
-            this.label1 = new System.Windows.Forms.Label();
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -53,7 +50,9 @@
             this.lstMain = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnInfo = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -125,17 +124,13 @@
             // 
             // splitContainer2.Panel2
             // 
-<<<<<<< HEAD
+            this.splitContainer2.Panel2.Controls.Add(this.button3);
+            this.splitContainer2.Panel2.Controls.Add(this.button2);
+            this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.btnResetAlarm);
             this.splitContainer2.Panel2.Controls.Add(this.btnStop);
-=======
-            this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Panel2.Controls.Add(this.btnAdd);
-            this.splitContainer2.Panel2.Controls.Add(this.btnDelete);
-            this.splitContainer2.Panel2.Controls.Add(this.btnEdit);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
@@ -165,12 +160,9 @@
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
-<<<<<<< HEAD
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-=======
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -197,9 +189,26 @@
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
-<<<<<<< HEAD
             this.dataGridView2.Size = new System.Drawing.Size(609, 140);
             this.dataGridView2.TabIndex = 9;
+            // 
+            // btnInfo
+            // 
+            this.btnInfo.AutoSize = true;
+            this.btnInfo.BackColor = System.Drawing.Color.Black;
+            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInfo.Font = new System.Drawing.Font("Angsana New", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnInfo.ForeColor = System.Drawing.Color.White;
+            this.btnInfo.Image = global::LAS_Interface.Properties.Resources.images__3_;
+            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInfo.Location = new System.Drawing.Point(71, 228);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(175, 43);
+            this.btnInfo.TabIndex = 15;
+            this.btnInfo.Text = "Status Details";
+            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnInfo.UseVisualStyleBackColor = false;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // groupBox1
             // 
@@ -214,21 +223,6 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loading Order";
-=======
-            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(545, 142);
-            this.dataGridView2.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.Location = new System.Drawing.Point(71, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 20);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Loading Order";
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             // 
             // btnAdd
             // 
@@ -281,7 +275,7 @@
             this.btnResetAlarm.Location = new System.Drawing.Point(238, 165);
             this.btnResetAlarm.Margin = new System.Windows.Forms.Padding(4);
             this.btnResetAlarm.Name = "btnResetAlarm";
-            this.btnResetAlarm.Size = new System.Drawing.Size(146, 39);
+            this.btnResetAlarm.Size = new System.Drawing.Size(112, 39);
             this.btnResetAlarm.TabIndex = 13;
             this.btnResetAlarm.Text = "Reset Alarm";
             this.btnResetAlarm.UseVisualStyleBackColor = false;
@@ -292,9 +286,9 @@
             this.btnStop.BackColor = System.Drawing.Color.Red;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnStop.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStop.Location = new System.Drawing.Point(225, 104);
+            this.btnStop.Location = new System.Drawing.Point(198, 105);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(147, 39);
+            this.btnStop.Size = new System.Drawing.Size(120, 39);
             this.btnStop.TabIndex = 12;
             this.btnStop.Text = "Stop Loading";
             this.btnStop.UseVisualStyleBackColor = false;
@@ -302,15 +296,11 @@
             // 
             // btnEnd
             // 
-<<<<<<< HEAD
             this.btnEnd.AutoSize = true;
-            this.btnEnd.BackColor = System.Drawing.Color.Magenta;
+            this.btnEnd.BackColor = System.Drawing.Color.DarkTurquoise;
             this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnEnd.Location = new System.Drawing.Point(378, 104);
-=======
-            this.btnEnd.Location = new System.Drawing.Point(172, 118);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
+            this.btnEnd.Location = new System.Drawing.Point(450, 104);
             this.btnEnd.Name = "btnEnd";
             this.btnEnd.Size = new System.Drawing.Size(147, 39);
             this.btnEnd.TabIndex = 3;
@@ -335,18 +325,14 @@
             // 
             // btnStart
             // 
-<<<<<<< HEAD
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStart.Location = new System.Drawing.Point(71, 104);
-=======
-            this.btnStart.Location = new System.Drawing.Point(24, 118);
->>>>>>> a3f3b76d3e96581de7de81e1b14740a63c7c3119
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(147, 40);
+            this.btnStart.Size = new System.Drawing.Size(120, 40);
             this.btnStart.TabIndex = 1;
             this.btnStart.Text = "Start Loading";
             this.btnStart.UseVisualStyleBackColor = false;
@@ -378,23 +364,44 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnInfo
+            // button1
             // 
-            this.btnInfo.AutoSize = true;
-            this.btnInfo.BackColor = System.Drawing.Color.Black;
-            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnInfo.Font = new System.Drawing.Font("Angsana New", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.btnInfo.ForeColor = System.Drawing.Color.White;
-            this.btnInfo.Image = global::LAS_Interface.Properties.Resources.images__3_;
-            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInfo.Location = new System.Drawing.Point(71, 228);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(175, 43);
-            this.btnInfo.TabIndex = 15;
-            this.btnInfo.Text = "Status Details";
-            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInfo.UseVisualStyleBackColor = false;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            this.button1.AutoSize = true;
+            this.button1.BackColor = System.Drawing.Color.Magenta;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button1.Location = new System.Drawing.Point(324, 104);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 40);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "End Batch";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.AutoSize = true;
+            this.button2.BackColor = System.Drawing.Color.Brown;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button2.Location = new System.Drawing.Point(357, 165);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(119, 39);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Start Process";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.AutoSize = true;
+            this.button3.BackColor = System.Drawing.Color.HotPink;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.button3.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.button3.Location = new System.Drawing.Point(482, 165);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(119, 39);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "Stop Process";
+            this.button3.UseVisualStyleBackColor = false;
             // 
             // FrmMain
             // 
@@ -461,6 +468,9 @@
         private System.Windows.Forms.Button btnResetAlarm;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 
