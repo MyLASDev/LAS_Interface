@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcculoadProcess.cs" />
+    <Compile Include="CLogfiles.cs" />
     <Compile Include="FrmLoading.cs">
       <SubType>Form</SubType>
     </Compile>

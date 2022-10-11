@@ -5,6 +5,7 @@ using System.Data;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using System.Threading;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Xml.Linq;
@@ -16,35 +17,26 @@ namespace LAS_Interface
     {
         string strconn = "server=r98du2bxwqkq3shg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;database=ahda1gtbqhb7pncg;uid=hktvkvjk6993txuk;pwd=ma46ffmhhxgl0zj6";
         IPEndPoint remoteEP;
-        Socket socket;
+        Socket socket; 
         public AcculoadLib.AcculoadMember[] AclMember;
+        public AcculoadProcess.AcculoadMember AcculoadProcess;
+        public CLogfiles LogFile = new CLogfiles();
+        public AcculoadProcess AlcProcess = new AcculoadProcess();
         public string load_no;
         public SqlConnection cn;
         public SqlDataAdapter da;
-        //private Rectangle button1OriginalRectangle;
-        //private Rectangle button2OriginalRectangle;
-        //private Rectangle button3OriginalRectangle;
-        //private Rectangle button4OriginalRectangle;
-        //private Rectangle button5OriginalRectangle;
-        //private Rectangle splitOriginalRectangle;
-        //private Rectangle originalFormSize;
-        public string batch_no;
+        public string batch_no; 
         public int pPreset;
+        Thread thrAclProcess;
 
-        public FrmMain()
+        public FrmMain()  
         {
             InitializeComponent();
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            //originalFormSize = new Rectangle (this.Location , this.Size);
-            //button1OriginalRectangle = new Rectangle(btnEnd.Location, btnEnd.Size );
-            //button2OriginalRectangle = new Rectangle(btnStart.Location, btnStart.Size );
-            //button3OriginalRectangle = new Rectangle(btnConnectAcl.Location, btnConnectAcl.Size );
-            //button4OriginalRectangle = new Rectangle(btnStop.Location, btnStop.Size );
-            //button5OriginalRectangle = new Rectangle(btnResetAlarm.Location, btnResetAlarm.Size );
-            //splitOriginalRectangle = new Rectangle(splitContainer2.Location.X, splitContainer2.Location.Y, splitContainer2.Width, splitContainer2.Height);
+ 
             timer1.Start();
             RaiseEvents("Application Start");
             updatedgvLH();
@@ -60,32 +52,8 @@ namespace LAS_Interface
             string text = "[Date Time : " + DateTime.Now + "]";
             SetStatusbar(text);
         }
-        private bool ConnectAcl()
-        {
-            try
-            {
-                string uri = "ktd-devth.ddns.net";
-                string ipAddress = "192.168.1.114";
-                var addresses = Dns.GetHostAddresses(uri);
-                remoteEP = new IPEndPoint(addresses[0], 7734);
-                //remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), 7734);
-                // Create a TCP/IP socket.
-                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket.ReceiveTimeout = 2000;
-                socket.SendTimeout = 1000;
-                socket.Connect(remoteEP);
-                RaiseEvents("Connection Success");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                RaiseEvents("Connect Lost = " + ex.Message);
-                return false;
-            }
-
-
-        }
-        void RaiseEvents(string pMsg)
+  
+        public void RaiseEvents(string pMsg)
         {
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
             DisplayMessage("", vMsg);
@@ -171,8 +139,10 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ connect Accuload ใช่หรือไม่ ?", "Connect Accuload", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                
+      
                 bool value = ClientLib.ConnectAcl();
-                bool vCheck = ClientLib.getIsConnectAcl();
+                //bool vCheck = ClientLib.getIsConnectAcl();
                 if (value)
                 {
                     RaiseEvents("Connection Success");
@@ -184,7 +154,8 @@ namespace LAS_Interface
             }
            
         }
-        public void updatedgvLH()
+
+        private void updatedgvLH()
         {
             
             string sql = "select * from loadingheaders";
@@ -202,7 +173,7 @@ namespace LAS_Interface
 
                 batch_no = dataGridView2.SelectedCells[0].Value.ToString();
 
-                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt FROM loadinglines where BatchNo = " + batch_no;
+                string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
                 string result = string.Empty;
                 AclMember = new AcculoadLib.AcculoadMember[1];
 
@@ -217,7 +188,7 @@ namespace LAS_Interface
                     string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
                     ClientLib.SendData(vCmd2);
                     RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
-                    CurrentStatus();
+                    PullEnquireStatus();
 
                     try
                     {
@@ -244,21 +215,21 @@ namespace LAS_Interface
                 {
                     MessageBox.Show("Error");
                 }
-                CurrentStatus();
+                PullEnquireStatus();
 
             }
         }
             
         private void btnEnd_Click(object sender, EventArgs e)
         {
-            string vCmd = AcculoadLib.EndBatch(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
-            CurrentStatus();
-
+           
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                string vCmd = AcculoadLib.EndBatch(14);
+                ClientLib.SendData(vCmd);
+                RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
+                PullEnquireStatus();
                 RaiseEvents("End Transaction");
             }
             
@@ -274,98 +245,6 @@ namespace LAS_Interface
             AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ, vData);
 
         }
-
-        public void CurrentStatus()
-        {
-            
-            PullEnquireStatus();
-
-            if (AclMember[0].AclValueNew.EQ.A1b3_ProgramMode)
-            {
-                RaiseEvents("ProgramMode = " + AclMember[0].AclValueNew.EQ.A1b3_ProgramMode);
-            }
-            if (AclMember[0].AclValueNew.EQ.A1b2_Release)
-            {
-                RaiseEvents("Release = " + AclMember[0].AclValueNew.EQ.A1b2_Release);
-            }
-            if (AclMember[0].AclValueNew.EQ.A1b1_Flowing)
-            {
-                RaiseEvents("Flowing = " + AclMember[0].AclValueNew.EQ.A1b1_Flowing);
-            }
-            if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
-            {
-                RaiseEvents("Authorized = " + AclMember[0].AclValueNew.EQ.A1b0_Authorized);
-            }
-            if (AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress)
-            {
-                RaiseEvents("TransactionInProgress = " + AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress);
-            }
-            if (AclMember[0].AclValueNew.EQ.A2b2_TransactionDone)
-            {
-                RaiseEvents("TransactionDone = " + AclMember[0].AclValueNew.EQ.A2b2_TransactionDone);
-            }
-            if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
-            {
-                RaiseEvents("BatchDone = " + AclMember[0].AclValueNew.EQ.A2b1_BatchDone);
-            }
-            if (AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
-            {
-                RaiseEvents("AlarmOn = " + AclMember[0].AclValueNew.EQ.A3b3_AlarmOn);
-            }
-            if (AclMember[0].AclValueNew.EQ.A3b2_StandbyTransactionExist)
-            {
-                RaiseEvents("StandbyTransactionExist = " + AclMember[0].AclValueNew.EQ.A3b2_StandbyTransactionExist);
-            }
-            if (AclMember[0].AclValueNew.EQ.A3b1_StorageFull)
-            {
-                RaiseEvents("StorageFull = " + AclMember[0].AclValueNew.EQ.A3b1_StorageFull);
-            }
-            if (AclMember[0].AclValueNew.EQ.A3b0_InStandbyMode)
-            {
-                RaiseEvents("InStandbyMode = " + AclMember[0].AclValueNew.EQ.A3b0_InStandbyMode);
-            }
-            if (AclMember[0].AclValueNew.EQ.A4b3_ProgramValueChange)
-            {
-                RaiseEvents("ProgramValueChange = " + AclMember[0].AclValueNew.EQ.A4b3_ProgramValueChange);
-            }
-            if (AclMember[0].AclValueNew.EQ.A4b2_DelayPrompt)
-            {
-                RaiseEvents("DelayPrompt = " + AclMember[0].AclValueNew.EQ.A4b2_DelayPrompt);
-            }
-            if (AclMember[0].AclValueNew.EQ.A4b1_DisplayMessageTimeout)
-            {
-                RaiseEvents("DisplayMessageTimeout = " + AclMember[0].AclValueNew.EQ.A4b1_DisplayMessageTimeout);
-            }
-            if (AclMember[0].AclValueNew.EQ.A4b0_PowerFailOccurred)
-            {
-                RaiseEvents("PowerFailOccurred = " + AclMember[0].AclValueNew.EQ.A4b0_PowerFailOccurred);
-            }
-            if (AclMember[0].AclValueNew.EQ.A5b3_CheckingEntries)
-            {
-                RaiseEvents("CheckingEntries = " + AclMember[0].AclValueNew.EQ.A5b3_CheckingEntries);
-            }
-            if (AclMember[0].AclValueNew.EQ.A5b1_Input2)
-            {
-                RaiseEvents("Input2 = " + AclMember[0].AclValueNew.EQ.A5b1_Input2);
-            }
-            if (AclMember[0].AclValueNew.EQ.A16b3_PrintingInProgress)
-            {
-                RaiseEvents("PrintingInProgress = " + AclMember[0].AclValueNew.EQ.A16b3_PrintingInProgress);
-            }
-            if (AclMember[0].AclValueNew.EQ.A16b2_PermissiveDelay)
-            {
-                RaiseEvents("PermissiveDelay = " + AclMember[0].AclValueNew.EQ.A16b2_PermissiveDelay);
-            }
-            if (AclMember[0].AclValueNew.EQ.A16b1_CardDataPresent)
-            {
-                RaiseEvents("CardDataPresent = " + AclMember[0].AclValueNew.EQ.A16b1_CardDataPresent);
-            }
-            if (AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress)
-            {
-                RaiseEvents("PresetInProgress = " + AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress);
-            }
-        }
-
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -398,13 +277,13 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Error = "+ ex);
                 RaiseEvents("Delete not successfully");
             }
 
         }
 
-        public void delline()
+        private void delline()
         {
             string loadno = dataGridView1.SelectedCells[0].Value.ToString();
             MySqlConnection conn = new MySqlConnection(strconn);
@@ -415,7 +294,7 @@ namespace LAS_Interface
             cmd.ExecuteNonQuery();
         }
 
-        public void delheader()
+        private void delheader()
         {
             string loadno = dataGridView1.SelectedCells[0].Value.ToString();
             MySqlConnection conn = new MySqlConnection(strconn);
@@ -444,13 +323,15 @@ namespace LAS_Interface
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            string vCmd = AcculoadLib.RemoteStop(14);
-            ClientLib.SendData(vCmd);
-            RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
-            CurrentStatus();
             DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                string vCmd = AcculoadLib.RemoteStop(14);
+                ClientLib.SendData(vCmd);
+                AcculoadProcess = new AcculoadProcess.AcculoadMember();
+                AcculoadProcess.StopBatch = false;
+                RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
+                PullEnquireStatus();
                 RaiseEvents("Stop Loading");
             }
         }
@@ -463,10 +344,48 @@ namespace LAS_Interface
 
         private void btnResetAlarm_Click(object sender, EventArgs e)
         {
-          string vCmd = AcculoadLib.ResetAlarm(14);
-          ClientLib.SendData(vCmd);
-          RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
-          CurrentStatus();
+            DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                string vCmd = AcculoadLib.ResetAlarm(14);
+                ClientLib.SendData(vCmd);
+                RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
+                PullEnquireStatus();
+            } 
         }
+
+        /*private void SProcess_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (DatabaseLib.IsServerConnected())
+                {
+                    if (ClientLib.getIsConnectAcl())
+                    {
+                        AlcProcess.StartThread();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Accuload connect lost");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Database doesn't connect");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error = " + ex);
+            }
+        }
+
+        private void StpProcess_Click(object sender, EventArgs e)
+        {
+            AlcProcess.StopThread();
+            PullEnquireStatus();
+        }*/
     }
 }

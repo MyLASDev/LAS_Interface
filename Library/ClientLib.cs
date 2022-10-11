@@ -16,6 +16,9 @@ namespace Library
         private static bool isConnectAcl; // field
         static int meterAddr =14;
 
+        public string TimeSend;
+        public string TimeRecv;
+
         public static bool IsConnectAcl   // property
         {
             get { return isConnectAcl; }   // get method
@@ -40,7 +43,7 @@ namespace Library
             try
             {
                 string uri = "ktd-devth.ddns.net";
-                string ipAddress = "192.168.1.114";
+                string ipAddress = "192.168.0.114";
                 var addresses = Dns.GetHostAddresses(uri);
                 //remoteEP = new IPEndPoint(addresses[0], 7734);
                 //remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), 7734);
@@ -49,8 +52,8 @@ namespace Library
                 //socket.ReceiveTimeout = 2000;
                 //socket.SendTimeout = 1000;
 
-                //tcp = new TcpClient(ipAddress, 7734);
-                tcp = new TcpClient(addresses[0].ToString(), 7734);
+                tcp = new TcpClient(ipAddress, 7734);
+                //tcp = new TcpClient(addresses[0].ToString(), 7734);
                 //tc = new TcpClient("192.168.1.193", 7734);
                 tcp.SendTimeout = 1000;
                 stm = tcp.GetStream();

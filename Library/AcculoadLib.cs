@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -85,13 +86,10 @@ namespace Library
             public AcculoadLib AclLib;
             public AcculoadLib._AcculoadValue AclValueNew;
             public AcculoadLib._AcculoadValue AclValueOld;
-            //public AcculoadLib._AcculoadValueCharacter AclValueCharter;
+            
             public string MeterNo;
             public int Address;
-            ////public _BatchCmdFnc BatchCommand;
-            ////public AcculoadLib._Transaction Transaction;
-            ////public AcculoadLib._TransactionBatchValue TransactionBatchValue;
-            ////public AcculoadLib._TransactionBatchValueCharacter TransactionBatchValueCharacter;
+          
 
             public bool IsConnect;
             public Int64 BatchID;
@@ -321,7 +319,58 @@ namespace Library
             string result = BuildMessage(pMeterAddr, "AR");
             return result;
         }
-      
+
+        public static string RequestCurrentFlowRate(int pMeterAddr, int pTotalMeter, int pMeterNo)
+        {
+            string result;
+            if (pTotalMeter > 1)
+                result = BuildMessage(pMeterAddr, "RQ P" + pMeterNo);
+            else
+                result = BuildMessage(pMeterAddr, "RQ");
+            return result;
+        }
+
+        public static string RequestPreset(int pMeterAddr)
+        {
+            string result = BuildMessage(pMeterAddr, "RP");
+            return result;
+        }
+
+        public static string RequestDeliveryGV(int pMeterAddr, int pProductNo)
+        {
+            string result = BuildMessage(pMeterAddr, "DY P" + pProductNo + "19");
+            return result;
+        }
+        public static string RequestDeliveryGST(int pMeterAddr, int pProductNo)
+        {
+            string result = BuildMessage(pMeterAddr, "DY P" + pProductNo + "20");
+            return result;
+        }
+
+        public static string RequestDeliveryGSV(int pMeterAddr, int pProductNo)
+        {
+            string result = BuildMessage(pMeterAddr, "DY P" + pProductNo + "21");
+            return result;
+        }
+
+        public static string RequestMeterTotalizerGV(int pMeterAddr, int pMeterNo)
+        {
+            string result = BuildMessage(pMeterAddr, "VT G P" + pMeterNo);
+            return result;
+        }
+
+        public static string RequestMeterTotalizerGST(int pMeterAddr, int pMeterNo)
+        {
+            string result = BuildMessage(pMeterAddr, "VT N P" + pMeterNo);
+            return result;
+        }
+
+        public static string RequestMeterTotalizerGSV(int pMeterAddr, int pMeterNo)
+        {
+            string result = BuildMessage(pMeterAddr, "VT P P" + pMeterNo);
+            return result;
+        }
+
         private static string BuildMessage(int pMeterAddr, string pMessage)
         {
 
@@ -358,6 +407,7 @@ namespace Library
                 bRet = CheckMessageReceive(pDecodeData); 
                
                 vRecv = pDecodeData.Substring(DATA_Position, ETX_Position - DATA_Position);  //take this line to commu.
+                //Console.WriteLine(vRecv);   
                 if (!bRet)
                 {
                     pValue.StringStatus = "0000000000000000";
