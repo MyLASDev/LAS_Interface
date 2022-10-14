@@ -37,6 +37,7 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
             this.btnStopProcess = new System.Windows.Forms.Button();
             this.btnStartProcess = new System.Windows.Forms.Button();
             this.btnEndBatch = new System.Windows.Forms.Button();
@@ -51,7 +52,17 @@
             this.btnEnd = new System.Windows.Forms.Button();
             this.btnConnectAcl = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.lstMain = new System.Windows.Forms.ListBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtGV = new System.Windows.Forms.TextBox();
+            this.txtFlowRate = new System.Windows.Forms.TextBox();
+            this.txtPreset = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtTotalizer = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.statusStrip1.SuspendLayout();
@@ -70,6 +81,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -105,9 +121,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.lstMain);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
             this.splitContainer1.Size = new System.Drawing.Size(1236, 621);
-            this.splitContainer1.SplitterDistance = 609;
+            this.splitContainer1.SplitterDistance = 668;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -122,9 +138,11 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            this.splitContainer2.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.label6);
             this.splitContainer2.Panel2.Controls.Add(this.btnStopProcess);
             this.splitContainer2.Panel2.Controls.Add(this.btnStartProcess);
             this.splitContainer2.Panel2.Controls.Add(this.btnEndBatch);
@@ -136,7 +154,9 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnEnd);
             this.splitContainer2.Panel2.Controls.Add(this.btnConnectAcl);
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
-            this.splitContainer2.Size = new System.Drawing.Size(609, 621);
+            this.splitContainer2.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer2.Size = new System.Drawing.Size(668, 621);
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
@@ -151,11 +171,13 @@
             // splitContainer3.Panel1
             // 
             this.splitContainer3.Panel1.Controls.Add(this.dataGridView1);
+            this.splitContainer3.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.dataGridView2);
-            this.splitContainer3.Size = new System.Drawing.Size(609, 319);
+            this.splitContainer3.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer3.Size = new System.Drawing.Size(668, 319);
             this.splitContainer3.SplitterDistance = 175;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -165,6 +187,7 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -174,7 +197,7 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(609, 175);
+            this.dataGridView1.Size = new System.Drawing.Size(668, 175);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
             // 
@@ -184,6 +207,7 @@
             this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView2.Location = new System.Drawing.Point(0, 0);
@@ -192,14 +216,27 @@
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(609, 140);
+            this.dataGridView2.Size = new System.Drawing.Size(668, 140);
             this.dataGridView2.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(126, 241);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(106, 18);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Status Details";
             // 
             // btnStopProcess
             // 
             this.btnStopProcess.AutoSize = true;
             this.btnStopProcess.BackColor = System.Drawing.Color.HotPink;
-            this.btnStopProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStopProcess.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStopProcess.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStopProcess.Location = new System.Drawing.Point(482, 165);
             this.btnStopProcess.Name = "btnStopProcess";
@@ -213,7 +250,7 @@
             // 
             this.btnStartProcess.AutoSize = true;
             this.btnStartProcess.BackColor = System.Drawing.Color.Brown;
-            this.btnStartProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStartProcess.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartProcess.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStartProcess.Location = new System.Drawing.Point(357, 165);
             this.btnStartProcess.Name = "btnStartProcess";
@@ -227,7 +264,7 @@
             // 
             this.btnEndBatch.AutoSize = true;
             this.btnEndBatch.BackColor = System.Drawing.Color.Magenta;
-            this.btnEndBatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEndBatch.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnEndBatch.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnEndBatch.Location = new System.Drawing.Point(324, 104);
             this.btnEndBatch.Name = "btnEndBatch";
@@ -248,9 +285,8 @@
             this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnInfo.Location = new System.Drawing.Point(71, 228);
             this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(175, 43);
-            this.btnInfo.TabIndex = 15;
-            this.btnInfo.Text = "Status Details";
+            this.btnInfo.Size = new System.Drawing.Size(44, 43);
+            this.btnInfo.TabIndex = 0;
             this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnInfo.UseVisualStyleBackColor = false;
             this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
@@ -260,11 +296,11 @@
             this.groupBox1.Controls.Add(this.btnDelete);
             this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.btnAdd);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.groupBox1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(71, 18);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(373, 67);
+            this.groupBox1.Size = new System.Drawing.Size(386, 67);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Loading Order";
@@ -272,7 +308,7 @@
             // btnDelete
             // 
             this.btnDelete.AutoSize = true;
-            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnDelete.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.Black;
             this.btnDelete.Location = new System.Drawing.Point(259, 22);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
@@ -286,7 +322,7 @@
             // btnEdit
             // 
             this.btnEdit.AutoSize = true;
-            this.btnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEdit.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.ForeColor = System.Drawing.Color.Black;
             this.btnEdit.Location = new System.Drawing.Point(151, 22);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
@@ -300,7 +336,7 @@
             // btnAdd
             // 
             this.btnAdd.AutoSize = true;
-            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnAdd.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.ForeColor = System.Drawing.Color.Black;
             this.btnAdd.Location = new System.Drawing.Point(43, 22);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
@@ -315,7 +351,7 @@
             // 
             this.btnResetAlarm.AutoSize = true;
             this.btnResetAlarm.BackColor = System.Drawing.Color.Orange;
-            this.btnResetAlarm.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnResetAlarm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetAlarm.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnResetAlarm.Location = new System.Drawing.Point(238, 165);
             this.btnResetAlarm.Margin = new System.Windows.Forms.Padding(4);
@@ -330,7 +366,7 @@
             // 
             this.btnStop.AutoSize = true;
             this.btnStop.BackColor = System.Drawing.Color.Red;
-            this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStop.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnStop.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStop.Location = new System.Drawing.Point(198, 105);
             this.btnStop.Name = "btnStop";
@@ -351,7 +387,7 @@
             // 
             this.btnEnd.AutoSize = true;
             this.btnEnd.BackColor = System.Drawing.Color.DarkTurquoise;
-            this.btnEnd.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnEnd.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnEnd.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnEnd.Location = new System.Drawing.Point(450, 104);
             this.btnEnd.Name = "btnEnd";
@@ -365,12 +401,12 @@
             // 
             this.btnConnectAcl.AutoSize = true;
             this.btnConnectAcl.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnConnectAcl.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnConnectAcl.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConnectAcl.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnConnectAcl.Location = new System.Drawing.Point(71, 165);
             this.btnConnectAcl.Margin = new System.Windows.Forms.Padding(4);
             this.btnConnectAcl.Name = "btnConnectAcl";
-            this.btnConnectAcl.Size = new System.Drawing.Size(159, 39);
+            this.btnConnectAcl.Size = new System.Drawing.Size(161, 39);
             this.btnConnectAcl.TabIndex = 2;
             this.btnConnectAcl.Text = "Connect Accuload";
             this.btnConnectAcl.UseVisualStyleBackColor = false;
@@ -380,7 +416,7 @@
             // 
             this.btnStart.AutoSize = true;
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnStart.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnStart.Location = new System.Drawing.Point(71, 104);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
@@ -391,21 +427,170 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.lstMain);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.groupBox2);
+            this.splitContainer4.Panel2.ForeColor = System.Drawing.Color.Transparent;
+            this.splitContainer4.Size = new System.Drawing.Size(563, 621);
+            this.splitContainer4.SplitterDistance = 390;
+            this.splitContainer4.TabIndex = 0;
+            // 
             // lstMain
             // 
             this.lstMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
             this.lstMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.lstMain.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstMain.ForeColor = System.Drawing.Color.Crimson;
             this.lstMain.FormattingEnabled = true;
             this.lstMain.HorizontalScrollbar = true;
-            this.lstMain.ItemHeight = 20;
+            this.lstMain.ItemHeight = 19;
             this.lstMain.Location = new System.Drawing.Point(0, 0);
             this.lstMain.Margin = new System.Windows.Forms.Padding(4);
             this.lstMain.Name = "lstMain";
             this.lstMain.ScrollAlwaysVisible = true;
-            this.lstMain.Size = new System.Drawing.Size(622, 621);
+            this.lstMain.Size = new System.Drawing.Size(563, 390);
             this.lstMain.TabIndex = 6;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.txtGV);
+            this.groupBox2.Controls.Add(this.txtFlowRate);
+            this.groupBox2.Controls.Add(this.txtPreset);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.txtTotalizer);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.ForeColor = System.Drawing.Color.White;
+            this.groupBox2.Location = new System.Drawing.Point(42, 13);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(306, 178);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Meter Informations";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(23, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(74, 18);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "FlowRate";
+            // 
+            // txtGV
+            // 
+            this.txtGV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtGV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
+            this.txtGV.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGV.ForeColor = System.Drawing.Color.White;
+            this.txtGV.Location = new System.Drawing.Point(147, 138);
+            this.txtGV.Name = "txtGV";
+            this.txtGV.Size = new System.Drawing.Size(91, 27);
+            this.txtGV.TabIndex = 7;
+            this.txtGV.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtGV.TextChanged += new System.EventHandler(this.txtGV_TextChanged);
+            // 
+            // txtFlowRate
+            // 
+            this.txtFlowRate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFlowRate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
+            this.txtFlowRate.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFlowRate.ForeColor = System.Drawing.Color.White;
+            this.txtFlowRate.Location = new System.Drawing.Point(147, 30);
+            this.txtFlowRate.MaxLength = 500;
+            this.txtFlowRate.Name = "txtFlowRate";
+            this.txtFlowRate.Size = new System.Drawing.Size(91, 27);
+            this.txtFlowRate.TabIndex = 1;
+            this.txtFlowRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtFlowRate.TextChanged += new System.EventHandler(this.txtFlowRate_TextChanged);
+            // 
+            // txtPreset
+            // 
+            this.txtPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPreset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
+            this.txtPreset.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPreset.ForeColor = System.Drawing.Color.White;
+            this.txtPreset.Location = new System.Drawing.Point(147, 104);
+            this.txtPreset.Name = "txtPreset";
+            this.txtPreset.Size = new System.Drawing.Size(91, 27);
+            this.txtPreset.TabIndex = 6;
+            this.txtPreset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPreset.TextChanged += new System.EventHandler(this.txtPreset_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(23, 142);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 18);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Loaded(GV)";
+            // 
+            // txtTotalizer
+            // 
+            this.txtTotalizer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTotalizer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(44)))), ((int)(((byte)(54)))));
+            this.txtTotalizer.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTotalizer.ForeColor = System.Drawing.Color.White;
+            this.txtTotalizer.Location = new System.Drawing.Point(147, 67);
+            this.txtTotalizer.Name = "txtTotalizer";
+            this.txtTotalizer.Size = new System.Drawing.Size(91, 27);
+            this.txtTotalizer.TabIndex = 5;
+            this.txtTotalizer.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtTotalizer.TextChanged += new System.EventHandler(this.txtTotalizer_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(23, 108);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 18);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Preset";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(23, 71);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(70, 18);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Totalizer";
             // 
             // timer1
             // 
@@ -450,6 +635,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -484,6 +675,17 @@
         private System.Windows.Forms.Button btnStopProcess;
         private System.Windows.Forms.Button btnStartProcess;
         private System.Windows.Forms.Button btnEndBatch;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.TextBox txtFlowRate;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtGV;
+        private System.Windows.Forms.TextBox txtPreset;
+        private System.Windows.Forms.TextBox txtTotalizer;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 

@@ -341,7 +341,7 @@ namespace LAS_Interface
 
         private void btnResetAlarm_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("คุณต้องการ Reset Alarm ใช่หรือไม่ ?", "Reset Alarm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 string vCmd = AcculoadLib.ResetAlarm(14);
@@ -387,7 +387,7 @@ namespace LAS_Interface
 
         private void btnEndBatch_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("คุณต้องการ End Batch ใช่หรือไม่ ?", "End Batch", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 string vCmd = AcculoadLib.EndBatch(14);
@@ -396,6 +396,26 @@ namespace LAS_Interface
                 RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
             }
                
+        }
+
+        private void txtFlowRate_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTotalizer_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPreset_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtGV_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
