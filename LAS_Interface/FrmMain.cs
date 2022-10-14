@@ -19,7 +19,8 @@ namespace LAS_Interface
         IPEndPoint remoteEP;
         Socket socket; 
         public AcculoadLib.AcculoadMember[] AclMember;
-        public AcculoadProcess.AcculoadMember AcculoadProcess;
+        //public AcculoadProcess.AcculoadMember AcculoadProcess;
+        public AcculoadProcess AcculoadProcess;
         public CLogfiles LogFile = new CLogfiles();
         public AcculoadProcess AlcProcess = new AcculoadProcess();
         public string load_no;
@@ -187,7 +188,6 @@ namespace LAS_Interface
 
                     string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
                     ClientLib.SendData(vCmd2);
-                    RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
                     PullEnquireStatus();
 
                     try
@@ -198,7 +198,7 @@ namespace LAS_Interface
                         {
                             string vCmd3 = AcculoadLib.RemoteStart(14);
                             ClientLib.SendData(vCmd3);
-
+                            RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
                         }
                         else
                         {
@@ -228,8 +228,8 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.EndBatch(14);
                 ClientLib.SendData(vCmd);
-                RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");
                 PullEnquireStatus();
+                RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");           
             }
             
         }
@@ -316,7 +316,6 @@ namespace LAS_Interface
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
 
-
         }
 
 
@@ -327,11 +326,10 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.RemoteStop(14);
                 ClientLib.SendData(vCmd);
-                AcculoadProcess = new AcculoadProcess.AcculoadMember();
-                AcculoadProcess.StopBatch = false;
-                RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");
+                AcculoadProcess = new AcculoadProcess();
+                AcculoadProcess.stpBatch = 2;
                 PullEnquireStatus();
-                
+                RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");      
             }
         }
 
@@ -348,8 +346,8 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.ResetAlarm(14);
                 ClientLib.SendData(vCmd);
-                RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");
                 PullEnquireStatus();
+                RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");         
             } 
         }
 
@@ -365,8 +363,8 @@ namespace LAS_Interface
                         AlcProcess.StartThread();
                     }
                     else
-                    {
-                        MessageBox.Show("Accuload connect lost");
+                    { 
+                        MessageBox.Show("Accuload doesn't connect");
                     }
                 }
                 else
@@ -394,8 +392,8 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.EndBatch(14);
                 ClientLib.SendData(vCmd);
-                RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
                 PullEnquireStatus();
+                RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
             }
                
         }

@@ -308,7 +308,7 @@ namespace Library
         {
             string strCmd = BuildMessage(pMeterAddr, "EB");
             return strCmd;
-        }
+        } 
         public static string EndTransaction(int pMeterAddr)
         {
             string result = BuildMessage(pMeterAddr, "ET");
@@ -320,13 +320,9 @@ namespace Library
             return result;
         }
 
-        public static string RequestCurrentFlowRate(int pMeterAddr, int pTotalMeter, int pMeterNo)
+        public static string RequestCurrentFlowRate(int pMeterAddr)
         {
-            string result;
-            if (pTotalMeter > 1)
-                result = BuildMessage(pMeterAddr, "RQ P" + pMeterNo);
-            else
-                result = BuildMessage(pMeterAddr, "RQ");
+            string result = BuildMessage(pMeterAddr, "RQ");
             return result;
         }
 
@@ -353,7 +349,7 @@ namespace Library
             return result;
         }
 
-        public static string RequestMeterTotalizerGV(int pMeterAddr, int pMeterNo)
+        public static string RequestMeterTotalizerGV(int pMeterAddr, int pMeterNo) 
         {
             string result = BuildMessage(pMeterAddr, "VT G P" + pMeterNo);
             return result;
@@ -464,7 +460,7 @@ namespace Library
                
                 return bRet;
             }
-            catch (Exception exp)
+            catch (Exception)
             { return false; }
         }
         private  static void DecodeCharacterToStatus(char pValue, ref bool pBit3, ref bool pBit2, ref bool pBit1, ref bool pBit0)

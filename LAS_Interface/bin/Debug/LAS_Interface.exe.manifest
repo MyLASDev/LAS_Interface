@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LAS_Interface.exe" size="130008">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LAS_Interface.exe" size="133080">
       <assemblyIdentity name="LAS_Interface" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TxfiuUhPxTSSFjfttnweTBU0O7QNM6mchHWL5PYMO84=</dsig:DigestValue>
+        <dsig:DigestValue>NQi3XTlyw59XugH7Az/qp+hutj6FHW1uJZRvW+MxAaI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>6eWQJ5Y7EHHtVOIItfbad4TnlI/xu+n7kmXtCBjzrUQ=</dsig:DigestValue>
+        <dsig:DigestValue>M2xQ2yAwgHp+hYMhCoiHklj17rc6dY7zyItv4T0bTSw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
