@@ -100,10 +100,10 @@ namespace LAS_Interface
 
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {
-                string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
+                //string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format("update loadinglines set Compartment = {0}, ProductName = '{1}', Preset = {2}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", compartment, productName, preset, load_no );
+                StrQuery = string.Format("update loadinglines set  ProductName = '{0}', Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {2} ;", productName, preset, load_no );
                 bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
             }
 
@@ -169,10 +169,9 @@ namespace LAS_Interface
                     MessageBoxIcon.Information);
                     txt_ช่อง.Text = "5";
                 }
-
+                
                 for (int i = 0; i < num; i++)
                 {
-
                     int iRowNo = i + 1;
                     string[] row1 = new string[] { iRowNo.ToString(), "", "" };
                     dgvLL.Rows.Add(row1);
@@ -304,5 +303,9 @@ namespace LAS_Interface
             }
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

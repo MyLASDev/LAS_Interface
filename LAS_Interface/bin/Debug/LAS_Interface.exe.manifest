@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LAS_Interface.exe" size="130008">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LAS_Interface.exe" size="133080">
       <assemblyIdentity name="LAS_Interface" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TxfiuUhPxTSSFjfttnweTBU0O7QNM6mchHWL5PYMO84=</dsig:DigestValue>
+        <dsig:DigestValue>4ByWVAWhAkEVQvAe5W/GgEoK3QMTyRh82hRIQvVysXg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
