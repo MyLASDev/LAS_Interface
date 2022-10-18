@@ -21,22 +21,26 @@ namespace LAS_Interface
     {
         string strconn = "server=r98du2bxwqkq3shg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;database=ahda1gtbqhb7pncg;uid=hktvkvjk6993txuk;pwd=ma46ffmhhxgl0zj6";
         string dirLog = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-        IPEndPoint remoteEP;
-        Socket socket; 
+
+        //public AcculoadProcess AlcProcess = new AcculoadProcess();
+
+        public SqlConnection cn;
+        public SqlDataAdapter da;
         public AcculoadLib.AcculoadMember[] AclMember;
         public AcculoadProcess AcculoadProcess;
         public CLogfiles LogFile = new CLogfiles();
-        //public AcculoadProcess AlcProcess = new AcculoadProcess();
-        public string load_no;
-        public SqlConnection cn;
-        public SqlDataAdapter da;
+
+        IPEndPoint remoteEP;
+        Socket socket;
+
         public string batch_no;
         public string SelectedCells;
+        public string load_no;
         public int pPreset;
+
+        private bool stpProcess = false;
         private int currentBatch;
-
-
-
+        
         public FrmMain()  
         {
             InitializeComponent();
@@ -58,7 +62,9 @@ namespace LAS_Interface
                 {
                     string readText = readtext.ReadLine();
                     currentBatch = Int32.Parse(readText);
+                    
                 }
+                File.Delete(dirLog + "currentbatch.text");
                 string sql = @"SELECT TotalizerGV FROM loadinglines where BatchNo = " + currentBatch; 
                 using (MySqlConnection connection = new MySqlConnection(strconn))
                 {
@@ -75,9 +81,9 @@ namespace LAS_Interface
                     reader.Close();
                 } 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -207,71 +213,76 @@ namespace LAS_Interface
         private void btnStart_Click(object sender, EventArgs e)
         {
             DialogResult confirm = MessageBox.Show("คุณต้องการ start loading ใช่หรือไม่ ?", "Start Loading", MessageBoxButtons.YesNo);
-            if (confirm == DialogResult.Yes)
-            {
-                if(SelectedCells != null)
+            if (confirm == DialogResult.Yes) 
+            { 
+                if (stpProcess)
                 {
-                    AcculoadProcess = new AcculoadProcess(this);
-                    AcculoadProcess.Batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-
-                    using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+                    if (SelectedCells != null)
                     {
-                        pLogFile.WriteLine(AcculoadProcess.Batch_no);
-                        pLogFile.Dispose();
-                    }
+                        AcculoadProcess = new AcculoadProcess(this);
+                        AcculoadProcess.Batch_no = dataGridView2.SelectedCells[0].Value.ToString();
 
-                    batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-
-                    string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
-                    string result = string.Empty;
-                    AclMember = new AcculoadLib.AcculoadMember[1];
-
-                    result = DatabaseLib.ExecuteReader_pPreset(sql);
-                    bool isParsable = Int32.TryParse(result, out pPreset);
-
-                    if (isParsable)
-                    {
-                        string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
-                        ClientLib.SendData(vCmd1);
-
-                        string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
-                        ClientLib.SendData(vCmd2);
-
-                        PullEnquireStatus();
-
-                        try
+                        using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
                         {
+                            pLogFile.WriteLine(AcculoadProcess.Batch_no);
+                            pLogFile.Dispose();
+                        }
+
+                        batch_no = dataGridView2.SelectedCells[0].Value.ToString();
+
+                        string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
+                        string result = string.Empty;
+                        AclMember = new AcculoadLib.AcculoadMember[1];
+
+                        result = DatabaseLib.ExecuteReader_pPreset(sql);
+                        bool isParsable = Int32.TryParse(result, out pPreset);
+
+                        if (isParsable)
+                        {
+                            string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
+                            ClientLib.SendData(vCmd1);
+
+                            string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
+                            ClientLib.SendData(vCmd2);
+
                             PullEnquireStatus();
 
-                            if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                            try
                             {
-                                string vCmd3 = AcculoadLib.RemoteStart(14);
-                                ClientLib.SendData(vCmd3);
-                                RaiseEvents("------------------------Start Load----------------------------");
+                                PullEnquireStatus();
+
+                                if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                                {
+                                    string vCmd3 = AcculoadLib.RemoteStart(14);
+                                    ClientLib.SendData(vCmd3);
+                                    RaiseEvents("------------------------Start Load----------------------------");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Error");
+                                }
+
                             }
-                            else
+                            catch (Exception)
                             {
                                 MessageBox.Show("Error");
                             }
-
                         }
-                        catch (Exception)
+                        else
                         {
                             MessageBox.Show("Error");
                         }
+                        PullEnquireStatus();
                     }
                     else
                     {
-                        MessageBox.Show("Error");
+                        MessageBox.Show("Please Select Loadinglines");
                     }
-                    PullEnquireStatus();
                 }
                 else
                 {
-                    MessageBox.Show("Please Select Loadinglines");
+                    MessageBox.Show("Please Start Process");
                 }
-
-               
             }
         }
 
@@ -295,7 +306,7 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd = AcculoadLib.EndBatch(14);
+                string vCmd = AcculoadLib.EndTransaction(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
                 RaiseEvents("-----------------------End Transaction-----------------------------");           
@@ -428,6 +439,7 @@ namespace LAS_Interface
         {
             try
             {
+                stpProcess = true;
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.stpBatch = 1;
                 if (DatabaseLib.IsServerConnected())

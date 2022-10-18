@@ -34,7 +34,6 @@ namespace LAS_Interface
         Thread thrAclRead;
         public static FrmMain frmmain;
 
-
         public struct AcculoadMember
         {
 
@@ -171,19 +170,18 @@ namespace LAS_Interface
         private int stepThreadReadData = 0;
         private int batchStatus = 0;
         private bool eCheck = false;
+        private bool tstDone = false;
         private bool responseStatus = false;
         private string msgSend;
         private DateTime responseTime;
-       
-        bool connect;
-        
+         
         bool thrRunning;
         bool firstStart;
         bool readComplete = false;
 
         public AcculoadMember[] AclMember;
         public AcculoadLib.AcculoadMember[] AclMember_Lib;
-        FrmMain frmMain;
+    
         public static int stpBatch = 0;
         public static int cnlBatch = 0;
         public static bool thrShutdown;
@@ -192,11 +190,12 @@ namespace LAS_Interface
         public static bool stepPreset;
         public static bool stepLoaded;
         public static string Batch_no;
+
         _StepReadData stepReadData;
+        FrmMain frmMain;
 
         public AcculoadProcess(FrmMain frmMain)
         {
-          
             this.frmMain = frmMain;
         }
 
@@ -648,7 +647,7 @@ namespace LAS_Interface
             string vCmd;
             
             PullEnquireStatus();
-            Console.WriteLine("Loading Loading " + AclMember[0].AclValueNew.EQ.A1b1_Flowing);
+            Console.WriteLine("Loading Loading");
        
             if (AclMember[0].AclValueNew.EQ.A1b0_Authorized && AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress && !AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
             {
@@ -658,6 +657,7 @@ namespace LAS_Interface
                     if (AclMember[0].CancelLoad)
                     {               
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
+                        
                     } 
 
                     if (AclMember[0].StopBatch)
@@ -668,7 +668,7 @@ namespace LAS_Interface
 
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                         stpBatch = 1;
-                       
+                        
                     }
 
                     if (AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
@@ -678,6 +678,7 @@ namespace LAS_Interface
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
+                        
                     }
                                   
                     if (!AclMember[0].AclValueNew.EQ.A1b2_Release)
@@ -687,6 +688,7 @@ namespace LAS_Interface
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
+                      
                     }
                 } 
 
@@ -698,7 +700,7 @@ namespace LAS_Interface
 
                     AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                     stpBatch = 1;
-                   
+                  
                 }
             }
 
@@ -707,7 +709,7 @@ namespace LAS_Interface
                 batchStatus = 3;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
-
+                tstDone = true;
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                         
             }
@@ -728,7 +730,8 @@ namespace LAS_Interface
                 DatabaseLib.ExecuteSQL(StrQuery);
 
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
-               
+              
+
             }
                   
             if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone && AclMember[0].CancelLoad)
@@ -740,7 +743,7 @@ namespace LAS_Interface
                     AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
                     AclMember[0].CancelLoad = false;
                     stpBatch = 1;
-
+              
             }
 
             if (AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
@@ -754,10 +757,10 @@ namespace LAS_Interface
             }
 
 
-            if (!AclMember[0].StopBatch && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
+            if (!AclMember[0].StopBatch && !tstDone && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
             {
-                AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
-               
+                AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
+                Console.WriteLine("6");
             }
 
         }
