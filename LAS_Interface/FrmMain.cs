@@ -10,38 +10,76 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Xml.Linq;
 using Google.Protobuf.WellKnownTypes;
+using System.CodeDom;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.IO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LAS_Interface
 {
     public partial class FrmMain : Form
     {
         string strconn = "server=r98du2bxwqkq3shg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;database=ahda1gtbqhb7pncg;uid=hktvkvjk6993txuk;pwd=ma46ffmhhxgl0zj6";
+        string dirLog = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         IPEndPoint remoteEP;
         Socket socket; 
         public AcculoadLib.AcculoadMember[] AclMember;
-        //public AcculoadProcess.AcculoadMember AcculoadProcess;
         public AcculoadProcess AcculoadProcess;
         public CLogfiles LogFile = new CLogfiles();
-        public AcculoadProcess AlcProcess = new AcculoadProcess();
+        //public AcculoadProcess AlcProcess = new AcculoadProcess();
         public string load_no;
         public SqlConnection cn;
         public SqlDataAdapter da;
-        public string batch_no; 
+        public string batch_no;
+        public string SelectedCells;
         public int pPreset;
-        Thread thrAclProcess;
+        private int currentBatch;
+
+
 
         public FrmMain()  
         {
             InitializeComponent();
+            
         }
-
+       
         private void FrmMain_Load(object sender, EventArgs e)
         {
- 
+            AcculoadProcess.frmmain = this;
             timer1.Start();
             RaiseEvents("Application Start");
             updatedgvLH();
-           
+            txtFlowRate.Text = "0";
+            txtPreset.Text = "0";
+            txtGV.Text = "0";
+            try
+            {
+                using (StreamReader readtext = new StreamReader(dirLog + "currentbatch.text", true))
+                {
+                    string readText = readtext.ReadLine();
+                    currentBatch = Int32.Parse(readText);
+                }
+                string sql = @"SELECT TotalizerGV FROM loadinglines where BatchNo = " + currentBatch; 
+                using (MySqlConnection connection = new MySqlConnection(strconn))
+                {
+                    MySqlCommand command = new MySqlCommand(sql, connection);
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    string Read = string.Empty;
+                    while (reader.Read())
+                    {
+                        txtTotalizer.Text = reader.GetString("TotalizerGV");
+                       
+                    }
+                    reader.Close();
+                } 
+            }
+            catch (Exception)
+            {
+
+            }
+
         }
         private void SetStatusbar(string pMessage)
         {
@@ -171,56 +209,87 @@ namespace LAS_Interface
             DialogResult confirm = MessageBox.Show("คุณต้องการ start loading ใช่หรือไม่ ?", "Start Loading", MessageBoxButtons.YesNo);
             if (confirm == DialogResult.Yes)
             {
-
-                batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-
-                string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
-                string result = string.Empty;
-                AclMember = new AcculoadLib.AcculoadMember[1];
-
-                result = DatabaseLib.ExecuteReader_pPreset(sql);
-                bool isParsable = Int32.TryParse(result, out pPreset);
-
-                if (isParsable)
+                if(SelectedCells != null)
                 {
-                    string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
-                    ClientLib.SendData(vCmd1);
+                    AcculoadProcess = new AcculoadProcess(this);
+                    AcculoadProcess.Batch_no = dataGridView2.SelectedCells[0].Value.ToString();
 
-                    string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
-                    ClientLib.SendData(vCmd2);
-                    PullEnquireStatus();
-
-                    try
+                    using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
                     {
+                        pLogFile.WriteLine(AcculoadProcess.Batch_no);
+                        pLogFile.Dispose();
+                    }
+
+                    batch_no = dataGridView2.SelectedCells[0].Value.ToString();
+
+                    string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
+                    string result = string.Empty;
+                    AclMember = new AcculoadLib.AcculoadMember[1];
+
+                    result = DatabaseLib.ExecuteReader_pPreset(sql);
+                    bool isParsable = Int32.TryParse(result, out pPreset);
+
+                    if (isParsable)
+                    {
+                        string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
+                        ClientLib.SendData(vCmd1);
+
+                        string vCmd2 = AcculoadLib.AuthorizeSetBatch(14, pPreset);
+                        ClientLib.SendData(vCmd2);
+
                         PullEnquireStatus();
 
-                        if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                        try
                         {
-                            string vCmd3 = AcculoadLib.RemoteStart(14);
-                            ClientLib.SendData(vCmd3);
-                            RaiseEvents("----------------------------------------------------Start Load----------------------------------------------------");
+                            PullEnquireStatus();
+
+                            if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
+                            {
+                                string vCmd3 = AcculoadLib.RemoteStart(14);
+                                ClientLib.SendData(vCmd3);
+                                RaiseEvents("------------------------Start Load----------------------------");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error");
+                            }
+
                         }
-                        else
+                        catch (Exception)
                         {
                             MessageBox.Show("Error");
                         }
-
                     }
-                    catch (Exception)
+                    else
                     {
                         MessageBox.Show("Error");
                     }
+                    PullEnquireStatus();
                 }
                 else
                 {
-                    MessageBox.Show("Error");
+                    MessageBox.Show("Please Select Loadinglines");
                 }
-                PullEnquireStatus();
 
+               
             }
         }
-            
-        private void btnEnd_Click(object sender, EventArgs e)
+
+        private void btnContinueBatch_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("คุณต้องการ Continue Batch ใช่หรือไม่ ?", "Continue Batch", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                string vCmd3 = AcculoadLib.RemoteStart(14);
+                ClientLib.SendData(vCmd3);
+                AcculoadProcess = new AcculoadProcess(this);
+                AcculoadProcess.stpBatch = 3;
+                PullEnquireStatus();
+                RaiseEvents("------------------------Continue Batch--------------------------------");
+            }
+        }
+
+        private void btnEndTransaction_Click(object sender, EventArgs e)
         {
            
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
@@ -229,7 +298,7 @@ namespace LAS_Interface
                 string vCmd = AcculoadLib.EndBatch(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("----------------------------------------------------End Transaction----------------------------------------------------");           
+                RaiseEvents("-----------------------End Transaction-----------------------------");           
             }
             
         }
@@ -307,8 +376,7 @@ namespace LAS_Interface
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
-
-            string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
+            string sql2 = @"SELECT BatchNo, LoadNo, status,Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = " + load_no;
            
 
@@ -316,6 +384,11 @@ namespace LAS_Interface
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
 
+        }
+
+        private void dataGridView2_MouseClick(object sender, MouseEventArgs e)
+        {
+            SelectedCells = dataGridView2.SelectedCells[0].ToString();
         }
 
 
@@ -326,10 +399,10 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.RemoteStop(14);
                 ClientLib.SendData(vCmd);
-                AcculoadProcess = new AcculoadProcess();
+                AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.stpBatch = 2;
                 PullEnquireStatus();
-                RaiseEvents("----------------------------------------------------Stop Load----------------------------------------------------");      
+                RaiseEvents("--------------------------------Stop Load--------------------------");      
             }
         }
 
@@ -347,7 +420,7 @@ namespace LAS_Interface
                 string vCmd = AcculoadLib.ResetAlarm(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("----------------------------------------------------Reset Alarm----------------------------------------------------");         
+                RaiseEvents("----------------------Reset Alarm-------------------------------");         
             } 
         }
 
@@ -355,12 +428,13 @@ namespace LAS_Interface
         {
             try
             {
-
+                AcculoadProcess = new AcculoadProcess(this);
+                AcculoadProcess.stpBatch = 1;
                 if (DatabaseLib.IsServerConnected())
                 {
                     if (ClientLib.getIsConnectAcl())
                     {
-                        AlcProcess.StartThread();
+                        AcculoadProcess.StartThread();
                     }
                     else
                     { 
@@ -381,8 +455,8 @@ namespace LAS_Interface
 
         private void btnStopProcess_Click(object sender, EventArgs e)
         {
-            AlcProcess.StopThread();
-            PullEnquireStatus();
+            AcculoadProcess = new AcculoadProcess(this);
+            AcculoadProcess.thrShutdown = true;
         }
 
         private void btnEndBatch_Click(object sender, EventArgs e)
@@ -392,30 +466,58 @@ namespace LAS_Interface
             {
                 string vCmd = AcculoadLib.EndBatch(14);
                 ClientLib.SendData(vCmd);
+                AcculoadProcess = new AcculoadProcess(this);
+                AcculoadProcess.cnlBatch = 2;
                 PullEnquireStatus();
-                RaiseEvents("----------------------------------------------------End Batch----------------------------------------------------");
-            }
+                RaiseEvents("---------------------------End Batch----------------------------");
+            }   
+        } 
+
+        public void Show_TextBox()
+        {
+            try
+            {
+                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM loadinglines where BatchNo = " + AcculoadProcess.Batch_no;
+                string result = DatabaseLib.ExecuteReader_pPreset(sql);
                
-        }
+                using (MySqlConnection connection = new MySqlConnection(strconn))
+                {
+                    AcculoadProcess = new AcculoadProcess(this);
+                    MySqlCommand command = new MySqlCommand(sql, connection);
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    string Read = string.Empty;
+                    while (reader.Read())
+                    {
+                        if (AcculoadProcess.stepFlowrate)
+                        {
+                            txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = reader.GetString("CurrentFlowrate")));
+                        } 
 
-        private void txtFlowRate_TextChanged(object sender, EventArgs e)
-        {
+                        if (AcculoadProcess.stepTotalizer)
+                        {
+                            txtTotalizer.Invoke((MethodInvoker)(() => txtTotalizer.Text = reader.GetString("TotalizerGV")));
+                        }
 
-        }
+                        if (AcculoadProcess.stepPreset)
+                        {
+                            txtPreset.Invoke((MethodInvoker)(() => txtPreset.Text = reader.GetString("CurrentPreset")));
+                        }
 
-        private void txtTotalizer_TextChanged(object sender, EventArgs e)
-        {
+                        if (AcculoadProcess.stepLoaded)
+                        {
+                            txtGV.Invoke((MethodInvoker)(() => txtGV.Text = reader.GetString("LoadedGV")));
+                        } 
+                 
+                    }
+                    reader.Close(); 
+                }
+            }
+            catch (Exception)
+            {
 
-        }
-
-        private void txtPreset_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtGV_TextChanged(object sender, EventArgs e)
-        {
-
+            }
         }
     }
 }

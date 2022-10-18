@@ -297,7 +297,7 @@ namespace LAS_Interface
                 DataRowView dv = (DataRowView)Value.DataBoundItem;
                 return dv.Row;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }
