@@ -14,6 +14,8 @@ using System.CodeDom;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Runtime.Remoting.Messaging;
+using Ubiety.Dns.Core;
 
 namespace LAS_Interface
 {
@@ -40,13 +42,13 @@ namespace LAS_Interface
 
         private bool stpProcess = false;
         private int currentBatch;
-        
-        public FrmMain()  
+
+        public FrmMain()
         {
             InitializeComponent();
-            
+
         }
-       
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             AcculoadProcess.frmmain = this;
@@ -62,10 +64,10 @@ namespace LAS_Interface
                 {
                     string readText = readtext.ReadLine();
                     currentBatch = Int32.Parse(readText);
-                    
+
                 }
                 File.Delete(dirLog + "currentbatch.text");
-                string sql = @"SELECT TotalizerGV FROM loadinglines where BatchNo = " + currentBatch; 
+                string sql = @"SELECT TotalizerGV FROM loadinglines where BatchNo = " + currentBatch;
                 using (MySqlConnection connection = new MySqlConnection(strconn))
                 {
                     MySqlCommand command = new MySqlCommand(sql, connection);
@@ -76,10 +78,10 @@ namespace LAS_Interface
                     while (reader.Read())
                     {
                         txtTotalizer.Text = reader.GetString("TotalizerGV");
-                       
+
                     }
                     reader.Close();
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -97,7 +99,7 @@ namespace LAS_Interface
             string text = "[Date Time : " + DateTime.Now + "]";
             SetStatusbar(text);
         }
-  
+
         public void RaiseEvents(string pMsg)
         {
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
@@ -184,25 +186,44 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ connect Accuload ใช่หรือไม่ ?", "Connect Accuload", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                
-      
+
                 bool value = ClientLib.ConnectAcl();
                 //bool vCheck = ClientLib.getIsConnectAcl();
                 if (value)
                 {
                     RaiseEvents("Connection Success");
+                    try
+                    {
+                        if (DatabaseLib.IsServerConnected())
+                        {
+                            stpProcess = true;
+                            AcculoadProcess = new AcculoadProcess(this);
+                            AcculoadProcess.stpBatch = 1;
+                            AcculoadProcess.StartThread();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Database doesn't connect");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error = " + ex);
+                    }
+
                 }
                 else
                 {
                     RaiseEvents("Connection lost");
                 }
             }
-           
+
         }
 
         private void updatedgvLH()
         {
-            
+
             string sql = "select * from loadingheaders";
             DataTable dt = new DataTable();
             dt = DatabaseLib.Excute_DataAdapter(sql);
@@ -213,8 +234,8 @@ namespace LAS_Interface
         private void btnStart_Click(object sender, EventArgs e)
         {
             DialogResult confirm = MessageBox.Show("คุณต้องการ start loading ใช่หรือไม่ ?", "Start Loading", MessageBoxButtons.YesNo);
-            if (confirm == DialogResult.Yes) 
-            { 
+            if (confirm == DialogResult.Yes)
+            {
                 if (stpProcess)
                 {
                     if (SelectedCells != null)
@@ -302,16 +323,16 @@ namespace LAS_Interface
 
         private void btnEndTransaction_Click(object sender, EventArgs e)
         {
-           
+
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 string vCmd = AcculoadLib.EndTransaction(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("-----------------------End Transaction-----------------------------");           
+                RaiseEvents("-----------------------End Transaction-----------------------------");
             }
-            
+
         }
 
         public void PullEnquireStatus()
@@ -327,25 +348,25 @@ namespace LAS_Interface
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-           FrmLoading frmDO = new FrmLoading(this);
-           frmDO.ShowDialog();
-           RaiseEvents("Add Delivery Order");
-           updatedgvLH();
+            FrmLoading frmDO = new FrmLoading(this);
+            frmDO.ShowDialog();
+            RaiseEvents("Add Delivery Order");
+            updatedgvLH();
         }
 
-         private void btnEdit_Click(object sender, EventArgs e)
-         {
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
             FrmLoading frmDO = new FrmLoading(this);
             frmDO.frmActon = 2;
             frmDO.ShowDialog();
             RaiseEvents("Edit Delivery Order");
             updatedgvLH();
-            
-         }
+
+        }
 
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
-           
+
             try
             {
                 delheader();
@@ -356,7 +377,7 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error = "+ ex);
+                MessageBox.Show("Error = " + ex);
                 RaiseEvents("Delete not successfully");
             }
 
@@ -383,13 +404,13 @@ namespace LAS_Interface
             cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
             cmd.ExecuteNonQuery();
         }
- 
+
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
             string sql2 = @"SELECT BatchNo, LoadNo, status,Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = " + load_no;
-           
+
 
             DataTable dt2 = new DataTable();
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
@@ -413,7 +434,7 @@ namespace LAS_Interface
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.stpBatch = 2;
                 PullEnquireStatus();
-                RaiseEvents("--------------------------------Stop Load--------------------------");      
+                RaiseEvents("--------------------------------Stop Load--------------------------");
             }
         }
 
@@ -431,37 +452,7 @@ namespace LAS_Interface
                 string vCmd = AcculoadLib.ResetAlarm(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("----------------------Reset Alarm-------------------------------");         
-            } 
-        }
-
-        private void btnStartProcess_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                stpProcess = true;
-                AcculoadProcess = new AcculoadProcess(this);
-                AcculoadProcess.stpBatch = 1;
-                if (DatabaseLib.IsServerConnected())
-                {
-                    if (ClientLib.getIsConnectAcl())
-                    {
-                        AcculoadProcess.StartThread();
-                    }
-                    else
-                    { 
-                        MessageBox.Show("Accuload doesn't connect");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Database doesn't connect");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error = " + ex);
+                RaiseEvents("----------------------Reset Alarm-------------------------------");
             }
         }
 
@@ -470,6 +461,7 @@ namespace LAS_Interface
             AcculoadProcess = new AcculoadProcess(this);
             AcculoadProcess.thrShutdown = true;
         }
+
 
         private void btnEndBatch_Click(object sender, EventArgs e)
         {
@@ -482,49 +474,63 @@ namespace LAS_Interface
                 AcculoadProcess.cnlBatch = 2;
                 PullEnquireStatus();
                 RaiseEvents("---------------------------End Batch----------------------------");
-            }   
-        } 
+            }
+        }
 
         public void Show_TextBox()
         {
             try
             {
-                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM loadinglines where BatchNo = " + AcculoadProcess.Batch_no;
-                string result = DatabaseLib.ExecuteReader_pPreset(sql);
-               
-                using (MySqlConnection connection = new MySqlConnection(strconn))
+                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo =" + AcculoadProcess.Batch_no;
+                DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
+                if (dt.Rows.Count > 0)
                 {
-                    AcculoadProcess = new AcculoadProcess(this);
-                    MySqlCommand command = new MySqlCommand(sql, connection);
-                    connection.Open();
-                    MySqlCommand cmd = new MySqlCommand(sql, connection);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    string Read = string.Empty;
-                    while (reader.Read())
-                    {
-                        if (AcculoadProcess.stepFlowrate)
-                        {
-                            txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = reader.GetString("CurrentFlowrate")));
-                        } 
+                    txtFlowRate.Text = dt.Rows[0]["CurrentFlowrate"].ToString();
+                    txtGV.Text = dt.Rows[0]["LoadedGV"].ToString();
+                    txtPreset.Text = dt.Rows[0]["LoadedGV"].ToString();
+                    txtTotalizer.Text = dt.Rows[0]["TotalizerGV"].ToString();
 
-                        if (AcculoadProcess.stepTotalizer)
-                        {
-                            txtTotalizer.Invoke((MethodInvoker)(() => txtTotalizer.Text = reader.GetString("TotalizerGV")));
-                        }
+                } 
 
-                        if (AcculoadProcess.stepPreset)
-                        {
-                            txtPreset.Invoke((MethodInvoker)(() => txtPreset.Text = reader.GetString("CurrentPreset")));
-                        }
+              /*  if ()
+                {
+                    string tranfer = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo =" + AcculoadProcess.Batch_no;
+                    DatabaseLib.Excute_DataAdapter(tranfer);
+                }*/
 
-                        if (AcculoadProcess.stepLoaded)
-                        {
-                            txtGV.Invoke((MethodInvoker)(() => txtGV.Text = reader.GetString("LoadedGV")));
-                        } 
-                 
-                    }
-                    reader.Close(); 
-                }
+                //using (MySqlConnection connection = new MySqlConnection(strconn))
+                //{
+                //    AcculoadProcess = new AcculoadProcess(this);
+                //    MySqlCommand command = new MySqlCommand(sql, connection);
+                //    connection.Open();
+                //    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                //    MySqlDataReader reader = cmd.ExecuteReader();
+                //    string Read = string.Empty;
+                //    while (reader.Read())
+                //    {
+                //        if (AcculoadProcess.stepFlowrate)
+                //        {
+                //            txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = reader.GetString("CurrentFlowrate")));
+                //        } 
+
+                //        if (AcculoadProcess.stepTotalizer)
+                //        {
+                //            txtTotalizer.Invoke((MethodInvoker)(() => txtTotalizer.Text = reader.GetString("TotalizerGV")));
+                //        }
+
+                //        if (AcculoadProcess.stepPreset)
+                //        {
+                //            txtPreset.Invoke((MethodInvoker)(() => txtPreset.Text = reader.GetString("CurrentPreset")));
+                //        }
+
+                //        if (AcculoadProcess.stepLoaded)
+                //        {
+                //            txtGV.Invoke((MethodInvoker)(() => txtGV.Text = reader.GetString("LoadedGV")));
+                //        } 
+
+                //    }
+                //    reader.Close(); 
+                //}
             }
             catch (Exception)
             {

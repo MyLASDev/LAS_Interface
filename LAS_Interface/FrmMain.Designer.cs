@@ -37,9 +37,9 @@
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.btnContinueBatch = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btnStopProcess = new System.Windows.Forms.Button();
-            this.btnStartProcess = new System.Windows.Forms.Button();
             this.btnEndBatch = new System.Windows.Forms.Button();
             this.btnInfo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -66,7 +66,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnContinueBatch = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -96,10 +95,10 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 689);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 869);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1565, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(1724, 26);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -124,8 +123,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer1.Size = new System.Drawing.Size(1565, 689);
-            this.splitContainer1.SplitterDistance = 845;
+            this.splitContainer1.Size = new System.Drawing.Size(1724, 869);
+            this.splitContainer1.SplitterDistance = 930;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -147,7 +146,6 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnContinueBatch);
             this.splitContainer2.Panel2.Controls.Add(this.label6);
             this.splitContainer2.Panel2.Controls.Add(this.btnStopProcess);
-            this.splitContainer2.Panel2.Controls.Add(this.btnStartProcess);
             this.splitContainer2.Panel2.Controls.Add(this.btnEndBatch);
             this.splitContainer2.Panel2.Controls.Add(this.btnInfo);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
@@ -159,8 +157,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnStart);
             this.splitContainer2.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.splitContainer2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer2.Size = new System.Drawing.Size(845, 689);
-            this.splitContainer2.SplitterDistance = 353;
+            this.splitContainer2.Size = new System.Drawing.Size(930, 869);
+            this.splitContainer2.SplitterDistance = 445;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -180,8 +178,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.dataGridView2);
             this.splitContainer3.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer3.Size = new System.Drawing.Size(845, 353);
-            this.splitContainer3.SplitterDistance = 193;
+            this.splitContainer3.Size = new System.Drawing.Size(930, 445);
+            this.splitContainer3.SplitterDistance = 243;
             this.splitContainer3.TabIndex = 1;
             // 
             // dataGridView1
@@ -200,7 +198,7 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(845, 193);
+            this.dataGridView1.Size = new System.Drawing.Size(930, 243);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
             // 
@@ -219,9 +217,22 @@
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(845, 156);
+            this.dataGridView2.Size = new System.Drawing.Size(930, 198);
             this.dataGridView2.TabIndex = 9;
             this.dataGridView2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView2_MouseClick);
+            // 
+            // btnContinueBatch
+            // 
+            this.btnContinueBatch.BackColor = System.Drawing.Color.MediumBlue;
+            this.btnContinueBatch.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnContinueBatch.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnContinueBatch.Location = new System.Drawing.Point(192, 182);
+            this.btnContinueBatch.Name = "btnContinueBatch";
+            this.btnContinueBatch.Size = new System.Drawing.Size(158, 40);
+            this.btnContinueBatch.TabIndex = 19;
+            this.btnContinueBatch.Text = "Continue Batch";
+            this.btnContinueBatch.UseVisualStyleBackColor = false;
+            this.btnContinueBatch.Click += new System.EventHandler(this.btnContinueBatch_Click);
             // 
             // label6
             // 
@@ -242,27 +253,13 @@
             this.btnStopProcess.BackColor = System.Drawing.Color.HotPink;
             this.btnStopProcess.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStopProcess.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStopProcess.Location = new System.Drawing.Point(338, 223);
+            this.btnStopProcess.Location = new System.Drawing.Point(705, 40);
             this.btnStopProcess.Name = "btnStopProcess";
-            this.btnStopProcess.Size = new System.Drawing.Size(119, 39);
+            this.btnStopProcess.Size = new System.Drawing.Size(206, 39);
             this.btnStopProcess.TabIndex = 18;
-            this.btnStopProcess.Text = "Stop Process";
+            this.btnStopProcess.Text = "Disconnect Accuload";
             this.btnStopProcess.UseVisualStyleBackColor = false;
             this.btnStopProcess.Click += new System.EventHandler(this.btnStopProcess_Click);
-            // 
-            // btnStartProcess
-            // 
-            this.btnStartProcess.AutoSize = true;
-            this.btnStartProcess.BackColor = System.Drawing.Color.Brown;
-            this.btnStartProcess.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartProcess.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStartProcess.Location = new System.Drawing.Point(203, 223);
-            this.btnStartProcess.Name = "btnStartProcess";
-            this.btnStartProcess.Size = new System.Drawing.Size(119, 39);
-            this.btnStartProcess.TabIndex = 17;
-            this.btnStartProcess.Text = "Start Process";
-            this.btnStartProcess.UseVisualStyleBackColor = false;
-            this.btnStartProcess.Click += new System.EventHandler(this.btnStartProcess_Click);
             // 
             // btnEndBatch
             // 
@@ -270,7 +267,7 @@
             this.btnEndBatch.BackColor = System.Drawing.Color.Magenta;
             this.btnEndBatch.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnEndBatch.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnEndBatch.Location = new System.Drawing.Point(324, 104);
+            this.btnEndBatch.Location = new System.Drawing.Point(357, 183);
             this.btnEndBatch.Name = "btnEndBatch";
             this.btnEndBatch.Size = new System.Drawing.Size(120, 40);
             this.btnEndBatch.TabIndex = 16;
@@ -357,10 +354,10 @@
             this.btnResetAlarm.BackColor = System.Drawing.Color.Orange;
             this.btnResetAlarm.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnResetAlarm.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnResetAlarm.Location = new System.Drawing.Point(284, 165);
+            this.btnResetAlarm.Location = new System.Drawing.Point(357, 135);
             this.btnResetAlarm.Margin = new System.Windows.Forms.Padding(4);
             this.btnResetAlarm.Name = "btnResetAlarm";
-            this.btnResetAlarm.Size = new System.Drawing.Size(112, 39);
+            this.btnResetAlarm.Size = new System.Drawing.Size(120, 39);
             this.btnResetAlarm.TabIndex = 13;
             this.btnResetAlarm.Text = "Reset Alarm";
             this.btnResetAlarm.UseVisualStyleBackColor = false;
@@ -372,7 +369,7 @@
             this.btnStop.BackColor = System.Drawing.Color.Red;
             this.btnStop.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnStop.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStop.Location = new System.Drawing.Point(198, 105);
+            this.btnStop.Location = new System.Drawing.Point(66, 184);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(120, 39);
             this.btnStop.TabIndex = 12;
@@ -393,9 +390,9 @@
             this.btnEndTransaction.BackColor = System.Drawing.Color.DarkTurquoise;
             this.btnEndTransaction.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnEndTransaction.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnEndTransaction.Location = new System.Drawing.Point(403, 165);
+            this.btnEndTransaction.Location = new System.Drawing.Point(192, 135);
             this.btnEndTransaction.Name = "btnEndTransaction";
-            this.btnEndTransaction.Size = new System.Drawing.Size(147, 39);
+            this.btnEndTransaction.Size = new System.Drawing.Size(158, 39);
             this.btnEndTransaction.TabIndex = 3;
             this.btnEndTransaction.Text = "End Transaction";
             this.btnEndTransaction.UseVisualStyleBackColor = false;
@@ -407,10 +404,10 @@
             this.btnConnectAcl.BackColor = System.Drawing.Color.DodgerBlue;
             this.btnConnectAcl.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConnectAcl.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnConnectAcl.Location = new System.Drawing.Point(114, 165);
+            this.btnConnectAcl.Location = new System.Drawing.Point(492, 39);
             this.btnConnectAcl.Margin = new System.Windows.Forms.Padding(4);
             this.btnConnectAcl.Name = "btnConnectAcl";
-            this.btnConnectAcl.Size = new System.Drawing.Size(161, 39);
+            this.btnConnectAcl.Size = new System.Drawing.Size(206, 39);
             this.btnConnectAcl.TabIndex = 2;
             this.btnConnectAcl.Text = "Connect Accuload";
             this.btnConnectAcl.UseVisualStyleBackColor = false;
@@ -422,7 +419,7 @@
             this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnStart.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStart.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnStart.Location = new System.Drawing.Point(71, 104);
+            this.btnStart.Location = new System.Drawing.Point(65, 135);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(120, 40);
@@ -446,8 +443,8 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox2);
             this.splitContainer4.Panel2.ForeColor = System.Drawing.Color.Transparent;
-            this.splitContainer4.Size = new System.Drawing.Size(715, 689);
-            this.splitContainer4.SplitterDistance = 432;
+            this.splitContainer4.Size = new System.Drawing.Size(789, 869);
+            this.splitContainer4.SplitterDistance = 544;
             this.splitContainer4.TabIndex = 0;
             // 
             // lstMain
@@ -463,7 +460,7 @@
             this.lstMain.Margin = new System.Windows.Forms.Padding(4);
             this.lstMain.Name = "lstMain";
             this.lstMain.ScrollAlwaysVisible = true;
-            this.lstMain.Size = new System.Drawing.Size(715, 432);
+            this.lstMain.Size = new System.Drawing.Size(789, 544);
             this.lstMain.TabIndex = 6;
             // 
             // groupBox2
@@ -482,7 +479,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(42, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(458, 178);
+            this.groupBox2.Size = new System.Drawing.Size(532, 178);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Meter Informations";
@@ -509,7 +506,7 @@
             this.txtGV.ForeColor = System.Drawing.Color.White;
             this.txtGV.Location = new System.Drawing.Point(147, 138);
             this.txtGV.Name = "txtGV";
-            this.txtGV.Size = new System.Drawing.Size(243, 27);
+            this.txtGV.Size = new System.Drawing.Size(317, 27);
             this.txtGV.TabIndex = 7;
             this.txtGV.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -523,7 +520,7 @@
             this.txtFlowRate.Location = new System.Drawing.Point(147, 30);
             this.txtFlowRate.MaxLength = 500;
             this.txtFlowRate.Name = "txtFlowRate";
-            this.txtFlowRate.Size = new System.Drawing.Size(243, 27);
+            this.txtFlowRate.Size = new System.Drawing.Size(317, 27);
             this.txtFlowRate.TabIndex = 1;
             this.txtFlowRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -536,7 +533,7 @@
             this.txtPreset.ForeColor = System.Drawing.Color.White;
             this.txtPreset.Location = new System.Drawing.Point(147, 104);
             this.txtPreset.Name = "txtPreset";
-            this.txtPreset.Size = new System.Drawing.Size(243, 27);
+            this.txtPreset.Size = new System.Drawing.Size(317, 27);
             this.txtPreset.TabIndex = 6;
             this.txtPreset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -562,7 +559,7 @@
             this.txtTotalizer.ForeColor = System.Drawing.Color.White;
             this.txtTotalizer.Location = new System.Drawing.Point(147, 67);
             this.txtTotalizer.Name = "txtTotalizer";
-            this.txtTotalizer.Size = new System.Drawing.Size(243, 27);
+            this.txtTotalizer.Size = new System.Drawing.Size(317, 27);
             this.txtTotalizer.TabIndex = 5;
             this.txtTotalizer.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -608,32 +605,19 @@
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnContinueBatch
-            // 
-            this.btnContinueBatch.BackColor = System.Drawing.Color.MediumBlue;
-            this.btnContinueBatch.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnContinueBatch.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnContinueBatch.Location = new System.Drawing.Point(450, 105);
-            this.btnContinueBatch.Name = "btnContinueBatch";
-            this.btnContinueBatch.Size = new System.Drawing.Size(158, 40);
-            this.btnContinueBatch.TabIndex = 19;
-            this.btnContinueBatch.Text = "Continue Batch";
-            this.btnContinueBatch.UseVisualStyleBackColor = false;
-            this.btnContinueBatch.Click += new System.EventHandler(this.btnContinueBatch_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClientSize = new System.Drawing.Size(1565, 715);
+            this.ClientSize = new System.Drawing.Size(1724, 895);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1254, 694);
             this.Name = "FrmMain";
-            this.Text = "FrmMain";
+            this.Text = "ff";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -692,7 +676,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnInfo;
         private System.Windows.Forms.Button btnStopProcess;
-        private System.Windows.Forms.Button btnStartProcess;
         private System.Windows.Forms.Button btnEndBatch;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.TextBox txtFlowRate;
