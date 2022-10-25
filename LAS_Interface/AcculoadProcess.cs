@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using static Library.AcculoadLib;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.CodeDom;
+using System.Security.Cryptography;
 
 namespace LAS_Interface
 {
@@ -189,8 +190,9 @@ namespace LAS_Interface
         public static bool stepTotalizer;
         public static bool stepPreset;
         public static bool stepLoaded;
+        public static bool Pass = false;
         public static string Batch_no;
-
+       
         _StepReadData stepReadData;
         FrmMain frmMain;
 
@@ -205,13 +207,13 @@ namespace LAS_Interface
             {
 
                 thrRunning = true;
+                thrShutdown = false;
 
                 thrAclProcess = new Thread(this.LoadingProcess);
                 thrAclProcess.Start();
 
                 thrAclProcess = new Thread(this.StartThreadReadData);
                 thrAclProcess.Start();
-
 
             }
             catch (Exception)
@@ -228,11 +230,14 @@ namespace LAS_Interface
 
         private void StartThreadReadData()
         {
+            AclMember_Lib = new AcculoadLib.AcculoadMember[1];
+            AclMember_Lib[0].AclValueNew = new AcculoadLib._AcculoadValue();
+            AclMember_Lib[0].AclValueNew.MeterValue = new AcculoadLib._MeterValue[1];
             stepReadData = _StepReadData.ReadBatchCurrentValue;
             while (thrRunning)
             {
                 
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
 
                 if (thrShutdown)
                 {
@@ -256,8 +261,8 @@ namespace LAS_Interface
 
                         stepReadData = _StepReadData.ReadBatchCurrentValue;
                         break;
-
                 }
+          
                 UpdateBatchValue();
             }
         }
@@ -271,11 +276,7 @@ namespace LAS_Interface
 
             try
             {
-                FrmMain FrmMain = new FrmMain();
-                AclMember_Lib = new AcculoadLib.AcculoadMember[1];
-                AclMember_Lib[0].AclValueNew = new AcculoadLib._AcculoadValue();
-                AclMember_Lib[0].AclValueNew.MeterValue = new AcculoadLib._MeterValue[1];
-
+               
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestCurrentFlowRate(AclAddress);
@@ -291,13 +292,6 @@ namespace LAS_Interface
 
                             bool b = double.TryParse(vRecv.Substring(vCheck.Length + 2, vRecv.IndexOf(char.ConvertFromUtf32(ETX)) - vCheck.Length - 2).Trim(), out d);
                             AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentFlowrate = d;
-                            /*string StrQuery = string.Format("update loadinglines set  CurrentFlowrate = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentFlowrate, Batch_no);
-                            if (DatabaseLib.ExecuteSQL(StrQuery))
-                            {
-                                stepFlowrate = true;
-                                frmMain.Show_TextBox();
-                            }*/
-
                         }
                     }
                     catch (Exception exp)
@@ -306,38 +300,26 @@ namespace LAS_Interface
                     }
                 }
 
-                if (!eCheck)
+                vCmd = AcculoadLib.RequestPreset(AclAddress);
+                vRecv = TxRxAccuload(AclAddress, vCmd);
+                vCheck = AclAddress.ToString("D2") + "RP";
+                if (vRecv != null)
                 {
-                    Thread.Sleep(1);
-                    vCmd = AcculoadLib.RequestPreset(AclAddress);
-                    vRecv = TxRxAccuload(AclAddress, vCmd);
-                    vCheck = AclAddress.ToString("D2") + "RP";
-                    if (vRecv != null)
+                    try
                     {
-
-                        try
+                        if ((vRecv.IndexOf(vCheck) >= 0) && (vRecv.ToLower().Contains("not available") == false))
                         {
-                            if ((vRecv.IndexOf(vCheck) >= 0) && (vRecv.ToLower().Contains("not available") == false))
-                            {
 
-                                bool b = double.TryParse(vRecv.Substring(vCheck.Length + 2, vRecv.IndexOf(char.ConvertFromUtf32(ETX)) - vCheck.Length - 2).Trim(), out d);
-                                AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentPreset = d;
-                                /*string StrQuery = string.Format("update loadinglines set  CurrentPreset = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentPreset, Batch_no);
-                                if (DatabaseLib.ExecuteSQL(StrQuery))
-                                {
-                                    stepPreset = true;
-                                    frmMain.Show_TextBox();
-                                    eCheck = true;
-                                }*/
-
-                            }
-                        }
-                        catch (Exception exp)
-                        {
-                            MessageBox.Show(exp.Message);
+                            bool b = double.TryParse(vRecv.Substring(vCheck.Length + 2, vRecv.IndexOf(char.ConvertFromUtf32(ETX)) - vCheck.Length - 2).Trim(), out d);
+                            AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentPreset = d;
                         }
                     }
+                    catch (Exception exp)
+                    {
+                        MessageBox.Show(exp.Message);
+                    }
                 }
+                
             }
             catch (Exception exp)
             {
@@ -354,11 +336,7 @@ namespace LAS_Interface
 
             try
             {
-                FrmMain FrmMain = new FrmMain();
-                AclMember_Lib = new AcculoadLib.AcculoadMember[1];
-                AclMember_Lib[0].AclValueNew = new AcculoadLib._AcculoadValue();
-                AclMember_Lib[0].AclValueNew.MeterValue = new AcculoadLib._MeterValue[1];
-
+                
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestDeliveryGV(AclAddress, ProductNo); //current volume 
@@ -372,13 +350,6 @@ namespace LAS_Interface
                         {
                             bool b = double.TryParse(vRecv.Substring(vCheck.Length + 4, 16).Trim(), out d);
                             AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV = d;
-                            /*string StrQuery = string.Format("update loadinglines set  LoadedGV = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV, Batch_no);
-                            if (DatabaseLib.ExecuteSQL(StrQuery))
-                            {
-                                stepLoaded = true;
-                                frmMain.Show_TextBox();
-                            }*/
-
                         }
                     }
                     catch (Exception exp)
@@ -386,8 +357,6 @@ namespace LAS_Interface
                         MessageBox.Show(exp.Message);
                     }
                 }
-
-                //Thread.Sleep(1); 
 
                 vCmd = AcculoadLib.RequestDeliveryGST(AclAddress, ProductNo);
                 vRecv = TxRxAccuload(AclAddress, vCmd);
@@ -401,8 +370,6 @@ namespace LAS_Interface
                             string kk = vRecv.Substring(vCheck.Length + 4, 15).Trim();
                             bool b = double.TryParse(kk, out d);
                             AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGST = d;
-                            //string StrQuery = string.Format("update loadinglines set  LoadedGST = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGST, Batch_no);
-                            //DatabaseLib.ExecuteSQL(StrQuery);
 
                         }
                     }
@@ -411,8 +378,6 @@ namespace LAS_Interface
                         MessageBox.Show(exp.Message);
                     }
                 }
-
-                //Thread.Sleep(1);
 
                 vCmd = AcculoadLib.RequestDeliveryGSV(AclAddress, ProductNo);
                 vRecv = TxRxAccuload(AclAddress, vCmd);
@@ -426,8 +391,6 @@ namespace LAS_Interface
                             string kk = vRecv.Substring(vCheck.Length + 4, 15).Trim();
                             bool b = double.TryParse(kk, out d);
                             AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGSV = d;
-                            //string StrQuery = string.Format("update loadinglines set  LoadedGSV = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGSV, Batch_no);
-                            //DatabaseLib.ExecuteSQL(StrQuery);
                         }
                     }
                     catch (Exception exp)
@@ -454,10 +417,6 @@ namespace LAS_Interface
             try
             {
 
-                AclMember_Lib = new AcculoadLib.AcculoadMember[1];
-                AclMember_Lib[0].AclValueNew = new AcculoadLib._AcculoadValue();
-                AclMember_Lib[0].AclValueNew.MeterValue = new AcculoadLib._MeterValue[1];
-
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestMeterTotalizerGV(AclAddress, ProductNo); //show totalizer 
@@ -467,16 +426,8 @@ namespace LAS_Interface
                     if (vRecv.IndexOf("VT G") > 0)
                     {
                         AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGV = Convert.ToInt64(vRecv.Substring(vRecv.IndexOf("VT G") + 8, 9).Trim());
-                        /*string StrQuery = string.Format("update loadinglines set  TotalizerGV = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGV, Batch_no);
-                        if (DatabaseLib.ExecuteSQL(StrQuery))
-                        {
-                            stepTotalizer = true;
-                            frmMain.Show_TextBox();
-                        }*/
                     }
                 }
-
-                //Thread.Sleep(1);
 
                 vCmd = AcculoadLib.RequestMeterTotalizerGST(AclAddress, ProductNo);
                 vRecv = TxRxAccuload(AclAddress, vCmd);
@@ -485,13 +436,9 @@ namespace LAS_Interface
                     if (vRecv.IndexOf("VT N") > 0)
                     {
                         AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGST = Convert.ToInt64(vRecv.Substring(vRecv.IndexOf("VT N") + 8, 9).Trim());
-                        //string StrQuery = string.Format("update loadinglines set  TotalizerGST = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGST, Batch_no);
-                        //DatabaseLib.ExecuteSQL(StrQuery);
 
                     }
                 }
-
-                //Thread.Sleep(1);
 
                 vCmd = AcculoadLib.RequestMeterTotalizerGSV(AclAddress, ProductNo);
                 vRecv = TxRxAccuload(AclAddress, vCmd);
@@ -500,8 +447,6 @@ namespace LAS_Interface
                     if (vRecv.IndexOf("VT P") > 0)
                     {
                         AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGSV = Convert.ToInt64(vRecv.Substring(vRecv.IndexOf("VT P") + 8, 9).Trim());
-                        //string StrQuery = string.Format("update loadinglines set  TotalizerGSV = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1} ;", AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGSV, Batch_no);
-                        //DatabaseLib.ExecuteSQL(StrQuery);
                     }
                 }
             }
@@ -522,7 +467,7 @@ namespace LAS_Interface
 
                 while (thrRunning)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(500);
 
                     if (stpBatch == 3)
                     {
@@ -651,6 +596,10 @@ namespace LAS_Interface
 
                     if (AclMember[0].CancelLoad)
                     {
+                        batchStatus = 3;
+                        string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
+                        DatabaseLib.ExecuteSQL(StrQuery);
+                        Console.WriteLine("64");
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
 
                     }
@@ -660,7 +609,7 @@ namespace LAS_Interface
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
-
+                        Console.WriteLine("63");
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                         stpBatch = 1;
 
@@ -669,7 +618,7 @@ namespace LAS_Interface
                     if (AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
                     {
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
-
+                        Console.WriteLine("62");
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
@@ -679,7 +628,7 @@ namespace LAS_Interface
                     if (!AclMember[0].AclValueNew.EQ.A1b2_Release)
                     {
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
-
+                        Console.WriteLine("61");
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
@@ -725,8 +674,16 @@ namespace LAS_Interface
                 DatabaseLib.ExecuteSQL(StrQuery);
 
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
+            }
 
+            if (!AclMember[0].StopBatch && !tstDone && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
+            {
+                batchStatus = 2;
+                string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
+                DatabaseLib.ExecuteSQL(StrQuery);
 
+                AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
+                Console.WriteLine("6");
             }
 
             if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone && AclMember[0].CancelLoad)
@@ -737,7 +694,9 @@ namespace LAS_Interface
 
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
                 AclMember[0].CancelLoad = false;
+                AclMember[0].StopBatch = false;
                 stpBatch = 1;
+                cnlBatch = 1;
 
             }
 
@@ -750,14 +709,6 @@ namespace LAS_Interface
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
 
             }
-
-
-            if (!AclMember[0].StopBatch && !tstDone && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
-            {
-                AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
-                Console.WriteLine("6");
-            }
-
         }
 
         public void PullEnquireStatus()
@@ -876,17 +827,13 @@ namespace LAS_Interface
         private void UpdateBatchValue()
         {
             int i = 0, j = 0;
-
-            AclMember_Lib = new AcculoadLib.AcculoadMember[1];
-            AclMember_Lib[0].AclValueNew = new AcculoadLib._AcculoadValue();
-            AclMember_Lib[0].AclValueNew.MeterValue = new AcculoadLib._MeterValue[1];
-
-            string StrQuery = string.Format("INSERT INTO backuplines (BatchNo, CurrentPreset, CurrentFlowrate, LoadedGV, LoadedGST, LoadedGSV, TotalizerGV, TotalizerGST, TotalizerGSV) VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}); ",
-                Batch_no, AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentPreset, AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentFlowrate, AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV, AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGST, 
-                AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGSV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGST, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGSV);
-
+           
+            string StrQuery = string.Format("update backuplines set CurrentPreset = {1}, CurrentFlowrate = {2}, LoadedGV = {3}, LoadedGST = {4}, LoadedGSV = {5}, TotalizerGV = {6}, TotalizerGST = {7}, TotalizerGSV = {8} WHERE BatchNo = {0}", 
+            Batch_no, AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentPreset, AclMember_Lib[0].AclValueNew.MeterValue[j].CurrentFlowrate, AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV, AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGST,
+            AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGSV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGST, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGSV);
             DatabaseLib.ExecuteSQL(StrQuery);
-
+            Console.WriteLine(AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV);
+            frmMain.Show_TextBox();
         }
     }
 }

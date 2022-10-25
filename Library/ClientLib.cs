@@ -42,8 +42,9 @@ namespace Library
         {
             try
             {
+                
                 string uri = "ktd-devth.ddns.net";
-                string ipAddress = "192.168.1.114";
+                string ipAddress = "192.168.0.114";
                 var addresses = Dns.GetHostAddresses(uri);
                 //remoteEP = new IPEndPoint(addresses[0], 7734);
                 //remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), 7734);
@@ -59,6 +60,9 @@ namespace Library
                 stm = tcp.GetStream();
                 isConnectAcl = true;
                 return true;
+                tcp.GetStream().Close();
+                tcp.Close();
+
             }
             catch (Exception ex)
             {
@@ -66,6 +70,14 @@ namespace Library
                 return false;
             }
         }
+
+        public static void DisconnectAcl()
+        {
+            tcp.GetStream().Close();
+            tcp.Close();
+            
+        }
+
         public static string SendData(string pMessage)
         {
             string vRecv = string.Empty;

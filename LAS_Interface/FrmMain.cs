@@ -16,6 +16,7 @@ using System.IO;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Runtime.Remoting.Messaging;
 using Ubiety.Dns.Core;
+using MySqlX.XDevAPI.Common;
 
 namespace LAS_Interface
 {
@@ -42,6 +43,7 @@ namespace LAS_Interface
 
         private bool stpProcess = false;
         private int currentBatch;
+        public static string[] delete = new string[5];
 
         public FrmMain()
         {
@@ -240,9 +242,8 @@ namespace LAS_Interface
                 {
                     if (SelectedCells != null)
                     {
-                        AcculoadProcess = new AcculoadProcess(this);
-                        AcculoadProcess.Batch_no = dataGridView2.SelectedCells[0].Value.ToString();
-
+                        
+                        checkkBox(dataGridView2.SelectedCells[0].Value.ToString());
                         using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
                         {
                             pLogFile.WriteLine(AcculoadProcess.Batch_no);
@@ -348,61 +349,107 @@ namespace LAS_Interface
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            FrmLoading frmDO = new FrmLoading(this);
-            frmDO.ShowDialog();
-            RaiseEvents("Add Delivery Order");
-            updatedgvLH();
+            DialogResult result = MessageBox.Show("คุณต้องการ Add Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                FrmLoading frmDO = new FrmLoading(this);
+                frmDO.ShowDialog();
+                RaiseEvents("Add Delivery Order");
+                updatedgvLH();
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            FrmLoading frmDO = new FrmLoading(this);
-            frmDO.frmActon = 2;
-            frmDO.ShowDialog();
-            RaiseEvents("Edit Delivery Order");
-            updatedgvLH();
-
+            DialogResult result = MessageBox.Show("คุณต้องการ Edit Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                FrmLoading frmDO = new FrmLoading(this);
+                frmDO.frmActon = 2;
+                frmDO.ShowDialog();
+                RaiseEvents("Edit Delivery Order");
+                updatedgvLH();
+            }
         }
 
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
-
-            try
+            DialogResult result = MessageBox.Show("คุณต้องการ Delete Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                delheader();
-                delline();
-                updatedgvLH();
-                MessageBox.Show("successfully");
-                RaiseEvents("Delete Delivery Order");
+                try
+                {
+                    delheader();
+                    delline();
+                    delback();
+                    updatedgvLH();
+                    MessageBox.Show("successfully");
+                    RaiseEvents("Delete Delivery Order");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error = " + ex);
+                    RaiseEvents("Delete not successfully");
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error = " + ex);
-                RaiseEvents("Delete not successfully");
-            }
-
         }
 
-        private void delline()
+        private void delback()
         {
+            using (MySqlConnection conn = new MySqlConnection(strconn))
+            {
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                for(int i = 0; i <= delete.Length; i++)
+                {
+                    if (delete[i] != null)
+                    {
+                        Console.WriteLine(delete[2]);
+
+                        cmd.CommandText = "delete from backuplines where BatchNo = " + delete[i];
+                        cmd.ExecuteNonQuery();
+              
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        } 
+
+        public void delline()
+        { 
             string loadno = dataGridView1.SelectedCells[0].Value.ToString();
-            MySqlConnection conn = new MySqlConnection(strconn);
-            conn.Open();
-            MySqlCommand cmd = conn.CreateCommand();
-            cmd.Parameters.AddWithValue("@LoadNo", loadno);
-            cmd.CommandText = "delete from loadinglines where LoadNo = @LoadNo";
-            cmd.ExecuteNonQuery();
+
+            string sql = @"SELECT BatchNo FROM loadinglines where LoadNo = " + loadno;
+            DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                delete[i] = dt.Rows[0]["BatchNo"].ToString();
+            }
+
+            using (MySqlConnection conn = new MySqlConnection(strconn))
+            {
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.Parameters.AddWithValue("@LoadNo", loadno);
+                cmd.CommandText = "delete from loadinglines where LoadNo = @LoadNo";
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private void delheader()
         {
             string loadno = dataGridView1.SelectedCells[0].Value.ToString();
-            MySqlConnection conn = new MySqlConnection(strconn);
-            conn.Open();
-            MySqlCommand cmd = conn.CreateCommand();
-            cmd.Parameters.AddWithValue("@LoadNo", loadno);
-            cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
-            cmd.ExecuteNonQuery();
+            using (MySqlConnection conn = new MySqlConnection(strconn))
+            {
+                conn.Open();
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.Parameters.AddWithValue("@LoadNo", loadno);
+                cmd.CommandText = "delete from loadingheaders where LoadNo = @LoadNo";
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
@@ -460,6 +507,8 @@ namespace LAS_Interface
         {
             AcculoadProcess = new AcculoadProcess(this);
             AcculoadProcess.thrShutdown = true;
+            ClientLib.DisconnectAcl();
+            RaiseEvents("Disconnect success");
         }
 
 
@@ -481,61 +530,62 @@ namespace LAS_Interface
         {
             try
             {
-                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo =" + AcculoadProcess.Batch_no;
+                Console.WriteLine(AcculoadProcess.Batch_no);
+                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo = " + AcculoadProcess.Batch_no;
+                DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
+
+                if (dt.Rows.Count > 0)
+                {
+                  
+                    txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = dt.Rows[0]["CurrentFlowrate"].ToString()));
+                
+                    txtGV.Invoke((MethodInvoker)(() => txtGV.Text = dt.Rows[0]["LoadedGV"].ToString()));
+                 
+                    txtPreset.Invoke((MethodInvoker)(() => txtPreset.Text = dt.Rows[0]["CurrentPreset"].ToString()));
+
+                    txtTotalizer.Invoke((MethodInvoker)(() => txtTotalizer.Text = dt.Rows[0]["TotalizerGV"].ToString()));
+                } 
+                UPdate_loadinglines();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void UPdate_loadinglines()
+        {
+            try
+            {
+                string sql = @"SELECT TotalizerGV, TotalizerGST, TotalizerGSV, CurrentPreset, CurrentFlowrate, LoadedGV, LoadedGST, LoadedGSV FROM backuplines where BatchNo =  " + AcculoadProcess.Batch_no;
                 DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
                 if (dt.Rows.Count > 0)
                 {
-                    txtFlowRate.Text = dt.Rows[0]["CurrentFlowrate"].ToString();
-                    txtGV.Text = dt.Rows[0]["LoadedGV"].ToString();
-                    txtPreset.Text = dt.Rows[0]["LoadedGV"].ToString();
-                    txtTotalizer.Text = dt.Rows[0]["TotalizerGV"].ToString();
+                    string StrQuery = string.Format("update loadinglines set CurrentPreset = {1}, CurrentFlowrate = {2}, LoadedGV = {3}, LoadedGST = {4}, LoadedGSV = {5}, TotalizerGV = {6}, TotalizerGST = {7}, TotalizerGSV = {8} WHERE BatchNo = {0}",
+                        AcculoadProcess.Batch_no, dt.Rows[0]["CurrentPreset"].ToString(), dt.Rows[0]["CurrentFlowrate"].ToString(), dt.Rows[0]["LoadedGV"].ToString(), dt.Rows[0]["LoadedGST"].ToString(),
+                        dt.Rows[0]["LoadedGSV"].ToString(), dt.Rows[0]["TotalizerGV"].ToString(), dt.Rows[0]["TotalizerGST"].ToString(), dt.Rows[0]["TotalizerGSV"].ToString());
 
-                } 
-
-              /*  if ()
-                {
-                    string tranfer = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo =" + AcculoadProcess.Batch_no;
-                    DatabaseLib.Excute_DataAdapter(tranfer);
-                }*/
-
-                //using (MySqlConnection connection = new MySqlConnection(strconn))
-                //{
-                //    AcculoadProcess = new AcculoadProcess(this);
-                //    MySqlCommand command = new MySqlCommand(sql, connection);
-                //    connection.Open();
-                //    MySqlCommand cmd = new MySqlCommand(sql, connection);
-                //    MySqlDataReader reader = cmd.ExecuteReader();
-                //    string Read = string.Empty;
-                //    while (reader.Read())
-                //    {
-                //        if (AcculoadProcess.stepFlowrate)
-                //        {
-                //            txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = reader.GetString("CurrentFlowrate")));
-                //        } 
-
-                //        if (AcculoadProcess.stepTotalizer)
-                //        {
-                //            txtTotalizer.Invoke((MethodInvoker)(() => txtTotalizer.Text = reader.GetString("TotalizerGV")));
-                //        }
-
-                //        if (AcculoadProcess.stepPreset)
-                //        {
-                //            txtPreset.Invoke((MethodInvoker)(() => txtPreset.Text = reader.GetString("CurrentPreset")));
-                //        }
-
-                //        if (AcculoadProcess.stepLoaded)
-                //        {
-                //            txtGV.Invoke((MethodInvoker)(() => txtGV.Text = reader.GetString("LoadedGV")));
-                //        } 
-
-                //    }
-                //    reader.Close(); 
-                //}
+                    DatabaseLib.ExecuteSQL(StrQuery);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)   
             {
-
+                MessageBox.Show(ex.Message);
             }
+        } 
+
+        public void checkkBox(string BatchNum)
+        {
+            string Checkk = DatabaseLib.ExecuteReader_bBatchNum(@"SELECT BatchNo FROM backuplines where BatchNo = " + BatchNum);
+            if (Checkk == "")
+            {
+                string StrQuery = string.Format("INSERT INTO backuplines (BatchNo, CurrentPreset, CurrentFlowrate, LoadedGV, LoadedGST, LoadedGSV, TotalizerGV, TotalizerGST, TotalizerGSV) VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}); ",
+                BatchNum, "0", "0", "0", "0", "0", "0", "0", "0");
+                DatabaseLib.ExecuteSQL(StrQuery);
+            }
+
+            AcculoadProcess = new AcculoadProcess(this);
+            AcculoadProcess.Batch_no = BatchNum;
         }
     }
 }
