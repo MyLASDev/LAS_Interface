@@ -308,8 +308,7 @@ namespace LAS_Interface
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
 
-            string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
-                              FROM loadinglines where LoadNo = " + load_no;
+            string sql2 = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, status FROM loadinglines where LoadNo = " + load_no;
            
 
             DataTable dt2 = new DataTable();
@@ -400,24 +399,5 @@ namespace LAS_Interface
                
         }
 
-        private void txtFlowRate_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtTotalizer_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtPreset_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtGV_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

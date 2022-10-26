@@ -164,12 +164,13 @@ namespace LAS_Interface
                 dgvLL.Rows.Clear();
                 if (num > 5)
                 {
+                    num = 5;
                     MessageBox.Show("จำนวนช่องเติมสูงสุด 5 ช่อง", "การแจ้งเตือน",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                     txt_ช่อง.Text = "5";
                 }
-                
+                dgvLL.Rows.Clear();
                 for (int i = 0; i < num; i++)
                 {
                     int iRowNo = i + 1;
@@ -304,6 +305,16 @@ namespace LAS_Interface
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvLL_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }
