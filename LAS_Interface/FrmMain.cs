@@ -57,9 +57,6 @@ namespace LAS_Interface
             timer1.Start();
             RaiseEvents("Application Start");
             updatedgvLH();
-            txtFlowRate.Text = "0";
-            txtPreset.Text = "0";
-            txtGV.Text = "0";
             try
             {
                 using (StreamReader readtext = new StreamReader(dirLog + "currentbatch.text", true))
@@ -69,7 +66,8 @@ namespace LAS_Interface
 
                 }
                 File.Delete(dirLog + "currentbatch.text");
-                string sql = @"SELECT TotalizerGV FROM loadinglines where BatchNo = " + currentBatch;
+                string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM loadinglines where BatchNo = " + currentBatch;
+               
                 using (MySqlConnection connection = new MySqlConnection(strconn))
                 {
                     MySqlCommand command = new MySqlCommand(sql, connection);
@@ -80,7 +78,9 @@ namespace LAS_Interface
                     while (reader.Read())
                     {
                         txtTotalizer.Text = reader.GetString("TotalizerGV");
-
+                        txtPreset.Text = reader.GetString("CurrentPreset");
+                        txtGV.Text = reader.GetString("LoadedGV");
+                        txtFlowRate.Text = reader.GetString("CurrentFlowrate");
                     }
                     reader.Close();
                 }
@@ -244,12 +244,7 @@ namespace LAS_Interface
                     {
                         
                         checkkBox(dataGridView2.SelectedCells[0].Value.ToString());
-                        using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
-                        {
-                            pLogFile.WriteLine(AcculoadProcess.Batch_no);
-                            pLogFile.Dispose();
-                        }
-
+               
                         batch_no = dataGridView2.SelectedCells[0].Value.ToString();
 
                         string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
@@ -508,6 +503,11 @@ namespace LAS_Interface
             AcculoadProcess = new AcculoadProcess(this);
             AcculoadProcess.thrShutdown = true;
             ClientLib.DisconnectAcl();
+            using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+            {
+                pLogFile.WriteLine(AcculoadProcess.Batch_no);
+                pLogFile.Dispose();
+            }
             RaiseEvents("Disconnect success");
         }
 
@@ -530,13 +530,12 @@ namespace LAS_Interface
         {
             try
             {
-                Console.WriteLine(AcculoadProcess.Batch_no);
+            
                 string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM backuplines where BatchNo = " + AcculoadProcess.Batch_no;
                 DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
 
                 if (dt.Rows.Count > 0)
                 {
-                  
                     txtFlowRate.Invoke((MethodInvoker)(() => txtFlowRate.Text = dt.Rows[0]["CurrentFlowrate"].ToString()));
                 
                     txtGV.Invoke((MethodInvoker)(() => txtGV.Text = dt.Rows[0]["LoadedGV"].ToString()));
