@@ -23,7 +23,6 @@ namespace LAS_Interface
         public void WriteLog(string pFileName, string pMsg)
         {
             
-
             string vFlieName = "Log" + pFileName + "_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
             string vHeaderText = "<" + pFileName + "><";
 

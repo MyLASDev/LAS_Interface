@@ -107,6 +107,33 @@ namespace Library
             return null;
         }
 
+        public static string ExecuteReader_bBatchNum(string pStrSQL)
+        {
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(strconn))
+                {
+                    MySqlCommand command = new MySqlCommand(pStrSQL, connection);
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(pStrSQL, connection);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    string Read = string.Empty;
+                    while (reader.Read())
+                    {
+                        Read = reader["BatchNo"] + "";
+                    }
+                    reader.Close();
+                    return Read;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            return null;
+        } 
+
         public static DataTable Excute_DataAdapter(string pSql)
         { 
             DataTable dt = new DataTable();

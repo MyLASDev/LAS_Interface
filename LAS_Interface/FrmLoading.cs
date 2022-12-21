@@ -197,7 +197,7 @@ namespace LAS_Interface
                 txt_พ่วง.Text = frmMain.dataGridView1.SelectedCells[2].Value.ToString();
                 txt_คนขับ.Text = frmMain.dataGridView1.SelectedCells[3].Value.ToString();
 
-                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt
+                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = "+load_no;
                 DataTable dt = new DataTable();
                 dt =DatabaseLib.Excute_DataAdapter(sql);
@@ -298,7 +298,7 @@ namespace LAS_Interface
                 DataRowView dv = (DataRowView)Value.DataBoundItem;
                 return dv.Row;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }

@@ -42,6 +42,7 @@ namespace Library
         {
             try
             {
+                
                 string uri = "ktd-devth.ddns.net";
                 string ipAddress = "192.168.1.114";
                 var addresses = Dns.GetHostAddresses(uri);
@@ -59,6 +60,9 @@ namespace Library
                 stm = tcp.GetStream();
                 isConnectAcl = true;
                 return true;
+                tcp.GetStream().Close();
+                tcp.Close();
+
             }
             catch (Exception ex)
             {
@@ -66,6 +70,14 @@ namespace Library
                 return false;
             }
         }
+
+        public static void DisconnectAcl()
+        {
+            tcp.GetStream().Close();
+            tcp.Close();
+            
+        }
+
         public static string SendData(string pMessage)
         {
             string vRecv = string.Empty;
