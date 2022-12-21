@@ -186,10 +186,6 @@ namespace LAS_Interface
         public static int stpBatch = 0;
         public static int cnlBatch = 0;
         public static bool thrShutdown;
-        public static bool stepFlowrate;
-        public static bool stepTotalizer;
-        public static bool stepPreset;
-        public static bool stepLoaded;
         public static bool Pass = false;
         public static string Batch_no;
        
@@ -237,7 +233,7 @@ namespace LAS_Interface
             while (thrRunning)
             {
                 
-                Thread.Sleep(500);
+                Thread.Sleep(300);
 
                 if (thrShutdown)
                 {
@@ -528,7 +524,6 @@ namespace LAS_Interface
 
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspStart;
                 stepThreadReadData = stepThreadReadData + 1;
-
             }
 
         }
@@ -591,6 +586,7 @@ namespace LAS_Interface
 
             if (AclMember[0].AclValueNew.EQ.A1b0_Authorized && AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress && !AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
             {
+              
                 if (!AclMember[0].AclValueNew.EQ.A1b1_Flowing)
                 {
 
@@ -691,7 +687,7 @@ namespace LAS_Interface
                 batchStatus = 4;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
-
+       
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
                 AclMember[0].CancelLoad = false;
                 AclMember[0].StopBatch = false;
@@ -705,7 +701,7 @@ namespace LAS_Interface
                 batchStatus = 5;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
-
+             
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
 
             }
@@ -833,6 +829,7 @@ namespace LAS_Interface
             AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGSV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGV, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGST, AclMember_Lib[0].AclValueNew.MeterValue[j].TotalizerGSV);
             DatabaseLib.ExecuteSQL(StrQuery);
             Console.WriteLine(AclMember_Lib[0].AclValueNew.MeterValue[j].DeliveryGV);
+            
             frmMain.Show_TextBox();
         }
     }
