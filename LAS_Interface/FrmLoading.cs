@@ -20,6 +20,7 @@ namespace LAS_Interface
         string strconn = "server=r98du2bxwqkq3shg.cbetxkdyhwsb.us-east-1.rds.amazonaws.com ;database=ahda1gtbqhb7pncg;uid=hktvkvjk6993txuk;pwd=ma46ffmhhxgl0zj6";
         public int frmActon = 1;
         public string load_no;
+        public string batch_no;
 
         public FrmLoading(FrmMain frmMain)
         {
@@ -100,10 +101,10 @@ namespace LAS_Interface
 
             for (int i = 0; i < dgvLL.Rows.Count; i++)
             {
-                //string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
+                string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format("update loadinglines set  ProductName = '{0}', Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {2} ;", productName, preset, load_no );
+                StrQuery = string.Format("update loadinglines set ProductName = '{0}', Preset = {1}, UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {2} and Compartment = {3} ;", productName, preset , load_no , compartment  );
                 bool vCheck = DatabaseLib.ExecuteSQL(StrQuery);
             }
 
@@ -116,11 +117,8 @@ namespace LAS_Interface
             string driver_name = txt_คนขับ.Text.Trim();
             long loadno;
 
-            string strSQL = string.Format ("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName =  '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = loadno ", tu_number1, tu_number2, driver_name);
+            string strSQL = string.Format("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName = '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", tu_number1, tu_number2, driver_name, load_no);
 
-          
-           // string strSQL = string.Format("UPDATE loadingheaders SET TuNumber1 = '{0}', TuNumber2 = '{1}', DriverName = '{2}', UpdatedAt = CURRENT_TIMESTAMP WHERE LoadNo = {3} ;", tu_number1, tu_number2, driver_name, load_no ) ;
-          
             if (DatabaseLib.ExecuteSQL (strSQL ))
             {
                     updateLine();
