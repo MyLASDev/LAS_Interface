@@ -1,0 +1,28 @@
+<AclAddr14><26/12/2565 23:40:19>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><26/12/2565 23:40:38>[LAS InterFace]> Accuload connect successful
+<AclAddr14><26/12/2565 23:40:39>[LAS InterFace]> Start read from accuload
+<AclAddr14><26/12/2565 23:40:39>[LAS InterFace]> Database connect successful
+<AclAddr14><26/12/2565 23:42:40>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><26/12/2565 23:44:44>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><26/12/2565 23:44:59>[LAS InterFace]> Accuload connect successful
+<AclAddr14><26/12/2565 23:45:00>[LAS InterFace]> Start read from accuload
+<AclAddr14><26/12/2565 23:45:00>[LAS InterFace]> Database connect successful
+<AclAddr14><26/12/2565 23:45:17>[LAS InterFace]> Load No[87] remote start batch.
+<AclAddr14><26/12/2565 23:45:17>[LAS InterFace]> Valve open delay.
+<AclAddr14><26/12/2565 23:45:17>[LAS InterFace]> Load No[87] loading.
+<AclAddr14><26/12/2565 23:45:38>[LAS InterFace]> Load No[87] end batch by LAS.
+<AclAddr14><26/12/2565 23:45:56>[LAS InterFace]> Load No[87] prepare loading.
+<AclAddr14><26/12/2565 23:45:57>[LAS InterFace]> Load No[87] stop load[release].
+<AclAddr14><26/12/2565 23:46:01>[LAS InterFace]> Load No[87] prepare loading.
+<AclAddr14><26/12/2565 23:46:01>[LAS InterFace]> Load No[87] prepare loading.
+<AclAddr14><26/12/2565 23:46:03>[LAS InterFace]> Load No[87] continue loading.
+<AclAddr14><26/12/2565 23:46:32>[LAS InterFace]> Load No[87] end batch by LAS.
+<AclAddr14><26/12/2565 23:46:51>[LAS InterFace]> Load No[87] batch stop[cancel batch].
+<AclAddr14><26/12/2565 23:47:31>[LAS InterFace]> Load No[86] remote start batch.
+<AclAddr14><26/12/2565 23:47:31>[LAS InterFace]> Valve open delay.
+<AclAddr14><26/12/2565 23:47:31>[LAS InterFace]> Load No[86] loading.
+<AclAddr14><26/12/2565 23:48:59>[LAS InterFace]> Load No[86] stop load[batch done].
+<AclAddr14><26/12/2565 23:49:14>[LAS InterFace]> Load No[86] batch done.
+<AclAddr14><26/12/2565 23:49:14>[LAS InterFace]> Load No[86] stop TOTGV = 14867, stop TOTGST = 14538, stop TOTGSV = 14538
+<AclAddr14><26/12/2565 23:49:14>[LAS InterFace]> Load No[86] loaded GV = 996.86, loaded GST = 974.82, loaded GSV = 974.82
+<AclAddr14><26/12/2565 23:49:24>[LAS InterFace]> ---------------Application Stop---------------

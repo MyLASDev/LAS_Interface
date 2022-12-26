@@ -1,0 +1,86 @@
+<AclAddr14><27/12/2565 0:30:03>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:30:26>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 0:30:27>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 0:30:27>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 0:30:54>[LAS InterFace]> Load No[0] remote start batch.
+<AclAddr14><27/12/2565 0:30:54>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 0:31:02>[LAS InterFace]> Load No[86] loading.
+<AclAddr14><27/12/2565 0:31:32>[LAS InterFace]> Load No[86] end batch by LAS.
+<AclAddr14><27/12/2565 0:31:55>[LAS InterFace]> Load No[86] batch stop[cancel batch].
+<AclAddr14><27/12/2565 0:32:24>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><27/12/2565 0:34:21>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:34:32>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 0:34:34>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 0:34:35>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 0:35:08>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><27/12/2565 0:35:45>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:36:54>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 0:36:55>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 0:36:56>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 0:37:15>[LAS InterFace]> Load No[0] remote start batch.
+<AclAddr14><27/12/2565 0:37:16>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 0:37:21>[LAS InterFace]> Load No[85] loading.
+<AclAddr14><27/12/2565 0:37:49>[LAS InterFace]> Load No[85] end batch by LAS.
+<AclAddr14><27/12/2565 0:38:05>[LAS InterFace]> Load No[85] batch stop[cancel batch].
+<AclAddr14><27/12/2565 0:39:11>[LAS InterFace]> Load No[85] remote start batch.
+<AclAddr14><27/12/2565 0:39:12>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 0:39:18>[LAS InterFace]> Load No[86] loading.
+<AclAddr14><27/12/2565 0:39:38>[LAS InterFace]> Load No[86] end batch by LAS.
+<AclAddr14><27/12/2565 0:39:50>[LAS InterFace]> Load No[86] batch stop[cancel batch].
+<AclAddr14><27/12/2565 0:39:56>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><27/12/2565 0:40:50>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:42:28>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:43:06>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 0:43:08>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 0:43:09>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 0:43:27>[LAS InterFace]> Load No[85] remote start batch.
+<AclAddr14><27/12/2565 0:43:28>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 0:43:34>[LAS InterFace]> Load No[85] loading.
+<AclAddr14><27/12/2565 0:45:04>[LAS InterFace]> Load No[85] stop load[batch done].
+<AclAddr14><27/12/2565 0:45:22>[LAS InterFace]> Load No[85] batch done.
+<AclAddr14><27/12/2565 0:45:22>[LAS InterFace]> Load No[85] stop TOTGV = 16830, stop TOTGST = 16458, stop TOTGSV = 16458
+<AclAddr14><27/12/2565 0:45:22>[LAS InterFace]> Load No[85] loaded GV = 996.5, loaded GST = 974.47, loaded GSV = 974.47
+<AclAddr14><27/12/2565 0:45:44>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><27/12/2565 0:46:01>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:54:51>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 0:55:01>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 0:55:03>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 0:55:04>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 0:55:22>[LAS InterFace]> Load No[85]Batch No[84] remote start batch.
+<AclAddr14><27/12/2565 0:55:23>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 0:55:30>[LAS InterFace]> Load No[85]Batch No[84] loading.
+<AclAddr14><27/12/2565 0:55:46>[LAS InterFace]> Load No[85] end batch by LAS.
+<AclAddr14><27/12/2565 0:55:54>[LAS InterFace]> Load No[85] batch stop[cancel batch].
+<AclAddr14><27/12/2565 0:56:26>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><27/12/2565 2:43:23>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><27/12/2565 2:43:40>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 2:43:42>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 2:43:43>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 2:43:57>[LAS InterFace]> Load No[85] Batch No[84] remote start batch.
+<AclAddr14><27/12/2565 2:43:58>[LAS InterFace]> Valve open delay.
+<AclAddr14><27/12/2565 2:44:02>[LAS InterFace]> Load No[85] Batch No[84] loading.
+<AclAddr14><27/12/2565 2:45:14>[LAS InterFace]> Load No[85] Batch No[84] stop load[alarm on].
+<AclAddr14><27/12/2565 2:45:15>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:45:53>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:45:54>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:45:58>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:45:59>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:03>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:04>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:08>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:09>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:13>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:14>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:17>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:19>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:22>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:24>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:26>[LAS InterFace]> Accuload connect successful
+<AclAddr14><27/12/2565 2:46:27>[LAS InterFace]> Database connect successful
+<AclAddr14><27/12/2565 2:46:28>[LAS InterFace]> Start read from accuload
+<AclAddr14><27/12/2565 2:46:31>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:32>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:36>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:37>[LAS InterFace]> Load No[85] Batch No[84] stop load[release].
+<AclAddr14><27/12/2565 2:46:41>[LAS InterFace]> Load No[85] Batch No[84] prepare loading.
+<AclAddr14><27/12/2565 2:46:41>[LAS InterFace]> ---------------Application Stop---------------

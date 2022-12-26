@@ -13,10 +13,11 @@ using static Library.AcculoadLib;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.CodeDom;
 using System.Security.Cryptography;
+using Ubiety.Dns.Core.Records.NotUsed;
 
 namespace LAS_Interface
 {
-    public class AcculoadProcess
+    public class AcculoadProcess 
     {
         const byte NUL = 0;
         const byte STX = 2;
@@ -95,7 +96,7 @@ namespace LAS_Interface
             public bool OldBatchScan;
             public int LoadActive;
             public double LoadNo;
-            public double LineNo;
+            public double BatchNo;
             public int LoadCount;
             public int CompTotal;
             public double Preset;
@@ -172,8 +173,10 @@ namespace LAS_Interface
         private int batchStatus = 0;
         private bool eCheck = false;
         private bool tstDone = false;
+        private bool prepare = false;
         private bool responseStatus = false;
         private string msgSend;
+        private string records;
         private DateTime responseTime;
 
         bool thrRunning;
@@ -202,6 +205,8 @@ namespace LAS_Interface
             try
             {
 
+               // frmMain.RaiseEvents("Start read from accuload");
+                
                 thrRunning = true;
                 thrShutdown = false;
 
@@ -272,7 +277,7 @@ namespace LAS_Interface
 
             try
             {
-               
+                
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestCurrentFlowRate(AclAddress);
@@ -332,7 +337,7 @@ namespace LAS_Interface
 
             try
             {
-                
+         
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestDeliveryGV(AclAddress, ProductNo); //current volume 
@@ -412,7 +417,7 @@ namespace LAS_Interface
 
             try
             {
-
+             
                 int i = 0, j = 0;
 
                 vCmd = AcculoadLib.RequestMeterTotalizerGV(AclAddress, ProductNo); //show totalizer 
@@ -460,7 +465,7 @@ namespace LAS_Interface
             {
                 AclMember = new AcculoadProcess.AcculoadMember[1];
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
-
+            
                 while (thrRunning)
                 {
                     Thread.Sleep(500);
@@ -501,6 +506,7 @@ namespace LAS_Interface
                         default:
                             break;
                     }
+                    PullEnquireStatus();
                 }
             }
             catch (Exception ex)
@@ -512,15 +518,21 @@ namespace LAS_Interface
 
         private void Loading_Active()
         {
+            //PullEnquireStatus();
 
-            PullEnquireStatus();
             Console.WriteLine("Loading Active");
 
             if (AclMember[0].AclValueNew.EQ.A1b0_Authorized && AclMember[0].AclValueNew.EQ.A16b0_PresetInProgress)
             {
+                GetLoadNo();
+
                 batchStatus = 1;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
+
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " remote start batch.");
+                Thread.Sleep(1000);
+                frmMain.RaiseEvents("Valve open delay.");
 
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspStart;
                 stepThreadReadData = stepThreadReadData + 1;
@@ -532,9 +544,11 @@ namespace LAS_Interface
         {
             string vCmd;
 
-            PullEnquireStatus();
-            Console.WriteLine("Loading Start");
+            GetLoadNo();
+            //PullEnquireStatus();
 
+            Console.WriteLine("Loading Start");
+  
             if (AclMember[0].AclValueNew.EQ.A1b0_Authorized)
             {
 
@@ -543,6 +557,8 @@ namespace LAS_Interface
                     batchStatus = 2;
                     string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                     DatabaseLib.ExecuteSQL(StrQuery);
+
+                    frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " loading.");
 
                     AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
 
@@ -554,6 +570,8 @@ namespace LAS_Interface
                     string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                     DatabaseLib.ExecuteSQL(StrQuery);
 
+                    frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[alarm on].");
+
                     AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                 }
 
@@ -563,6 +581,8 @@ namespace LAS_Interface
                     string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                     DatabaseLib.ExecuteSQL(StrQuery);
 
+                    frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " end batch by LAS.");
+
                     AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                     stpBatch = 1;
                 }
@@ -570,7 +590,7 @@ namespace LAS_Interface
             }
             else
             {
-
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[unauthorize].");
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
 
             }
@@ -581,9 +601,11 @@ namespace LAS_Interface
         {
             string vCmd;
 
-            PullEnquireStatus();
-            Console.WriteLine("Loading Loading");
+            GetLoadNo();
+            // PullEnquireStatus();
 
+            Console.WriteLine("Loading Loading");
+      
             if (AclMember[0].AclValueNew.EQ.A1b0_Authorized && AclMember[0].AclValueNew.EQ.A2b3_TransactionInProgress && !AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
             {
               
@@ -596,6 +618,9 @@ namespace LAS_Interface
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
                         Console.WriteLine("64");
+
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[permissive].");
+
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
 
                     }
@@ -606,6 +631,9 @@ namespace LAS_Interface
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                         DatabaseLib.ExecuteSQL(StrQuery);
                         Console.WriteLine("63");
+
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load by LAS.");
+
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
                         stpBatch = 1;
 
@@ -613,7 +641,10 @@ namespace LAS_Interface
 
                     if (AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
                     {
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[alarm on].");
+
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
+
                         Console.WriteLine("62");
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
@@ -623,7 +654,10 @@ namespace LAS_Interface
 
                     if (!AclMember[0].AclValueNew.EQ.A1b2_Release)
                     {
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[release].");
+
                         AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
+
                         Console.WriteLine("61");
                         batchStatus = 3;
                         string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
@@ -631,17 +665,29 @@ namespace LAS_Interface
 
                     }
                 }
-
-                if (AclMember[0].StopBatch)
+                else
                 {
-                    batchStatus = 3;
-                    string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
-                    DatabaseLib.ExecuteSQL(StrQuery);
+                    if (prepare)
+                    {
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " continue loading.");
+                        prepare = false;
+                    }
 
-                    AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
-                    stpBatch = 1;
+                    if (AclMember[0].StopBatch)
+                    {
+                        batchStatus = 3;
+                        string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
+                        DatabaseLib.ExecuteSQL(StrQuery);
+
+                        frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load by LAS.");
+
+                        AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
+                        stpBatch = 1;
+
+                    }
 
                 }
+
             }
 
             if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone)
@@ -650,6 +696,9 @@ namespace LAS_Interface
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
                 tstDone = true;
+
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop load[batch done].");
+
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspStop;
 
             }
@@ -660,16 +709,21 @@ namespace LAS_Interface
         {
             string vCmd;
 
-            PullEnquireStatus();
-            Console.WriteLine("Loading Stop");
+            GetLoadNo();
+           // PullEnquireStatus();
 
-            if (AclMember[0].AclValueNew.EQ.A1b1_Flowing && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn)
+            Console.WriteLine("Loading Stop");
+            
+            if (AclMember[0].AclValueNew.EQ.A1b1_Flowing && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].StopBatch)
             {
                 batchStatus = 2;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
 
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " prepare loading.");
+
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
+                prepare = true;
             }
 
             if (!AclMember[0].StopBatch && !tstDone && !AclMember[0].AclValueNew.EQ.A3b3_AlarmOn && !AclMember[0].AclValueNew.EQ.A2b2_TransactionDone && !AclMember[0].CancelLoad)
@@ -678,16 +732,21 @@ namespace LAS_Interface
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
 
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " prepare loading.");
+
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspLoading;
                 Console.WriteLine("6");
+                prepare = true;
             }
 
             if (AclMember[0].AclValueNew.EQ.A2b1_BatchDone && AclMember[0].CancelLoad)
             {
                 batchStatus = 4;
-                string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
+                string StrQuery = string.Format("update loadinglines set  status = {0},  UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
-       
+
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " batch stop[cancel batch].");
+
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
                 AclMember[0].CancelLoad = false;
                 AclMember[0].StopBatch = false;
@@ -701,7 +760,16 @@ namespace LAS_Interface
                 batchStatus = 5;
                 string StrQuery = string.Format("update loadinglines set  status = {0}, UpdatedAt = CURRENT_TIMESTAMP WHERE BatchNo = {1}", batchStatus, Batch_no);
                 DatabaseLib.ExecuteSQL(StrQuery);
-             
+
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " batch done.");
+
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " Batch No[" + AclMember[0].BatchNo + "]" + " stop TOTGV = " + AclMember_Lib[0].AclValueNew.MeterValue[0].TotalizerGV +  
+                                                                ", stop TOTGST = " + AclMember_Lib[0].AclValueNew.MeterValue[0].TotalizerGST +
+                                                                ", stop TOTGSV = " + AclMember_Lib[0].AclValueNew.MeterValue[0].TotalizerGSV);
+                frmMain.RaiseEvents("Load No[" + AclMember[0].LoadNo + "]" + " loaded GV = " + AclMember_Lib[0].AclValueNew.MeterValue[0].DeliveryGV +
+                                                        ", loaded GST = " + AclMember_Lib[0].AclValueNew.MeterValue[0].DeliveryGST +
+                                                        ", loaded GSV = " + AclMember_Lib[0].AclValueNew.MeterValue[0].DeliveryGSV);
+
                 AclMember[0].BatchStepProcess = _BatchStepProcess.bspBCActive;
 
             }
@@ -715,6 +783,16 @@ namespace LAS_Interface
             string vData = ClientLib.SendData(vCmd);
             AcculoadLib.DecodedEnquireStatus(ref AclMember[0].AclValueNew.EQ, vData);
 
+        }
+
+        public void GetLoadNo()
+        {
+            string sql = @"SELECT LoadNo FROM loadinglines where BatchNo = " + Batch_no;
+            string result = string.Empty;
+            DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
+            result = dt.Rows[0]["LoadNo"].ToString();
+            AclMember[0].LoadNo = Convert.ToDouble(result);
+            AclMember[0].BatchNo = Convert.ToDouble(Batch_no);    
         }
 
         /* void WriteResetAlarm()

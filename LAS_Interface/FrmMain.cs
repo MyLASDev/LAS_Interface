@@ -31,6 +31,7 @@ namespace LAS_Interface
         public SqlDataAdapter da;
         public AcculoadLib.AcculoadMember[] AclMember;
         public AcculoadProcess AcculoadProcess;
+       // public AcculoadProcess.AcculoadMember[] AclProMember;
         public CLogfiles LogFile = new CLogfiles();
 
         IPEndPoint remoteEP;
@@ -55,7 +56,7 @@ namespace LAS_Interface
         {
             AcculoadProcess.frmmain = this;
             timer1.Start();
-            RaiseEvents("Application Start");
+            RaiseEvents("---------------Application Start--------------");
             updatedgvLH();
             try
             {
@@ -106,6 +107,7 @@ namespace LAS_Interface
         {
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
             DisplayMessage("", vMsg);
+            LogFile.WriteLog("AclAddr14", vMsg);
         }
         #region ListboxItem
 
@@ -193,7 +195,7 @@ namespace LAS_Interface
                 //bool vCheck = ClientLib.getIsConnectAcl();
                 if (value)
                 {
-                    RaiseEvents("Connection Success");
+                    RaiseEvents("Accuload connect successful");
                     try
                     {
                         if (DatabaseLib.IsServerConnected())
@@ -202,22 +204,28 @@ namespace LAS_Interface
                             AcculoadProcess = new AcculoadProcess(this);
                             AcculoadProcess.stpBatch = 1;
                             AcculoadProcess.StartThread();
+                            Thread.Sleep(1000);
+                            RaiseEvents("Database connect successful");
+                            Thread.Sleep(1000);
+                            RaiseEvents("Start read from accuload");
                         }
                         else
                         {
-                            MessageBox.Show("Database doesn't connect");
+                            //MessageBox.Show("Database doesn't connect");
+                            RaiseEvents("Database connect fail");
                         }
 
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error = " + ex);
+                        //MessageBox.Show("Error = " + ex);
+                        RaiseEvents("Database connect fail");
                     }
 
                 }
                 else
                 {
-                    RaiseEvents("Connection lost");
+                    RaiseEvents("Accuload connect lost");
                 }
             }
 
@@ -230,7 +238,14 @@ namespace LAS_Interface
             DataTable dt = new DataTable();
             dt = DatabaseLib.Excute_DataAdapter(sql);
             dataGridView1.DataSource = dt;
+        }
 
+        private void updatedgvLL()
+        {
+            string sql = "SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines";
+            DataTable dt = new DataTable();
+            dt = DatabaseLib.Excute_DataAdapter(sql);
+            dataGridView2.DataSource = dt;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -242,19 +257,29 @@ namespace LAS_Interface
                 {
                     if (SelectedCells != null)
                     {
-                        
+                       
                         checkkBox(dataGridView2.SelectedCells[0].Value.ToString());
                
                         batch_no = dataGridView2.SelectedCells[0].Value.ToString();
 
-                        string sql = @"SELECT Preset FROM loadinglines where BatchNo = " + batch_no;
+                        //AcculoadProcess.GetLoadNo();
+                        
+                        string sql = @"SELECT Preset, status FROM loadinglines where BatchNo = " + batch_no;
+                   
                         string result = string.Empty;
-                        AclMember = new AcculoadLib.AcculoadMember[1];
+                        string result1 = string.Empty;
 
-                        result = DatabaseLib.ExecuteReader_pPreset(sql);
+                        DataTable dt = DatabaseLib.Excute_DataAdapter(sql);
+
+                        result = dt.Rows[0]["Preset"].ToString();
+                        result1 = dt.Rows[0]["status"].ToString();
+                     
+
+                        AclMember = new AcculoadLib.AcculoadMember[1];
+                  
                         bool isParsable = Int32.TryParse(result, out pPreset);
 
-                        if (isParsable)
+                        if (isParsable && result1!= "5")
                         {
                             string vCmd1 = AcculoadLib.AllocateBlendRecipes(14, 1);
                             ClientLib.SendData(vCmd1);
@@ -272,23 +297,18 @@ namespace LAS_Interface
                                 {
                                     string vCmd3 = AcculoadLib.RemoteStart(14);
                                     ClientLib.SendData(vCmd3);
-                                    RaiseEvents("------------------------Start Load----------------------------");
                                 }
-                                else
-                                {
-                                    MessageBox.Show("Error");
-                                }
-
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-                                MessageBox.Show("Error");
+                                RaiseEvents("Error = " + ex);
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Error");
+                            MessageBox.Show("Please select load no again");
                         }
+
                         PullEnquireStatus();
                     }
                     else
@@ -298,7 +318,7 @@ namespace LAS_Interface
                 }
                 else
                 {
-                    MessageBox.Show("Please Start Process");
+                    MessageBox.Show("Please Connect Accuload");
                 }
             }
         }
@@ -313,7 +333,7 @@ namespace LAS_Interface
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.stpBatch = 3;
                 PullEnquireStatus();
-                RaiseEvents("------------------------Continue Batch--------------------------------");
+                
             }
         }
 
@@ -326,7 +346,7 @@ namespace LAS_Interface
                 string vCmd = AcculoadLib.EndTransaction(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("-----------------------End Transaction-----------------------------");
+               
             }
 
         }
@@ -364,6 +384,7 @@ namespace LAS_Interface
                 frmDO.ShowDialog();
                 RaiseEvents("Edit Delivery Order");
                 updatedgvLH();
+                updatedgvLL();
             }
         }
 
@@ -450,10 +471,7 @@ namespace LAS_Interface
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             load_no = dataGridView1.SelectedCells[0].Value.ToString();
-            string sql2 = @"SELECT BatchNo, LoadNo, status,Compartment, ProductName, Preset
-                              FROM loadinglines where LoadNo = " + load_no;
-
-
+            string sql2 = @"SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines where LoadNo = " + load_no;
             DataTable dt2 = new DataTable();
             dt2 = DatabaseLib.Excute_DataAdapter(sql2);
             dataGridView2.DataSource = dt2;
@@ -476,7 +494,6 @@ namespace LAS_Interface
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.stpBatch = 2;
                 PullEnquireStatus();
-                RaiseEvents("--------------------------------Stop Load--------------------------");
             }
         }
 
@@ -494,21 +511,24 @@ namespace LAS_Interface
                 string vCmd = AcculoadLib.ResetAlarm(14);
                 ClientLib.SendData(vCmd);
                 PullEnquireStatus();
-                RaiseEvents("----------------------Reset Alarm-------------------------------");
             }
         }
 
         private void btnStopProcess_Click(object sender, EventArgs e)
         {
-            AcculoadProcess = new AcculoadProcess(this);
-            AcculoadProcess.thrShutdown = true;
-            ClientLib.DisconnectAcl();
-            using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+            DialogResult result = MessageBox.Show("คุณต้องการ ยกเลิกการเชื่อมต่อ ใช่หรือไม่ ?", "Disconnect", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                pLogFile.WriteLine(AcculoadProcess.Batch_no);
-                pLogFile.Dispose();
+                AcculoadProcess = new AcculoadProcess(this);
+                AcculoadProcess.thrShutdown = true;
+                ClientLib.DisconnectAcl();
+                using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+                {
+                    pLogFile.WriteLine(AcculoadProcess.Batch_no);
+                    pLogFile.Dispose();
+                }
+                RaiseEvents("---------------Application Stop---------------");
             }
-            RaiseEvents("Disconnect success");
         }
 
 
@@ -522,10 +542,11 @@ namespace LAS_Interface
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.cnlBatch = 2;
                 PullEnquireStatus();
-                RaiseEvents("---------------------------End Batch----------------------------");
             }
         }
 
+//<<<<<<< HEAD
+//=======
         public void Show_TextBox()
         {
             try
@@ -586,5 +607,6 @@ namespace LAS_Interface
             AcculoadProcess = new AcculoadProcess(this);
             AcculoadProcess.Batch_no = BatchNum;
         }
+
     }
 }

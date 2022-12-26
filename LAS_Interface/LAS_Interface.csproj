@@ -196,6 +196,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="automation.ico" />
+    <None Include="Resources\raw1.jpg" />
+    <None Include="Resources\raw.jpg" />
     <None Include="Resources\images %283%29.png" />
     <None Include="Resources\images %282%29.png" />
     <None Include="Resources\images %281%29.png" />

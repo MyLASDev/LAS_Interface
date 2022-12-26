@@ -82,7 +82,7 @@ namespace LAS_Interface
                 string compartment = dgvLL.Rows[i].Cells["compartment"].Value.ToString();
                 string productName = dgvLL.Rows[i].Cells["product"].Value.ToString();
                 string preset = dgvLL.Rows[i].Cells["preset"].Value.ToString();
-                StrQuery = string.Format (@"INSERT INTO loadinglines (LoadNo, Compartment, ProductName, Preset) VALUES({0}, {1}, '{2}', {3});",pLoadNo,compartment,productName,preset);
+                StrQuery = string.Format (@"INSERT INTO loadinglines (LoadNo, Compartment, ProductName, Preset) VALUES({0}, {1}, '{2}', {3});", pLoadNo,compartment,productName,preset);
                 bool vCheck= DatabaseLib.ExecuteSQL(StrQuery);
 
             }
@@ -164,12 +164,13 @@ namespace LAS_Interface
                 dgvLL.Rows.Clear();
                 if (num > 5)
                 {
+                    num = 5;
                     MessageBox.Show("จำนวนช่องเติมสูงสุด 5 ช่อง", "การแจ้งเตือน",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                     txt_ช่อง.Text = "5";
                 }
-                
+                dgvLL.Rows.Clear();
                 for (int i = 0; i < num; i++)
                 {
                     int iRowNo = i + 1;
@@ -196,7 +197,7 @@ namespace LAS_Interface
                 txt_พ่วง.Text = frmMain.dataGridView1.SelectedCells[2].Value.ToString();
                 txt_คนขับ.Text = frmMain.dataGridView1.SelectedCells[3].Value.ToString();
 
-                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset, LoadindVolume, CreatedAt, UpdatedAt
+                string sql = @"SELECT BatchNo, LoadNo, Compartment, ProductName, Preset
                               FROM loadinglines where LoadNo = "+load_no;
                 DataTable dt = new DataTable();
                 dt =DatabaseLib.Excute_DataAdapter(sql);
@@ -304,6 +305,16 @@ namespace LAS_Interface
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvLL_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

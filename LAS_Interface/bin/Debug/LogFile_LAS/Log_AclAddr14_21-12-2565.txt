@@ -1,0 +1,6 @@
+<AclAddr14><21/12/2565 18:18:34>[LAS InterFace]> Application Start
+<AclAddr14><21/12/2565 18:19:07>[LAS InterFace]> Connection lost
+<AclAddr14><21/12/2565 18:19:15>[LAS InterFace]> -----------------------End Transaction-----------------------------
+<AclAddr14><21/12/2565 18:19:23>[LAS InterFace]> ----------------------Reset Alarm-------------------------------
+<AclAddr14><21/12/2565 18:19:27>[LAS InterFace]> --------------------------------Stop Load--------------------------
+<AclAddr14><21/12/2565 18:19:31>[LAS InterFace]> ------------------------Continue Batch--------------------------------

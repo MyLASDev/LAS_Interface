@@ -1,0 +1,84 @@
+<AclAddr14><22/12/2565 15:18:24>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><22/12/2565 15:18:59>[LAS InterFace]> Accuload connect lost
+<AclAddr14><22/12/2565 16:48:00>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><22/12/2565 16:48:33>[LAS InterFace]> Accuload connect successful
+<AclAddr14><22/12/2565 16:48:34>[LAS InterFace]> Start read from accuload
+<AclAddr14><22/12/2565 16:48:34>[LAS InterFace]> Database connect successful
+<AclAddr14><22/12/2565 16:48:52>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><22/12/2565 16:49:19>[LAS InterFace]> Accuload connect successful
+<AclAddr14><22/12/2565 16:49:20>[LAS InterFace]> Start read from accuload
+<AclAddr14><22/12/2565 16:49:20>[LAS InterFace]> Database connect successful
+<AclAddr14><22/12/2565 16:49:48>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><22/12/2565 17:06:33>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><22/12/2565 17:07:01>[LAS InterFace]> Accuload connect successful
+<AclAddr14><22/12/2565 17:07:02>[LAS InterFace]> Start read from accuload
+<AclAddr14><22/12/2565 17:07:02>[LAS InterFace]> Database connect successful
+<AclAddr14><22/12/2565 17:07:02>[LAS InterFace]> 1111111111
+<AclAddr14><22/12/2565 17:07:02>[LAS InterFace]> 2222222
+<AclAddr14><22/12/2565 17:07:03>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:03>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:04>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:04>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:05>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:05>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:06>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:06>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:07>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:07>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:08>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:08>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:09>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:09>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:10>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:10>[LAS InterFace]> 333333333
+<AclAddr14><22/12/2565 17:07:11>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:11>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:12>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:12>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:13>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:13>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:14>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:14>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:15>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:15>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:16>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:16>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:17>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:17>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:18>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:18>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:19>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:19>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:20>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:20>[LAS InterFace]> 1111111111
+<AclAddr14><22/12/2565 17:07:20>[LAS InterFace]> 2222222
+<AclAddr14><22/12/2565 17:07:21>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:21>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:22>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:22>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:23>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:23>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:24>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:24>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:25>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:25>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:26>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:26>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:27>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:27>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:28>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:29>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:29>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:30>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:30>[LAS InterFace]> 333333333
+<AclAddr14><22/12/2565 17:07:30>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:31>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:31>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:32>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:32>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:33>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:33>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:34>[LAS InterFace]> 444444444
+<AclAddr14><22/12/2565 17:07:34>[LAS InterFace]> ---------------Application Stop---------------
+<AclAddr14><22/12/2565 17:08:56>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><22/12/2565 17:13:02>[LAS InterFace]> ---------------Application Start--------------

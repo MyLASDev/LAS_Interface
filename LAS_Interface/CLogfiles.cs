@@ -10,7 +10,7 @@ namespace LAS_Interface
     public class CLogfiles
     {
 
-        string dirLog = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\Log\\";//Directory.GetCurrentDirectory() + "\\Log\\"
+        string dirLog = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\LogFile_LAS\\";//Directory.GetCurrentDirectory() + "\\Log\\"
         
         public void CreateFolderLog()
         {
@@ -22,8 +22,7 @@ namespace LAS_Interface
 
         public void WriteLog(string pFileName, string pMsg)
         {
-            
-            string vFlieName = "Log" + pFileName + "_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
+            string vFlieName = "Log_" + pFileName + "_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
             string vHeaderText = "<" + pFileName + "><";
 
             CreateFolderLog();
@@ -38,7 +37,7 @@ namespace LAS_Interface
         {
             string vFlieName = "Err_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
             string vHeaderText = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "> ";
-
+        
             CreateFolderLog();
             using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + vFlieName, true))
             {
