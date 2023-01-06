@@ -45,8 +45,8 @@ namespace LAS_Interface
                     {
                         addLine(loadno);
                         MessageBox.Show("successfully");
-
-                        this.Close();
+                        frmMain.RaiseEvents("Add Delivery Order");
+                       // this.Close();
                     }
 
                 }
@@ -63,7 +63,8 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                
+                frmMain.RaiseEventsErr(ex.ToString());
+                frmMain.RaiseEvents("Database connect fail");
             }
             
 
@@ -121,15 +122,16 @@ namespace LAS_Interface
 
             if (DatabaseLib.ExecuteSQL (strSQL ))
             {
-                    updateLine();
-                    MessageBox.Show("successfully");
-                    this.Close();
+                updateLine();
+                MessageBox.Show("successfully");
+                frmMain.RaiseEvents("Edit Delivery Order");
+                //this.Close();
 
             }
             else
             {
                 MessageBox.Show("error");
-                this.Close();
+                //this.Close();
             }
 
 
@@ -178,9 +180,10 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error",
+                frmMain.RaiseEventsErr(ex.ToString());
+               /* MessageBox.Show(ex.Message, "Error",
                                   MessageBoxButtons.OK,
-                                  MessageBoxIcon.Error);
+                                  MessageBoxIcon.Error);*/
             }
 
 

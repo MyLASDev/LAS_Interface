@@ -33,11 +33,11 @@ namespace LAS_Interface
             }
         }
 
-        public void WriteErrLog(string pMsg)
+        public void WriteErrLog(string pFileName, string pMsg)
         {
-            string vFlieName = "Err_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
-            string vHeaderText = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "> ";
-        
+            string vFlieName = "Err_" + pFileName + "_" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt";
+            string vHeaderText = "<" + pFileName + "><"; //DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "> ";
+
             CreateFolderLog();
             using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + vFlieName, true))
             {

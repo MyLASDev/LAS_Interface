@@ -1,0 +1,6 @@
+<AclAddr14><6/1/2566 18:15:11>[LAS InterFace]> System.IndexOutOfRangeException: There is no row at position 0.
+   at System.Data.RBTree`1.GetNodeByIndex(Int32 userIndex)
+   at System.Data.DataRowCollection.get_Item(Int32 index)
+   at LAS_Interface.AcculoadProcess.GetLoadNo() in D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\AcculoadProcess.cs:line 816
+   at LAS_Interface.AcculoadProcess.Loading_Loading() in D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\AcculoadProcess.cs:line 620
+   at LAS_Interface.AcculoadProcess.LoadingProcess() in D:\C#\LAS_Interface\LAS_Interface\LAS_Interface\AcculoadProcess.cs:line 507

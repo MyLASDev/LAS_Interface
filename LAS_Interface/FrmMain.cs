@@ -17,6 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Runtime.Remoting.Messaging;
 using Ubiety.Dns.Core;
 using MySqlX.XDevAPI.Common;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace LAS_Interface
 {
@@ -45,6 +46,7 @@ namespace LAS_Interface
         private bool stpProcess = false;
         private int currentBatch;
         public static string[] delete = new string[5];
+        public static string[] backup = new string[2];
 
         public FrmMain()
         {
@@ -58,13 +60,14 @@ namespace LAS_Interface
             timer1.Start();
             RaiseEvents("---------------Application Start--------------");
             updatedgvLH();
+            updatedgvLL();
             try
             {
                 using (StreamReader readtext = new StreamReader(dirLog + "currentbatch.text", true))
                 {
                     string readText = readtext.ReadLine();
                     currentBatch = Int32.Parse(readText);
-
+                    backup[0] = readText;
                 }
                 File.Delete(dirLog + "currentbatch.text");
                 string sql = @"SELECT TotalizerGV, CurrentPreset, LoadedGV, CurrentFlowrate FROM loadinglines where BatchNo = " + currentBatch;
@@ -88,7 +91,7 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                RaiseEventsErr(ex.ToString());
             }
 
         }
@@ -108,7 +111,17 @@ namespace LAS_Interface
             string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
             DisplayMessage("", vMsg);
             LogFile.WriteLog("AclAddr14", vMsg);
+            //LogFile.WriteErrLog("AclAddr14", vMsg);
         }
+
+        public void RaiseEventsErr(string pMsg)
+        {
+            string vMsg = DateTime.Now + ">[LAS InterFace]> " + pMsg;
+            DisplayMessage("", vMsg);
+            //LogFile.WriteLog("AclAddr14", vMsg);
+            LogFile.WriteErrLog("AclAddr14", vMsg);
+        }
+
         #region ListboxItem
 
         public void DisplayMessage(string pFileName, string pMsg)
@@ -208,6 +221,11 @@ namespace LAS_Interface
                             RaiseEvents("Database connect successful");
                             Thread.Sleep(1000);
                             RaiseEvents("Start read from accuload");
+                            this.Invoke(new Action(() =>
+                            {
+                                btnConnectAcl.Enabled = false;
+                            }));
+                        
                         }
                         else
                         {
@@ -219,6 +237,7 @@ namespace LAS_Interface
                     catch (Exception ex)
                     {
                         //MessageBox.Show("Error = " + ex);
+                        RaiseEventsErr(ex.ToString());
                         RaiseEvents("Database connect fail");
                     }
 
@@ -227,6 +246,7 @@ namespace LAS_Interface
                 {
                     RaiseEvents("Accuload connect lost");
                 }
+
             }
 
         }
@@ -242,10 +262,23 @@ namespace LAS_Interface
 
         private void updatedgvLL()
         {
-            string sql = "SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines";
-            DataTable dt = new DataTable();
-            dt = DatabaseLib.Excute_DataAdapter(sql);
-            dataGridView2.DataSource = dt;
+            if (load_no != null)
+            {
+                string sql = @"SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines where LoadNo = " + load_no;
+                //string sql = "SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines";
+                DataTable dt = new DataTable();
+                dt = DatabaseLib.Excute_DataAdapter(sql);
+                dataGridView2.DataSource = dt;
+            }
+            else
+            {
+                string sql = @"SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines where LoadNo = " + dataGridView1.SelectedCells[0].Value.ToString(); ;
+                //string sql = "SELECT BatchNo, LoadNo, status, Compartment, ProductName, Preset FROM loadinglines";
+                DataTable dt = new DataTable();
+                dt = DatabaseLib.Excute_DataAdapter(sql);
+                dataGridView2.DataSource = dt;
+            }
+       
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -297,11 +330,15 @@ namespace LAS_Interface
                                 {
                                     string vCmd3 = AcculoadLib.RemoteStart(14);
                                     ClientLib.SendData(vCmd3);
+                                } 
+                                else
+                                {
+                                    RaiseEvents("Loading Unauthorized.");
                                 }
                             }
                             catch (Exception ex)
                             {
-                                RaiseEvents("Error = " + ex);
+                                RaiseEventsErr(ex.ToString());
                             }
                         }
                         else
@@ -328,12 +365,24 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ Continue Batch ใช่หรือไม่ ?", "Continue Batch", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd3 = AcculoadLib.RemoteStart(14);
-                ClientLib.SendData(vCmd3);
-                AcculoadProcess = new AcculoadProcess(this);
-                AcculoadProcess.stpBatch = 3;
-                PullEnquireStatus();
-                
+                if (ClientLib.IsConnectedAcl())
+                {
+                    string vCmd3 = AcculoadLib.RemoteStart(14);
+                    ClientLib.SendData(vCmd3);
+                    AcculoadProcess = new AcculoadProcess(this);
+                    AcculoadProcess.stpBatch = 3;
+                    PullEnquireStatus();
+                    this.Invoke(new Action(() =>
+                    {
+                        btnContinueBatch.Enabled = false;
+                        btnEndBatch.Enabled = false;
+                    }));
+                }
+                else
+                {
+                    RaiseEvents("Connection Lost...");
+                }
+
             }
         }
 
@@ -343,9 +392,16 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ End Transaction ใช่หรือไม่ ?", "End Transaction", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd = AcculoadLib.EndTransaction(14);
-                ClientLib.SendData(vCmd);
-                PullEnquireStatus();
+                if (ClientLib.IsConnectedAcl())
+                {
+                    string vCmd = AcculoadLib.EndTransaction(14);
+                    ClientLib.SendData(vCmd);
+                    PullEnquireStatus();
+                }
+                else
+                {
+                    RaiseEvents("Connection Lost...");
+                }
                
             }
 
@@ -369,7 +425,7 @@ namespace LAS_Interface
             {
                 FrmLoading frmDO = new FrmLoading(this);
                 frmDO.ShowDialog();
-                RaiseEvents("Add Delivery Order");
+                //RaiseEvents("Add Delivery Order");
                 updatedgvLH();
             }
         }
@@ -382,7 +438,7 @@ namespace LAS_Interface
                 FrmLoading frmDO = new FrmLoading(this);
                 frmDO.frmActon = 2;
                 frmDO.ShowDialog();
-                RaiseEvents("Edit Delivery Order");
+                //RaiseEvents("Edit Delivery Order");
                 updatedgvLH();
                 updatedgvLL();
             }
@@ -404,7 +460,7 @@ namespace LAS_Interface
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error = " + ex);
+                    RaiseEventsErr(ex.ToString());
                     RaiseEvents("Delete not successfully");
                 }
             }
@@ -489,11 +545,23 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ stop loading ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd = AcculoadLib.RemoteStop(14);
-                ClientLib.SendData(vCmd);
-                AcculoadProcess = new AcculoadProcess(this);
-                AcculoadProcess.stpBatch = 2;
-                PullEnquireStatus();
+                if (ClientLib.IsConnectedAcl())
+                {
+                    string vCmd = AcculoadLib.RemoteStop(14);
+                    ClientLib.SendData(vCmd);
+                    AcculoadProcess = new AcculoadProcess(this);
+                    AcculoadProcess.stpBatch = 2;
+                    PullEnquireStatus();
+                    this.Invoke(new Action(() =>
+                    {
+                        btnContinueBatch.Enabled = true;
+                        btnEndBatch.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    RaiseEvents("Connection Lost...");
+                }
             }
         }
 
@@ -508,9 +576,21 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ Reset Alarm ใช่หรือไม่ ?", "Reset Alarm", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd = AcculoadLib.ResetAlarm(14);
-                ClientLib.SendData(vCmd);
-                PullEnquireStatus();
+                if (ClientLib.IsConnectedAcl())
+                {
+                    string vCmd = AcculoadLib.ResetAlarm(14);
+                    ClientLib.SendData(vCmd);
+                    PullEnquireStatus();
+                    this.Invoke(new Action(() =>
+                    {
+                        btnContinueBatch.Enabled = true;
+                        btnEndBatch.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    RaiseEvents("Connection Lost...");
+                }
             }
         }
 
@@ -519,15 +599,24 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ ยกเลิกการเชื่อมต่อ ใช่หรือไม่ ?", "Disconnect", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                
                 AcculoadProcess = new AcculoadProcess(this);
                 AcculoadProcess.thrShutdown = true;
                 ClientLib.DisconnectAcl();
-                using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+                Enable_Click();
+                if (backup[1] == AcculoadProcess.Batch_no) 
                 {
-                    pLogFile.WriteLine(AcculoadProcess.Batch_no);
-                    pLogFile.Dispose();
+                    using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+                    {
+                        pLogFile.WriteLine(AcculoadProcess.Batch_no);
+                        pLogFile.Dispose();
+                    }
+                    RaiseEvents("---------------Application Stop---------------");
+                    this.Invoke(new Action(() =>
+                    {
+                        btnConnectAcl.Enabled = true;
+                    }));
                 }
-                RaiseEvents("---------------Application Stop---------------");
             }
         }
 
@@ -537,11 +626,23 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ End Batch ใช่หรือไม่ ?", "End Batch", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string vCmd = AcculoadLib.EndBatch(14);
-                ClientLib.SendData(vCmd);
-                AcculoadProcess = new AcculoadProcess(this);
-                AcculoadProcess.cnlBatch = 2;
-                PullEnquireStatus();
+                if (ClientLib.IsConnectedAcl())
+                {
+                    string vCmd = AcculoadLib.EndBatch(14);
+                    ClientLib.SendData(vCmd);
+                    AcculoadProcess = new AcculoadProcess(this);
+                    AcculoadProcess.cnlBatch = 2;
+                    PullEnquireStatus();
+                    this.Invoke(new Action(() =>
+                    {
+                        btnContinueBatch.Enabled = false;
+                        btnEndTransaction.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    RaiseEvents("Connection Lost...");
+                }
             }
         }
 
@@ -569,7 +670,9 @@ namespace LAS_Interface
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                RaiseEventsErr(ex.ToString());
+               // string vCmd = AcculoadLib.RemoteStop(14);
+               // ClientLib.SendData(vCmd);
             }
         }
 
@@ -590,9 +693,40 @@ namespace LAS_Interface
             }
             catch (Exception ex)   
             {
-                MessageBox.Show(ex.Message);
+                RaiseEventsErr(ex.ToString());
+                string vCmd = AcculoadLib.RemoteStop(14);
+                ClientLib.SendData(vCmd);
             }
-        } 
+        }
+
+        public void Enable_Click()
+        {
+            this.Invoke(new Action(() =>
+            {
+                btnContinueBatch.Enabled = true;
+                btnEndTransaction.Enabled = true;
+                btnEndBatch.Enabled = true;
+                btnStart.Enabled = true;
+            }));
+        }
+        public void End_Click()
+        {
+            this.Invoke(new Action(() =>
+            {
+                btnEndTransaction.Enabled = true;
+            }));
+        }
+
+        public void Disable_Click()
+        {
+            this.Invoke(new Action(() =>
+            {
+                btnContinueBatch.Enabled = false;
+                btnEndTransaction.Enabled = false;
+                btnEndBatch.Enabled = false;
+                btnStart.Enabled = false;
+            }));
+        }
 
         public void checkkBox(string BatchNum)
         {
@@ -606,7 +740,20 @@ namespace LAS_Interface
 
             AcculoadProcess = new AcculoadProcess(this);
             AcculoadProcess.Batch_no = BatchNum;
+            backup[1] = AcculoadProcess.Batch_no;
         }
 
+        private void FrmMain_Closed(object sender, FormClosedEventArgs e)
+        {
+            if (backup[1] == null) 
+            {
+                backup[1] = backup[0];
+                using (System.IO.StreamWriter pLogFile = new StreamWriter(dirLog + "currentbatch.text", true))
+                {
+                    pLogFile.WriteLine(backup[1]);
+                    pLogFile.Dispose();
+                }
+            }
+        }
     }
 }

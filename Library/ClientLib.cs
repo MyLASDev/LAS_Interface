@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Net.Http;
+
 namespace Library
 {
     public class ClientLib
@@ -45,7 +47,7 @@ namespace Library
                 
                 string uri = "ktd-devth.ddns.net";
                 string ipAddress = "192.168.0.114";
-                var addresses = Dns.GetHostAddresses(uri);
+               // var addresses = Dns.GetHostAddresses(uri);
                 //remoteEP = new IPEndPoint(addresses[0], 7734);
                 //remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), 7734);
                 // Create a TCP/IP socket.
@@ -58,7 +60,7 @@ namespace Library
                 //tc = new TcpClient("192.168.1.193", 7734);
                 tcp.SendTimeout = 1000;
                 stm = tcp.GetStream();
-                isConnectAcl = true;
+                IsConnectedAcl();
                 return true;
                 tcp.GetStream().Close();
                 tcp.Close();
@@ -69,6 +71,61 @@ namespace Library
                 isConnectAcl = false;
                 return false;
             }
+        }
+
+
+        public static bool IsConnectedAcl()
+        {
+           
+            try
+            {
+                if ( tcp != null && tcp.Client != null &&  tcp.Connected)
+                {
+                    /* pear to the documentation on Poll:
+                     * When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
+                     * -either- true if Socket.Listen(Int32) has been called and a connection is pending;
+                     * -or- true if data is available for reading; 
+                     * -or- true if the connection has been closed, reset, or terminated; 
+                     * otherwise, returns false
+                     */
+
+                    // Detect if client disconnected
+                     if ( tcp.Client.Poll(0, SelectMode.SelectRead))
+                     {
+                         byte[] buff = new byte[1];
+                         if (tcp.Client.Receive(buff, SocketFlags.Peek) == 0)
+                         {
+                            // Client disconnected
+                            isConnectAcl = false;
+                            return false;
+                            
+                         }
+                         else
+                         {
+                            isConnectAcl = true;
+                            return true;
+                         
+                         }
+                     }
+                    isConnectAcl = true;
+                    return true;
+                    
+                }
+                else
+                {
+                    ConnectAcl();
+                    isConnectAcl = false;
+                    return false;
+                    
+                } 
+
+            }
+            catch
+            {
+                isConnectAcl = false;
+                return false;
+            }
+            
         }
 
         public static void DisconnectAcl()
@@ -113,7 +170,7 @@ namespace Library
                 stm.Read(mRecbyte, 0, mRecbyte.Length);
                 vRecv = ASCIIEncoding.UTF8.GetString(mRecbyte);
             }
-
+            
             return vRecv;
         }
         
