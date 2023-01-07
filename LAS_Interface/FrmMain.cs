@@ -18,6 +18,7 @@ using System.Runtime.Remoting.Messaging;
 using Ubiety.Dns.Core;
 using MySqlX.XDevAPI.Common;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+using LAS_Interface;
 
 namespace LAS_Interface
 {
@@ -423,10 +424,17 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ Add Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                FrmLoading frmDO = new FrmLoading(this);
-                frmDO.ShowDialog();
-                //RaiseEvents("Add Delivery Order");
-                updatedgvLH();
+                if (DatabaseLib.IsServerConnected())
+                {
+                    FrmLoading frmDO = new FrmLoading(this);
+                    frmDO.ShowDialog();
+                    //RaiseEvents("Add Delivery Order");
+                    updatedgvLH();
+                }
+                else
+                {
+                    RaiseEvents("Database connect fail");
+                }
             }
         }
 
@@ -435,12 +443,19 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ Edit Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                FrmLoading frmDO = new FrmLoading(this);
-                frmDO.frmActon = 2;
-                frmDO.ShowDialog();
-                //RaiseEvents("Edit Delivery Order");
-                updatedgvLH();
-                updatedgvLL();
+                if (DatabaseLib.IsServerConnected())
+                {
+                    FrmLoading frmDO = new FrmLoading(this);
+                    frmDO.frmActon = 2;
+                    frmDO.ShowDialog();
+                    //RaiseEvents("Edit Delivery Order");
+                    updatedgvLH();
+                    updatedgvLL();
+                }
+                else
+                {
+                    RaiseEvents("Database connect fail");
+                }
             }
         }
 
@@ -449,19 +464,26 @@ namespace LAS_Interface
             DialogResult result = MessageBox.Show("คุณต้องการ Delete Loading Order ใช่หรือไม่ ?", "Stop Loading", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                try
+                if (DatabaseLib.IsServerConnected())
                 {
-                    delheader();
-                    delline();
-                    delback();
-                    updatedgvLH();
-                    MessageBox.Show("successfully");
-                    RaiseEvents("Delete Delivery Order");
+                    try
+                    {
+                        delheader();
+                        delline();
+                        delback();
+                        updatedgvLH();
+                        MessageBox.Show("successfully");
+                        RaiseEvents("Delete Delivery Order");
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseEventsErr(ex.ToString());
+                        RaiseEvents("Delete not successfully");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    RaiseEventsErr(ex.ToString());
-                    RaiseEvents("Delete not successfully");
+                    RaiseEvents("Database connect fail");
                 }
             }
         }
@@ -757,3 +779,4 @@ namespace LAS_Interface
         }
     }
 }
+

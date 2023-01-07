@@ -1,0 +1,12 @@
+<AclAddr14><7/1/2566 16:06:28>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 16:07:40>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 16:09:45>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 16:10:36>[LAS InterFace]> Connection Lost...
+<AclAddr14><7/1/2566 19:03:11>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 19:03:56>[LAS InterFace]> Accuload connect lost
+<AclAddr14><7/1/2566 19:16:50>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 19:17:18>[LAS InterFace]> Delete Delivery Order
+<AclAddr14><7/1/2566 19:17:39>[LAS InterFace]> Edit Delivery Order
+<AclAddr14><7/1/2566 19:19:05>[LAS InterFace]> Add Delivery Order
+<AclAddr14><7/1/2566 19:20:54>[LAS InterFace]> ---------------Application Start--------------
+<AclAddr14><7/1/2566 19:22:03>[LAS InterFace]> ---------------Application Start--------------
